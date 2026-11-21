@@ -20,10 +20,11 @@ Weincenter Lörrach uses Power Automate Cloud and Power Automate Desktop to fulf
 
 ## Current high-level flows
 
-1. Orders are retrieved from the marketplace. Vivino retrieval and status updates use its API according to the **historical Vivino guide**, pp. 2-3; Hawesko method TODO: verify.
+1. **Stakeholder-reported current state (2026-11-21):** Vivino and Hawesko order retrieval both use their respective APIs. The historical Vivino guide (pp. 2-3) also describes Vivino API-based order retrieval and status updates. Hawesko API endpoint specifics and update method remain TODO: verify from exports.
 2. Cloud orchestration calls PAD flows to perform DPD shipment creation and WEGA invoicing (Vivino historical guide, pp. 2-3).
 3. Shipment tracking and invoice number are recorded and order status is updated in the relevant marketplace/SharePoint list (user report + Vivino guide).
-4. Vivino guide describes an end-of-day `Shipped` updater at 17:00 and bi-weekly SharePoint archival. Both require confirmation from the upcoming exports.
+4. Both tracking lists and the shared parcel-configuration Excel workbook reside in the **same SharePoint site** (stakeholder-reported current state; exact site ID, paths and Hawesko list name TODO: verify).
+5. Vivino guide describes an end-of-day `Shipped` updater at 17:00 and bi-weekly SharePoint archival. Both require confirmation from the upcoming exports.
 
 ## Sources of truth (provisional)
 
@@ -39,6 +40,7 @@ Weincenter Lörrach uses Power Automate Cloud and Power Automate Desktop to fulf
 - **Conflict — verification required:** stakeholder narrative mentioned WEGA then DPD; Vivino historical guide (p. 3) describes DPD then WEGA. Review actual execution order in current flows.
 - **TODO: verify:** published guide describes hourly Vivino schedule, 17:00 Shipped process, bi-weekly backup cleanup; the stakeholder only confirms multiple daily executions, not exact clocks.
 - **TODO: verify:** presence of external PAD attended RPA licensing, Power Automate environment IDs, connector ownership and machine IDs.
+- **TODO: verify:** whether additional shared spreadsheets, SharePoint assets or dependencies exist; stakeholder does not recall any beyond the parcel-configuration workbook.
 
 ## Logical diagram (not a verified action-by-action flow)
 

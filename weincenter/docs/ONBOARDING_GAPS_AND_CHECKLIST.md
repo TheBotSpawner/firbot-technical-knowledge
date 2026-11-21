@@ -13,7 +13,9 @@ client_slug: weincenter-loerrach
 - [ ] Confirm production flow IDs and Power Automate environment; no passwords or connector secrets in published repo.
 - [ ] Confirm real Vivino step sequence (DPD then WEGA per historical guide, or WEGA then DPD per stakeholder narrative).
 - [ ] Confirm current schedules: orchestration cadence; Vivino end-of-day shipping at 17:00; cleanup every 14 days.
-- [ ] Verify tracking list exact names/IDs, SharePoint field IDs/data types and the Excel configuration dependency.
+- [ ] Verify tracking list exact names/IDs, SharePoint field IDs/data types and the shared Excel configuration workbook (stakeholder confirms both lists and workbook use one site).
+- [ ] Verify both order-retrieval APIs from each solution export; identify Hawesko API endpoint, authentication owner and update mechanism.
+- [ ] Check for other Excel/SharePoint dependencies not currently recalled by the stakeholder.
 - [ ] Inspect retry safeguards and idempotency before deleting/resetting any tracking record.
 - [ ] Identify physical Windows machine, session account, machine connectivity, support owner and unattended restrictions.
 - [ ] Check exact licensing SKU and subscription; no unverified assumptions.

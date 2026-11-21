@@ -11,8 +11,8 @@ client_slug: weincenter-loerrach
 | ID | Type | Exact / working name | Platform | Business role | Owner | Sensitivity | Linked automations | Verification |
 |---|---|---|---|---|---|---|---|---|
 | `DATA-ORD-001` | List | `Vivino Orders Tracking` | SharePoint (Weincenter Lörrach – Intern) | Order-level state and execution tracking | Client (assumed) | Confidential (provisional) | AUTO-ORD-001, AUTO-ORD-003, AUTO-ORD-004 | Historical guide pp. 6-8; TODO: verify current schema |
-| `DATA-ORD-002` | List | `Hawesko Orders Tracking` (working name, exact spelling TODO) | SharePoint | Hawesko order tracking | Client (assumed) | Confidential (provisional) | AUTO-ORD-002 | Stakeholder-reported only; TODO: verify name and schema |
-| `DATA-ORD-003` | Excel configuration | `Package weight and dimensions.xlsx` | SharePoint Documents | Parcel size/weight rules for DPD | Client (assumed) | Internal (provisional) | AUTO-ORD-001; Hawesko dependency TODO | Historical guide pp. 8-9; TODO: verify |
+| `DATA-ORD-002` | List | `Hawesko Orders Tracking` (working name, exact spelling TODO) | SharePoint (same site as Vivino list) | Hawesko order tracking | Client (assumed) | Confidential (provisional) | AUTO-ORD-002 | Stakeholder-reported only; TODO: verify name and schema |
+| `DATA-ORD-003` | Excel configuration | `Package weight and dimensions.xlsx` | SharePoint Documents (same site as both tracking lists) | Parcel size/weight rules for DPD | Client (assumed) | Internal (provisional) | AUTO-ORD-001, AUTO-ORD-002 | Vivino guide pp. 8-9 + stakeholder-reported shared use (2026-11-21); TODO: verify exact live file |
 | `DATA-ORD-004` | Archive folder | `Documents / Vivino Order Tracking / Orders Archive` | SharePoint | Retain backups of old orders deleted from operational list | Client (assumed) | Confidential (provisional) | AUTO-ORD-004 | Historical guide p. 8; TODO: verify current operation |
 
 ## Vivino Orders Tracking — known fields from guide (pp. 6-7)
@@ -38,6 +38,10 @@ SharePoint list URL (historical): `https://haltingerwinzereg.sharepoint.com/site
 ## Package configuration columns (historical guide p. 9)
 
 `Bottles in Parcel`, `Weight in KG`, `Length`, `Width`, `Height`. Workbook path from guide: `Documents / Vivino Order Tracking / Package weight and dimensions.xlsx`.
+
+## Shared site and currently known dependencies
+
+**Stakeholder-reported (2026-11-21):** the Vivino and Hawesko lists and the parcel-configuration Excel workbook all reside within the same SharePoint site. The stakeholder does not recall any additional Excel workbook dependencies. This must be verified during solution export inspection. Do not infer that the above list is exhaustive.
 
 ## Risks / gaps
 
