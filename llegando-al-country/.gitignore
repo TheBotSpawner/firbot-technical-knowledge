@@ -1,0 +1,28 @@
+# Sensitive Make exports / private inspection area
+exports/make/private/*
+!exports/make/private/.gitkeep
+
+# Accidentally placed raw blueprint files outside sanitised path
+exports/make/*.json
+exports/make/*.zip
+exports/make/*.csv
+exports/make/*.xlsx
+exports/make/*.har
+
+# Prevent typical secret material in any folder
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.key
+*.secret
+secrets.*
+credentials.*
+
+# Local temp
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
