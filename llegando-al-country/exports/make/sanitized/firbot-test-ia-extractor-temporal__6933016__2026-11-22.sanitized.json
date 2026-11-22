@@ -1,0 +1,313 @@
+{
+ "id": 6933016,
+ "name": "Firbot - Test IA extractor (temporal)",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": false,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "openai-gpt-3",
+  "openai-gpt-3",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-11-06T18:24:01.115Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-06T18:16:43.743Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": false,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "history",
+       "type": "text"
+      },
+      {
+       "name": "model",
+       "type": "text"
+      },
+      {
+       "name": "name",
+       "type": "text"
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "model": "{{1.model}}",
+     "prompt": "##Instrucciones Específicas\r\n\r\nTu única labor en este chatbot de recomendación de servicios es comprender y resumir el contexto en el que estamos dentro de la conversación, en base a la cadena de mensajes que vas a analizar a continuación.\r\n\r\nPara cumplir este objetivo lo que vas a hacer es leer la cadena de mensajes en detalle, teniendo en cuenta su orden, y razonar/entender qué es lo que está buscando el usuario en este momento.\n\nSIEMPRE LO QUE LE PROPONEMOS AL USUARIO TIENE PRIORIDAD POR SOBRE LO QUE PUSO EL USUARIO. Si el usuario aceptó algo que le propusimos ponés ese dato y te olvidás completamente de lo que puso anteriormente.\n\nEL USUARIO QUE NOS CONTACTA ES {{1.name}}\r\n\r\nPor ej. Si el usuario está buscando un servicio, y ya ingresó una zona, el resumen diría algo así como \"El usuario busca un servicio por zonaEjemplo, pero todavía no ingreso qué servicio\". Si el usuario cambia de opinión y quiere de repente recomendar un servicio, tu resumen diría algo como \"El usuario estaba buscando un servicioEjemplo por zonaEjemplo, pero ahora le gustaria recomendar un servicio. Faltaría ingresar datos sobre el proveedor.. Estos son solo ejemplos orientativos de lo que tenés que escribir en el resumen, que va a ser guardado en la variable la variable contextSummary.\n\nEn caso de haberlas, siempre mencioná las propuestas de servicios o barrios similares que le hayamos hecho al usuario en el resumen.\r\n\r\nTe recuerdo nuevamente, en caso de querer BUSCAR un servicio, necesitamos recolectar qué servicio está buscando, NADA MAS EN CASO DE BUSCAR. Si nos da la zona genial, sino al ser búsqueda no pasa nada, ya que en este caso la zona es OPCIONAL, asi que no la preguntes si no nos la dió y asi podemos seguir. \r\n\r\nEn caso de querer publicar un servicio (distinto de recomendar) no necesitamos nada. \n\nTambién, en caso de que el usuario quiera recibir la revista no necesitamos nada. \r\n\r\nEn caso de querer recomendar un servicio, a diferencia de la búsqueda SI NECESITAMOS LA ZONA DONDE SE REALIZÓ EL SERVICIO, sumado al servicio que quiere recomendar, y además necesitamos datos sobre el proveedor de servicio, como su número de teléfono y su nombre o el de su servicio. \r\n\r\nEsto es muy importante: Notá que a diferencia de la recomendación, para simplemente buscar un servicio no necesitamos ni el número de teléfono ni el nombre del proveedor, simplemente buscamos el servicio y opcionalmente la zona, a diferencia de la opción Recomendar.\r\n\r\nTambién como podrás notar, el servicio en cuestión, ya sea búsqueda o recomendación, siempre es necesario. No podemos avanzar sin este dato.\r\n\r\nSi ves un mensaje con la estructura \"El contacto es = (Nombre)+(Número)\", eso significa que el mensaje que llegó fueron los datos de un contacto (El proveedor de servicio). SIEMPRE QUE SE ADJUNTA UN CONTACTO SE TRATA DE UNA RECOMENDACIÓN. Desde este punto es crucial que razones y puedas entender si el nombre del proveedor de servicio ya incluye alguna información sobre el nombre del servicio o la zona donde trabaja. Esto sirve también para saber si tenemos toda la información que necesitamos.\r\n\r\nEn resumen, si el usuario está buscando un servicio, necesitamos conocer el servicio que busca y opcionalmente una zona. Entendé que, en caso de buscar, la zona es opcional. En caso que el usuario quiera recomendar un servicio, ahí necesitaríamos obligatoriamente zona, servicio, nombre del proveedor y su número de teléfono. \r\n\r\nEsta es la cadena de mensajes que vas a analizar en detalle:\r\n{{1.history}}\r\n\r\nSi en el último mensaje ves que dice not manageable information, significa que el usuario mandó un tipo de mensaje que por ahora no manejamos como audio o imagen, así que tenemos que comentar esto en el resumen.\n\nTe recuerdo nuevamente, es muy importante que si le propusimos un barrio o servicio al usuario, y lo aceptó, nos olvidemos de lo que puso el usuario antes, en el resumen solo vamos a poner el nuevo dato propuesto. No te confundas con esto.\n\n\nSi ya le dimos la respuesta que necesitaba al usuario, por ejemplo este estaba buscando y ya encontramos y le dimos lo que necesitaba, pero ahora pregunta algo sobre eso ya no pongas que busca un servicio por ejemplo, pone que ahora el usuario esta preguntando por lo que este preguntando sobre lo que buscamos, pero ya no quiere buscar, es muy importante que sepas identificar esta situacion especifica y no confundirte. ",
+     "rawText": "Cadena de mensajes:\n\n{{1.history}}",
+     "parameters": [
+      {
+       "name": "contextSummary",
+       "type": "string",
+       "isRequired": false,
+       "description": "Un resumen del contexto en el que nos encontramos actualmente habiendo analizado la conversación previa"
+      }
+     ]
+    },
+    "module": "openai-gpt-3:transformTextToStructuredData",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "__IMTCONN__": 4527306
+    }
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "model": "{{1.model}}",
+     "prompt": "## INSTRUCCIONES\n\nTu única función es entender qué necesita actualmente el usuario y extraer los datos necesarios usando:\n\n**Contexto actual:**\n`{{2.contextSummary}}`\n\n**Cadena de mensajes:**\n`{{1.history}}`\n\nAnalizá siempre la conversación en orden y priorizá la información más reciente. Si el usuario corrige o cambia algo, usá el dato nuevo.\n\n## whatUserNeed\n\nEsta variable SOLO puede ser exactamente uno de estos valores:\n\n- Buscar\n- Recomendar\n- Publicar\n- Revista\n- Other\n\nUsá `Other` cuando no corresponda a ninguna de las otras opciones.\n\nTambién usá `Other` si el objetivo anterior ya fue resuelto y ahora el usuario hace una pregunta nueva sobre el resultado obtenido. Ejemplo: ya le encontramos un servicio y ahora pregunta cómo contactarlo o qué días trabaja.\n\n## DATOS NECESARIOS\n\n### Buscar\n\nPara buscar necesitamos obligatoriamente:\n\n- `work`: servicio buscado.\n\n`zone` es OPCIONAL. Si el usuario dio un barrio, guardalo. Si no lo dio, dejalo vacío y podemos avanzar igualmente.\n\nEn Buscar nunca necesitamos `providerName` ni `providerContact`.\n\n### Recomendar\n\nPara recomendar necesitamos obligatoriamente:\n\n- `work`: servicio que realiza.\n- `zone`: barrio donde se realizó el servicio.\n- `providerName`: nombre del proveedor o servicio.\n- `providerContact`: teléfono del proveedor, SOLO NÚMEROS.\n\n### Publicar / Revista\n\nNo necesitamos recolectar datos adicionales.\n\n---\n\n## CONTACTOS ADJUNTOS - REGLA MUY IMPORTANTE\n\nSi aparece un mensaje con esta estructura:\n\n`El contacto es = NOMBRE+NUMERO`\n\nsignifica que el usuario adjuntó un contacto de WhatsApp.\n\n**SIEMPRE que se adjunta un contacto, `whatUserNeed` = `Recomendar`.**\n\nDel contacto extraé:\n\n- `providerContact`: el número después del `+`, dejando SOLO números.\n- `providerName`: el nombre de la persona o proveedor.\n- `work`: si dentro del nombre puede identificarse claramente un oficio, profesión o servicio.\n- `zone`: si dentro del nombre puede identificarse claramente un barrio, country o zona.\n\n**No trates el nombre del contacto como un bloque indivisible. Analizá sus palabras porque pueden contener varios datos útiles. No vuelvas a pedir datos que ya puedan inferirse claramente del nombre.**\n\nEjemplos:\n\n`El contacto es = Juan Plomero[REDACTED_PHONE]`\n\n→ whatUserNeed: Recomendar  \n→ providerName: Juan  \n→ providerContact: [REDACTED_PHONE]  \n→ work: Plomero  \n→ zone: vacío\n\n`El contacto es = Sofia Jardinera La Horqueta[REDACTED_PHONE]`\n\n→ whatUserNeed: Recomendar  \n→ providerName: Sofia  \n→ providerContact: [REDACTED_PHONE]  \n→ work: Jardinera  \n→ zone: La Horqueta\n\n`El contacto es = Diego Electricista Nordelta[REDACTED_PHONE]`\n\n→ providerName: Diego  \n→ work: Electricista  \n→ zone: Nordelta\n\nLa información puede aparecer en cualquier orden. Razoná semánticamente, no dependas únicamente de la posición de las palabras.\n\nInferí servicio o barrio **solo cuando sea razonablemente claro**. No inventes información.\n\nSi podés reconocer claramente una parte como servicio o barrio, separala del `providerName`. Si no es posible separar el nombre con seguridad, conservá el nombre completo como `providerName`.\n\n---\n\n## PROPUESTAS ACEPTADAS\n\nSi nosotros le propusimos al usuario un servicio similar y el usuario aceptó:\n\n- guardá en `proposalService` EXACTAMENTE el texto del servicio que propusimos.\n\nEjemplo:\n\nUsuario ingresó `niñero`  \nChatbot propuso `Niñera`  \nUsuario acepta  \n→ `proposalService = Niñera`\n\nNunca pongas en `proposalService` el valor original del usuario.\n\nLo mismo aplica a barrios:\n\n- si aceptó un barrio propuesto, `proposalZone` debe contener EXACTAMENTE el barrio propuesto.\n\nSi no hubo propuesta o todavía no fue aceptada, dejá estas variables vacías.\n\nCuando una propuesta fue aceptada, el valor propuesto tiene prioridad sobre el valor original.\n\n---\n\n## CONTEXTO Y CAMBIOS DE INTENCIÓN\n\nSi el usuario cambia de objetivo, adaptate al objetivo nuevo y no arrastres datos incompatibles del anterior.\n\nEjemplo: estaba buscando un jardinero y ahora quiere recomendar un electricista → `whatUserNeed = Recomendar` y utilizá solamente los datos relevantes para la nueva recomendación.\n\nSi el último mensaje dice `not manageable information`, significa que envió un tipo de mensaje no soportado, como audio o imagen. Tenelo en cuenta al determinar el estado actual.\n\n---\n\n## LAST MESSAGE\n\nPuede aparecer información con:\n\n`(Last Message Buscar)`  \no  \n`(Last Message Recomendar)`\n\nEs información de una acción anterior ya terminada.\n\nSi el usuario parece estar retomando explícitamente esa acción, podés usarla como contexto.\n\nEjemplo:\n\n`jardinero (Last Message Buscar)`  \nUsuario: `Ah, era en Pilar`\n\n→ Buscar jardinero en Pilar.\n\nPero si el usuario elige `Seguir Buscando`, `Recomendar Servicio` o `Seguir Recomendando`, comienza una acción NUEVA y queda terminantemente prohibido reutilizar los datos de la acción anterior.\n\n---\n\n## PRIORIDAD FINAL\n\nAnte conflictos, seguí este orden:\n\n1. Correcciones o datos nuevos del usuario.\n2. Propuestas nuestras que el usuario aceptó, usando EXACTAMENTE el valor propuesto.\n3. Datos explícitos o claramente inferibles de un contacto adjunto.\n4. Contexto anterior todavía vigente.\n\nCompletá `zone`, `work`, `providerContact`, `providerName`, `proposalService` y `proposalZone` únicamente con información disponible o razonablemente inferible. Si un dato no aplica o realmente no está disponible, dejalo vacío.\n\n---\n\n## DESCRIPCIONES RECOMENDADAS PARA LAS VARIABLES\n\n### `work`\n\nEl servicio buscado o realizado por la persona recomendada. En recomendaciones, también debe inferirse del nombre de un contacto adjunto cuando sea claro. Ej: `\"Juan Plomero\"` → `\"Plomero\"`; `\"Sofia Jardinera La Horqueta\"` → `\"Jardinera\"`.\n\n### `zone`\n\nBarrio donde se busca o realizó el servicio. En recomendaciones, también debe inferirse del nombre del contacto cuando sea claro. Ej: `\"Sofia Jardinera La Horqueta\"` → `\"La Horqueta\"`.\n\n### `providerName`\n\nNombre del proveedor recomendado. Si el contacto incluye además oficio y/o barrio, separar esos datos cuando sea claro. Ej: `\"Sofia Jardinera La Horqueta\"` → providerName `\"Sofia\"`, work `\"Jardinera\"`, zone `\"La Horqueta\"`.\n",
+     "rawText": "Contexto actual:\n{{2.contextSummary}}\n\nCadena de Mensajes:\n{{1.history}}",
+     "parameters": [
+      {
+       "name": "whatUserNeed",
+       "type": "string",
+       "isRequired": false,
+       "description": "En esta variable pondremos si el usuario quiere Publicar un servicio, Recomendar un servicio, Buscar un servicio o Recibir la Revista.",
+       "valueExamples": [
+        "Publicar",
+        "Recomendar",
+        "Buscar",
+        "Revista",
+        "Other"
+       ]
+      },
+      {
+       "name": "zone",
+       "type": "string",
+       "isRequired": false,
+       "description": "Barrio donde se busca el servicio o donde actualmente trabaja la persona recomendada, solo si el usuario lo mencionó o está en el nombre del contacto. NUNCA inventes un barrio. Si no lo dijo, dejalo vacío.",
+       "valueExamples": []
+      },
+      {
+       "name": "work",
+       "type": "string",
+       "isRequired": false,
+       "description": "El servicio que se está buscando o que realiza la persona recomendada, tal como lo escribió el usuario en la conversación (ej: si escribió costureras, poné costureras). NUNCA inventes ni uses un servicio que el usuario no mencionó. Si no lo dijo, dejalo vacío.",
+       "valueExamples": []
+      },
+      {
+       "name": "providerContact",
+       "type": "string",
+       "isRequired": false,
+       "description": "Número de teléfono del proveedor. Solo rellenar esta variable en caso de tratarse de una recomendación de servicios, nunca en una búsqueda. SOLO NÚMEROS ADMITIDOS, NADA DE PALABRAS."
+      },
+      {
+       "name": "providerName",
+       "type": "string",
+       "isRequired": false,
+       "description": "Nombre del proveedor. Solo rellenar esta variable en caso de tratarse de una recomendación de servicios, nunca en una búsqueda."
+      },
+      {
+       "name": "proposalService",
+       "type": "string",
+       "isRequired": false,
+       "description": "Si le propusimos al usuario un servicio similar al que ingresó, y este aceptó, entonces guardamos el servicio nuevo PROPUESTO en esta variable. EXACTAMENTE LAS MISMAS LETRAS TIENE QUE TENER A LA PROPUESTA QUE LE DIMOS"
+      },
+      {
+       "name": "proposalZone",
+       "type": "string",
+       "isRequired": false,
+       "description": "Si le propusimos al usuario un barrio similar al que ingresó, y este aceptó, entonces guardamos el barrio nuevo PROPUESTO en esta variable."
+      }
+     ]
+    },
+    "module": "openai-gpt-3:transformTextToStructuredData",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 600,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "__IMTCONN__": 4527306
+    }
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "ctx": "{{2.contextSummary}}",
+     "need": "{{3.whatUserNeed}}",
+     "work": "{{3.work}}",
+     "zone": "{{3.zone}}",
+     "providerName": "{{3.providerName}}",
+     "proposalService": "{{3.proposalService}}"
+    },
+    "module": "scenario-service:ReturnData",
+    "version": 2,
+    "metadata": {
+     "expect": [
+      {
+       "name": "ctx",
+       "type": "text",
+       "label": ""
+      },
+      {
+       "name": "need",
+       "type": "text",
+       "label": ""
+      },
+      {
+       "name": "work",
+       "type": "text",
+       "label": ""
+      },
+      {
+       "name": "zone",
+       "type": "text",
+       "label": ""
+      },
+      {
+       "name": "proposalService",
+       "type": "text",
+       "label": ""
+      },
+      {
+       "name": "providerName",
+       "type": "text",
+       "label": ""
+      }
+     ],
+     "designer": {
+      "x": 900,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   }
+  ],
+  "name": "Firbot - Test IA extractor (temporal)",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "name": "history",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "model",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "name",
+     "type": "text",
+     "required": false
+    }
+   ],
+   "output": [
+    {
+     "name": "ctx",
+     "type": "text"
+    },
+    {
+     "name": "need",
+     "type": "text"
+    },
+    {
+     "name": "work",
+     "type": "text"
+    },
+    {
+     "name": "zone",
+     "type": "text"
+    },
+    {
+     "name": "proposalService",
+     "type": "text"
+    },
+    {
+     "name": "providerName",
+     "type": "text"
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 5,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

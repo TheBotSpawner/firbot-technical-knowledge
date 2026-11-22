@@ -1,37 +1,39 @@
 ---
 title: "Make and Claude Handoff"
-status: Draft
+status: Verified
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "First Make-connected inventory completed 2026-11-22 (read-only)"
 ---
 
 # Make Inventory and Claude Handoff
 
-## Handoff objective
+## Status
 
-Connect the correct **Llegando al Country** Make account and turn this *partial initial baseline* into a verified, maintainable map of the productive Nexo ecosystem. Inventory only — **not a development or production mutation request**.
+The first read-only, Make-connected inventory was completed on **2026-11-22** through the Make MCP connector (account user of the client organization). **No production resource was modified, activated, deactivated or executed**; only list/get operations were used (`organizations_list`, `scenarios_list`, `scenarios_get`, `hooks_list`, `connections_list`, `keys_list`, `data-stores_list`, `data-structures_list`, `executions_list`, `folders_list`, `users_me`).
 
-## Proposed read-only sequence
+> ⚠️ The Make MCP connector also exposes *tools that execute scenarios* (named `s<ID>_<scenario name>`, e.g. `LL - Subscenario Send Sticker`, `LL - Buscar Zona`, the RecMulti scenarios) and mutating tools (`scenarios_update`, `scenarios_run`, `data-store-records_*`, `hooks_*`…). **Calling an `s<ID>_…` tool runs the production scenario immediately** (sends WhatsApp messages, writes Strapi). Never call them for documentation.
 
-1. Read `../CLAUDE.md`, all ten `../knowledge/0*.md` registries and this handoff.
-2. Confirm Make organisation/team and that no other client's assets are in scope.
-3. Discover all scenarios with IDs, exact names, folders, active status and trigger type. Reconcile the 12 initial automation IDs; preserve them when matched.
-4. Read active main and child scenario configurations; map `CallSubscenario` edges, inputs/outputs, webhook routes, data store dependencies, endpoint methods, error handlers, and concurrency/idempotency.
-5. Inventory each Data Store; preserve exact names and vendor IDs, record schemas and verify any obsolete/unused assets without deleting them.
-6. Trace Strapi integrations and separate *reads* from *writes*. **LL - Anuncios remains read-only** according to stakeholder and should not be modified to "test" assumptions.
-7. Redact/review all export artifacts. Document source, timestamp, hashes, exact scope and sanitisation status in `../exports/make/manifest.md`.
-8. Update `03_AUTOMATION_REGISTRY.md`, `04_DATA_ASSETS_REGISTRY.md`, focused files under `knowledge/automations/make/` and `knowledge/schemas/`, gaps and checklists. Do not mark an export as identical to live until compared.
-9. Present a reconciliation report listing verified findings, unknowns, conflicts, security issues and next recommended documents.
+## Results
 
-## Requested outputs per scenario
+| Area | Result | Where |
+|---|---|---|
+| Org/team | `Llegando al Country` 4655020 / `My Team` 1163364, zone us2, Pro plan | [02](../knowledge/02_SYSTEMS_REGISTRY.md) |
+| Scenarios | 37 (29 active, 8 inactive), 0 folders | [03](../knowledge/03_AUTOMATION_REGISTRY.md), [Make index](../knowledge/automations/make/README.md) |
+| Dependencies | Full `CallSubscenario` graph + HTTP re-injection edges | [Make index](../knowledge/automations/make/README.md) |
+| Data Stores | 9, all schemas | [schemas/make](../knowledge/schemas/make/README.md) |
+| Strapi | 9 endpoints/collections used; Anuncios read-only verified | [schemas/strapi](../knowledge/schemas/strapi/README.md) |
+| Exports | 37 sanitized + manifest | [manifest](../exports/make/manifest.md) |
+| Findings | 3 execution failures, 16 findings | [07](../knowledge/07_INCIDENT_REGISTRY.md), [security](SECURITY_NOTES.md) |
 
-- Stable canonical ID, exact Make name, Make scenario ID, active state, folder and owner.
-- Trigger/webhook/schedule, inputs, outputs, dependencies, connected services and data.
-- Business purpose, routing summary, logging, error handling, retry/rollback/manual recovery.
-- Sensitive-data treatment, known limitations, source references and last verification date.
-- Diagram or subscenario call graph where it improves troubleshooting.
+## Next session (read-only) — suggested sequence
+
+1. Re-run `scenarios_list` for team 1163364; compare `lastEdit` with the manifest; re-export changed scenarios.
+2. Read execution details of the failed executions and the DLQ item (read-only `executions_get-detail`), without replaying.
+3. If read-only Strapi access is granted: export content-type schemas and API-token permissions; replace "Make-observed" field tables.
+4. With the Meta owner: WABA/app/webhook/template inventory.
+5. Update registries, gap summary and checklist.
 
 ## Practical separation
 
-- Keep current state in this repo. Create proposed architecture fixes, new scenarios or major refactors in sibling **`automations-development/`** only when that workspace exists and a change request is authorised.
-- If any access level allows edits, **do not use mutating operations** during inventory. Never run scenario execution or test production messages without explicit approval.
+- Current state lives here. Fixes (token migration, webhook auth, time-window filters, `WichSpecialEvent` typo, Pedido Review log values, cleanup of tooling) go to `automations-development` once authorised.
+- Never use the Firbot Blueprint Patcher or simulators as part of documentation work.

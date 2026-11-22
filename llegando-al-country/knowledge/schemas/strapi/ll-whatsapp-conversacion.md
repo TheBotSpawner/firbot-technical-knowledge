@@ -2,10 +2,10 @@
 title: "LL - WhatsApp Conversación — Visible Fields"
 status: Draft
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "UI fields from screenshots (partial); Make-observed fields confirmed from live blueprints 2026-11-22"
 ---
 
-# LL - WhatsApp Conversación — Visible UI Fields
+# SCHEMA-LTC-002 — LL - WhatsApp Conversación — Visible UI Fields
 
 - **Canonical Data ID:** `DATA-LTC-002`
 - **Strapi API identifier (visible):** `wpp-conversacion`
@@ -25,6 +25,10 @@ verification: "Initial baseline; partial validation"
 | `ultimoMensaje` | Datetime | Visible in UI; actual schema TODO |
 | `cantidadMensajes` | Number | Visible in UI; actual schema TODO |
 | `varianteInicial` | Relation | Visible in UI; actual schema TODO |
+
+## Make usage — confirmed from live blueprints, 2026-11-22
+
+No Make scenario calls a conversation endpoint directly. **Inference:** conversation records (`conversacionId`, `cantidadMensajes`, `ultimoMensaje`, `varianteInicial`) are maintained server-side by the Strapi custom controller behind `POST /api/wpp-bot/mensajes` (see [`ll-whatsapp-mensaje.md`](ll-whatsapp-mensaje.md)). **TODO: verify** with the client's Strapi developers.
 
 ## Schema verification required
 

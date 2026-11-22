@@ -1,0 +1,372 @@
+{
+ "id": 2629639,
+ "name": "Delete Messages",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "datastore",
+  "builtin",
+  "builtin",
+  "datastore"
+ ],
+ "lastEdit": "2025-08-04T02:06:52.370Z",
+ "scheduling": {
+  "type": "indefinitely",
+  "interval": 7200
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": "2026-11-22T14:55:55.862Z",
+ "created": "2025-08-03T03:24:32.173Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {
+     "sort": [],
+     "filter": [],
+     "mappAbleLimit": ""
+    },
+    "module": "datastore:SearchRecord",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "filter",
+       "type": "filter",
+       "label": "Filter",
+       "options": "rpc://datastore/1.12.1/RpcGetUDTKeys",
+       "required": true
+      },
+      {
+       "name": "sort",
+       "spec": [
+        {
+         "name": "key",
+         "type": "select",
+         "label": "Key",
+         "dynamic": true,
+         "options": [],
+         "required": true
+        },
+        {
+         "name": "order",
+         "type": "select",
+         "label": "Order",
+         "options": [
+          {
+           "label": "Ascending",
+           "value": 1
+          },
+          {
+           "label": "Descending",
+           "value": -1
+          }
+         ],
+         "required": true
+        }
+       ],
+       "type": "array",
+       "label": "Sort"
+      },
+      {
+       "name": "mappAbleLimit",
+       "type": "uinteger",
+       "label": "Mappable Limit"
+      }
+     ],
+     "restore": {
+      "parameters": {
+       "datastore": {
+        "label": "CountryMagazineDataStore"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "__IMTLENGTH__",
+       "type": "uinteger",
+       "label": "Total number of bundles"
+      },
+      {
+       "name": "__IMTINDEX__",
+       "type": "uinteger",
+       "label": "Bundle order position"
+      },
+      {
+       "name": "key",
+       "type": "text",
+       "label": "Key"
+      },
+      {
+       "name": "data",
+       "spec": [
+        {
+         "help": "Nombre del usuario",
+         "name": "Name",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "Numero de celular de la persona",
+         "name": "Cellphone_Number",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "El mensaje ",
+         "name": "Message",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "Cuando se genero ese mensaje",
+         "name": "Timestamp",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "Si es de entrada o salida",
+         "name": "Direction",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        }
+       ],
+       "type": "collection",
+       "label": "Record"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "datastore",
+       "type": "datastore",
+       "label": "Data store",
+       "required": true
+      },
+      {
+       "name": "continueWhenNoRes",
+       "type": "boolean",
+       "label": "Continue the execution of the route even if the module returns no results"
+      },
+      {
+       "name": "limit",
+       "type": "uinteger",
+       "label": "Limit"
+      }
+     ]
+    },
+    "parameters": {
+     "limit": null,
+     "datastore": 38022,
+     "continueWhenNoRes": false
+    }
+   },
+   {
+    "id": 5,
+    "mapper": {
+     "key": "{{1.key}}",
+     "data": "{{1.data}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Data store - Search records [1]"
+       },
+       "target": {
+        "label": "Custom"
+       }
+      }
+     },
+     "designer": {
+      "x": 300,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "feeder": 1
+    }
+   },
+   {
+    "id": 6,
+    "mapper": {
+     "array": "{{5.array}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "mode": "edit",
+       "name": "array",
+       "spec": [],
+       "type": "array",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "array": {
+        "mode": "edit"
+       }
+      }
+     },
+     "designer": {
+      "x": 600,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "filter": {
+     "name": "Message older than 4 hours",
+     "conditions": [
+      [
+       {
+        "a": "{{(now - parseDate(6.data.Timestamp; \"YYYY-MM-DD HH:mm\")) / 3600000}}",
+        "b": "3",
+        "o": "number:greater"
+       }
+      ]
+     ]
+    },
+    "mapper": {
+     "key": "{{6.key}}"
+    },
+    "module": "datastore:DeleteRecord",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "key",
+       "type": "text",
+       "label": "Key",
+       "required": true
+      }
+     ],
+     "restore": {
+      "parameters": {
+       "datastore": {
+        "label": "CountryMagazineDataStore"
+       }
+      }
+     },
+     "designer": {
+      "x": 960,
+      "y": -12
+     },
+     "parameters": [
+      {
+       "name": "datastore",
+       "type": "datastore",
+       "label": "Data store",
+       "required": true
+      }
+     ]
+    },
+    "parameters": {
+     "datastore": 38022
+    }
+   }
+  ],
+  "name": "Delete Messages",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": [],
+    "samples": {
+     "__sanitized__": "design-time sample bundles removed (contained real personal data)"
+    }
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "indefinitely",
+   "interval": 7200
+  },
+  "interface": {
+   "input": [],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 1,
+   "person": 0
+  }
+ }
+}

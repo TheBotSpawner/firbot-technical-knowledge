@@ -2,7 +2,7 @@
 title: "Project Guide"
 status: Draft
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "Onboarding baseline + live Make inventory 2026-11-22"
 ---
 
 # 00 — Project Guide
@@ -29,7 +29,8 @@ This is the entry point for understanding the technical environment of **Llegand
 - **WhatsApp Business Cloud API:** messaging transport and bot channel, **without Coexistence** (stakeholder-confirmed).
 - **OpenAI API:** called directly from Make for AI-backed conversation handling.
 - **Client-owned Strapi:** recommended-service records, WhatsApp conversations/messages, published ads and related collections.
-- **Gmail:** alerts about automation errors, not the user-facing channel.
+- **Error e-mail alerts:** sent via Microsoft 365/Outlook connection in Make (stakeholder described Gmail — conflict recorded).
+- **Google Drive:** sticker image files.
 - **Client web application/dashboard:** only the dependencies and interfaces relevant to Nexo; owner and implementation are client-managed.
 
 ## Exclusions / boundaries
@@ -44,11 +45,11 @@ This is the entry point for understanding the technical environment of **Llegand
 | Topic | Current state | Evidence |
 |---|---|---|
 | Nexo | Live in production with real users | Confirmed requirement / stakeholder account (2026-11-22) |
-| Make ownership | Client-owned Make account, multiple interconnected scenarios | Confirmed by stakeholder; screenshot of Make Data Stores |
-| Production vs test | No separate testing environment | Confirmed by stakeholder |
+| Make ownership | Client-owned Make org `Llegando al Country` (4655020), team 1163364; 37 scenarios (29 active), 9 Data Stores | **Confirmed from live system** 2026-11-22 |
+| Production vs test | No separate testing environment; development/test runs observed in production (2026-11-05) | Confirmed by stakeholder + Make execution provenance |
 | Maintenance | Firbot assists with incidents and iterative improvements, **without a formal paid maintenance agreement** | Confirmed by stakeholder |
 | Platform/data ownership | Client manages Strapi, website and statistics/message dashboard | Confirmed by stakeholder |
-| Error channel | Gmail for error notifications; regular user messaging via WhatsApp | Confirmed by stakeholder and main blueprint |
+| Error channel | Stakeholder: Gmail. Live config: e-mails sent through a Microsoft 365 (Outlook) connection to Firbot/stakeholder mailboxes | **Conflict — verification required** (FIND-LTC-007) |
 | Commercial intro | A time-limited free introductory advertising period followed by monthly charges was described as tentative | **Unknown — verify** exact commercial model and implementation |
 
 ## Data sensitivity

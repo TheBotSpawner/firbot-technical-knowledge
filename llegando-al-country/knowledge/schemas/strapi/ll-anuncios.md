@@ -2,10 +2,10 @@
 title: "LL - Anuncios — Visible Fields"
 status: Draft
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "UI fields from screenshots (partial); Make-observed fields confirmed from live blueprints 2026-11-22"
 ---
 
-# LL - Anuncios — Visible UI Fields
+# SCHEMA-LTC-004 — LL - Anuncios — Visible UI Fields
 
 - **Canonical Data ID:** `DATA-LTC-004`
 - **Strapi API identifier (visible):** `servicio`
@@ -72,6 +72,32 @@ verification: "Initial baseline; partial validation"
 | `Texto de búsqueda (derivado)` | Text | Do not edit manually |
 | `Texto de búsqueda normalizado (derivado)` | Text | Do not edit manually |
 | `aviso_aprobado_pendiente` | Boolean | Visible in UI; actual schema TODO |
+
+## Fields observed in Make (exact API keys) — confirmed from live blueprints, 2026-11-22
+
+**REST endpoint:** `/api/servicios` (the "LL - Anuncios" collection is exposed as `servicios`; singular API ID `servicio`).
+**Operations from Make:** `GET` only — `GET /api/servicios` (list, filtered) and `GET /api/servicios/{id}`. **No writes found → read-only rule confirmed; no conflict.**
+
+| API key | Used as | Scenarios (Make ID) |
+|---|---|---|
+| `id` | path param from webhook payload `servicio.id` / `opinion.servicio.id` | 4378165, 4469351, 4469369, 5625466, 5822780 |
+| `nombre` | response (message text, AI input); `fields[]` | 2637692, 4378165, 5625466 |
+| `descripcion` | response → OpenAI category detection | 5625466 |
+| `descripcionCorta` | `fields[]`, AI similarity input | 2637692 |
+| `slug` | `fields[]`, filter `slug $containsi`, public URL `/llegando/servicio/{slug}` | 2637692, 5695064, 5625466 |
+| `estado` | filter `estado $eq activo` | 2637692, 2637743 |
+| `whatsapp` | `fields[]`, recipient of advertiser templates | 4378165, 4469351, 4469369 |
+| `hit_20_visitas_enviado` | `fields[]`, filter in Onboarding Paso 3 (send only if false) | 5822780 |
+| `textoBusquedaNormalizado` | referenced in search mapping | 2637692 |
+| `barrios` (relation → barrios) | `populate`, filter `barrios.nombre $containsi` | 2637743 |
+| `categorias` (relation → categorías) | `populate`, filter `categorias.nombre $containsi` | 2637743 |
+| `categoriaPrincipal` (relation) | filter `categoriaPrincipal.nombre $containsi` | 2637743 |
+| `usuario` (relation → LL - Usuarios: `nombre`, `numero`) | populated; advertiser name/phone fallback | 4378165, 4469351, 4469369, 5625466 |
+| `cuponUsado` (relation → LL - Cupones: `cupon`) | populated; used to find recommenders who share the coupon | 4378165 |
+
+Relations seen populated in design-time responses (not used in mappings): `paseos`, `galeria`, `portada`, `corredor`, `opiniones`, `FotoBanner`, `ll_seccion_homes`, `suscripcion_activa`, `origenRecomendacion` (→ recomendaciones-servicios). Flags `mensaje_bienvenida_enviado` and `hit_20_visitas_enviado` are **set by Strapi/website logic, not by Make** (no Make writes).
+
+**Make scenarios reading this collection:** `LL - Buscar Categoría`, `LL - Buscar Servicio por Zona`, `LL - Anuncio Publicado`, `LL - Nueva Opinion Anuncio`, `LL - Nueva Visita Anuncio`, `LL - Pedido Review`, `LL - Subscenario Special Interaction`, `LL - Onboarding Paso 3`.
 
 ## Schema verification required
 

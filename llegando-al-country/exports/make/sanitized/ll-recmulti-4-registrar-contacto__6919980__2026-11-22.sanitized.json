@@ -1,0 +1,791 @@
+{
+ "id": 6919980,
+ "name": "LL - RecMulti 4 Registrar Contacto",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "util",
+  "http",
+  "builtin",
+  "json",
+  "builtin",
+  "http",
+  "scenario-service",
+  "scenario-service",
+  "scenario-service",
+  "http",
+  "builtin",
+  "http",
+  "scenario-service",
+  "scenario-service",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-11-06T16:56:00.965Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-05T20:26:00.115Z",
+ "chainingRole": "child",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "nombre",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "telefono",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "servicio",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "zone_name",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "zone_id",
+       "type": "number",
+       "required": false
+      },
+      {
+       "name": "user_name",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "user_wa_id",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "TestMode",
+       "type": "boolean",
+       "default": false,
+       "required": false
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "scope": "roundtrip",
+     "variables": [
+      {
+       "name": "digits",
+       "value": "{{replace(ifempty(1.telefono; emptystring); \"/[^0-9]/g\"; emptystring)}}"
+      },
+      {
+       "name": "key10",
+       "value": "{{if(length(replace(ifempty(1.telefono; emptystring); \"/[^0-9]/g\"; emptystring)) >= 8; substring(replace(ifempty(1.telefono; emptystring); \"/[^0-9]/g\"; emptystring); max(0; length(replace(ifempty(1.telefono; emptystring); \"/[^0-9]/g\"; emptystring)) - 10); length(replace(ifempty(1.telefono; emptystring); \"/[^0-9]/g\"; emptystring))); \"__invalido__\")}}"
+      },
+      {
+       "name": "squery",
+       "value": "{{if(length(trim(ifempty(1.servicio; emptystring))) > 2; encodeURL(substring(trim(ifempty(1.servicio; emptystring)); 0; max(4; length(trim(ifempty(1.servicio; emptystring))) - 2))); \"__sin_servicio__\")}}"
+      },
+      {
+       "name": "entry",
+       "value": "{{\"{\" + \"\"\"\" + escapeJSON(ifempty(1.user_name; \"Vecino\")) + \"\"\"\" + \":\" + \"\"\"\" + 1.user_wa_id + \"\"\"\" + \"}\"}}"
+      }
+     ]
+    },
+    "module": "util:SetVariables",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "name": "Normalizar datos"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "url": "https://admin.countrymagazine.com.ar/api/recomendaciones-servicios?filters[telefonoServicio][$containsi]={{2.key10}}&pagination[pageSize]=1",
+     "method": "get",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer {{var.team.LL_STRAPI_TOKEN}}"
+      }
+     ],
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "stopOnHttpError": false,
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "version": 4,
+    "metadata": {
+     "designer": {
+      "x": 600,
+      "y": 0,
+      "name": "Buscar recomendación existente por teléfono"
+     }
+    },
+    "parameters": {
+     "tlsType": "",
+     "authenticationType": "noAuth"
+    }
+   },
+   {
+    "id": 4,
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 5,
+        "filter": {
+         "name": "Ya existe en Strapi",
+         "conditions": [
+          [
+           {
+            "a": "{{length(3.data.data)}}",
+            "b": "0",
+            "o": "number:greater"
+           },
+           {
+            "a": "{{3.statusCode}}",
+            "b": "200",
+            "o": "number:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "object": "{{3.data.data[].attributes.Recomendadores}}"
+        },
+        "module": "json:TransformToJSON",
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1200,
+          "y": -150,
+          "name": "Recomendadores a JSON"
+         }
+        },
+        "parameters": {}
+       },
+       {
+        "id": 6,
+        "mapper": null,
+        "module": "builtin:BasicRouter",
+        "routes": [
+         {
+          "flow": [
+           {
+            "id": 7,
+            "filter": {
+             "name": "No lo recomendó antes (real)",
+             "conditions": [
+              [
+               {
+                "a": "{{contains(5.json; 1.user_wa_id)}}",
+                "b": "{{false}}",
+                "o": "boolean:equal"
+               },
+               {
+                "a": "{{1.TestMode}}",
+                "b": "{{false}}",
+                "o": "boolean:equal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "url": "https://admin.countrymagazine.com.ar/api/recomendaciones-servicios/{{3.data.data[].id}}",
+             "method": "put",
+             "headers": [
+              {
+               "name": "Authorization",
+               "value": "Bearer {{var.team.LL_STRAPI_TOKEN}}"
+              }
+             ],
+             "contentType": "json",
+             "inputMethod": "jsonString",
+             "shareCookies": false,
+             "parseResponse": true,
+             "allowRedirects": true,
+             "stopOnHttpError": false,
+             "jsonStringBodyContent": "{\"data\":{\"Recomendadores\":{{if(indexOf(5.json; \"[\") = 0 & length(5.json) > 2; substring(5.json; 0; length(5.json) - 1) + \",\" + 2.entry + \"]\"; \"[\" + 2.entry + \"]\")}}}}",
+             "requestCompressedContent": true
+            },
+            "module": "http:MakeRequest",
+            "version": 4,
+            "metadata": {
+             "designer": {
+              "x": 1800,
+              "y": -300,
+              "name": "Sumar recomendador"
+             }
+            },
+            "parameters": {
+             "tlsType": "",
+             "authenticationType": "noAuth"
+            }
+           },
+           {
+            "id": 8,
+            "mapper": {
+             "recId": "{{3.data.data[].id}}",
+             "status": "{{if(7.statusCode < 300; \"sumado\"; \"error\")}}",
+             "catName": ""
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "status",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "recId",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "catName",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "designer": {
+              "x": 2100,
+              "y": -300
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         },
+         {
+          "flow": [
+           {
+            "id": 81,
+            "filter": {
+             "name": "Ya lo había recomendado",
+             "conditions": [
+              [
+               {
+                "a": "{{contains(5.json; 1.user_wa_id)}}",
+                "b": "{{true}}",
+                "o": "boolean:equal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "recId": "{{3.data.data[].id}}",
+             "status": "ya_recomendado",
+             "catName": ""
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "status",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "recId",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "catName",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "designer": {
+              "x": 1800,
+              "y": -150
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         },
+         {
+          "flow": [
+           {
+            "id": 82,
+            "filter": {
+             "name": "Modo test",
+             "conditions": [
+              [
+               {
+                "a": "{{contains(5.json; 1.user_wa_id)}}",
+                "b": "{{false}}",
+                "o": "boolean:equal"
+               },
+               {
+                "a": "{{1.TestMode}}",
+                "b": "{{true}}",
+                "o": "boolean:equal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "recId": "{{3.data.data[].id}}",
+             "status": "test_sumaria",
+             "catName": ""
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "status",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "recId",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "catName",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "designer": {
+              "x": 1800,
+              "y": 0
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1500,
+          "y": -150
+         }
+        }
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 9,
+        "filter": {
+         "name": "No existe",
+         "conditions": [
+          [
+           {
+            "a": "{{length(3.data.data)}}",
+            "b": "0",
+            "o": "number:equal"
+           },
+           {
+            "a": "{{3.statusCode}}",
+            "b": "200",
+            "o": "number:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "url": "https://admin.countrymagazine.com.ar/api/categorias-de-servicios?filters[$or][0][nombre][$startsWithi]={{2.squery}}&filters[$or][1][nombre][$containsi]=%20{{2.squery}}&sort=nombre:asc&pagination[pageSize]=3&fields[0]=nombre",
+         "method": "get",
+         "headers": [
+          {
+           "name": "Authorization",
+           "value": "Bearer {{var.team.LL_STRAPI_TOKEN}}"
+          }
+         ],
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": false,
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "version": 4,
+        "metadata": {
+         "designer": {
+          "x": 1200,
+          "y": 300,
+          "name": "Buscar categoría (nombre o palabras clave)"
+         }
+        },
+        "parameters": {
+         "tlsType": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 10,
+        "mapper": null,
+        "module": "builtin:BasicRouter",
+        "routes": [
+         {
+          "flow": [
+           {
+            "id": 11,
+            "filter": {
+             "name": "Real",
+             "conditions": [
+              [
+               {
+                "a": "{{1.TestMode}}",
+                "b": "{{false}}",
+                "o": "boolean:equal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "url": "https://admin.countrymagazine.com.ar/api/recomendaciones-servicios",
+             "method": "post",
+             "headers": [
+              {
+               "name": "Authorization",
+               "value": "Bearer {{var.team.LL_STRAPI_TOKEN}}"
+              }
+             ],
+             "contentType": "json",
+             "inputMethod": "jsonString",
+             "shareCookies": false,
+             "parseResponse": true,
+             "allowRedirects": true,
+             "stopOnHttpError": false,
+             "jsonStringBodyContent": "{\"data\":{\"nombrePrestador\":\"{{escapeJSON(trim(1.nombre))}}\",\"telefonoServicio\":\"{{2.digits}}\",\"barrioCliente\":\"{{escapeJSON(1.zone_name)}}\",\"barrioServicio\":{\"connect\":[{{if(ifempty(1.zone_id; 0) > 0; \"{\"\"id\"\":\" + 1.zone_id + \"}\"; emptystring)}}]},\"categoriaServicio\":{\"connect\":[{{if(if(9.statusCode = 200; ifempty(9.data.data[].id; 0); 0) > 0; \"{\"\"id\"\":\" + if(9.statusCode = 200; ifempty(9.data.data[].id; 0); 0) + \"}\"; emptystring)}}]},\"observacion\":\"Recomendación múltiple por WhatsApp. Barrio ingresado: {{escapeJSON(1.zone_name)}}. Servicio ingresado: {{escapeJSON(trim(ifempty(1.servicio; emptystring)))}}\",\"Recomendadores\":[{{2.entry}}]}}",
+             "requestCompressedContent": true
+            },
+            "module": "http:MakeRequest",
+            "version": 4,
+            "metadata": {
+             "designer": {
+              "x": 1800,
+              "y": 300,
+              "name": "Crear recomendación en Strapi"
+             }
+            },
+            "parameters": {
+             "tlsType": "",
+             "authenticationType": "noAuth"
+            }
+           },
+           {
+            "id": 12,
+            "mapper": {
+             "recId": "{{11.data.data.id}}",
+             "status": "{{if(11.statusCode < 300; \"nueva\"; \"error\")}}",
+             "catName": "{{if(9.statusCode = 200; ifempty(9.data.data[].attributes.nombre; emptystring); emptystring)}}"
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "status",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "recId",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "catName",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "designer": {
+              "x": 2100,
+              "y": 300
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         },
+         {
+          "flow": [
+           {
+            "id": 13,
+            "filter": {
+             "name": "Modo test",
+             "conditions": [
+              [
+               {
+                "a": "{{1.TestMode}}",
+                "b": "{{true}}",
+                "o": "boolean:equal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "recId": "",
+             "status": "test_nueva",
+             "catName": "{{if(9.statusCode = 200; ifempty(9.data.data[].attributes.nombre; emptystring); emptystring)}}"
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "status",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "recId",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "catName",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "designer": {
+              "x": 1800,
+              "y": 600
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1500,
+          "y": 300
+         }
+        }
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 14,
+        "filter": {
+         "name": "Error consultando Strapi",
+         "conditions": [
+          [
+           {
+            "a": "{{3.statusCode}}",
+            "b": "200",
+            "o": "number:notequal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "recId": "",
+         "status": "error",
+         "catName": ""
+        },
+        "module": "scenario-service:ReturnData",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "status",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "recId",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "catName",
+           "type": "text",
+           "label": ""
+          }
+         ],
+         "designer": {
+          "x": 1200,
+          "y": 900
+         }
+        },
+        "parameters": {}
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 0
+     }
+    }
+   }
+  ],
+  "name": "LL - RecMulti 4 Registrar Contacto",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "name": "nombre",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "telefono",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "servicio",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "zone_name",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "zone_id",
+     "type": "number",
+     "required": false
+    },
+    {
+     "name": "user_name",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "user_wa_id",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "TestMode",
+     "type": "boolean",
+     "default": false,
+     "required": false
+    }
+   ],
+   "output": [
+    {
+     "name": "status",
+     "type": "text"
+    },
+    {
+     "name": "recId",
+     "type": "text"
+    },
+    {
+     "name": "catName",
+     "type": "text"
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

@@ -1,0 +1,581 @@
+{
+ "id": 6919674,
+ "name": "Firbot - Blueprint Patcher",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": false,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "make",
+  "json",
+  "util",
+  "builtin",
+  "make",
+  "datastore",
+  "builtin",
+  "datastore",
+  "datastore"
+ ],
+ "lastEdit": "2026-11-06T16:41:27.536Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-05T20:05:50.521Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": false,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "scenarioId",
+       "type": "number",
+       "required": true
+      },
+      {
+       "name": "dryRun",
+       "type": "boolean",
+       "default": true,
+       "required": true
+      },
+      {
+       "name": "f1",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r1",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f2",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r2",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f3",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r3",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f4",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r4",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f5",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r5",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f6",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r6",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f7",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r7",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "f8",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "r8",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "expected",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "probe",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "url": "/v2/scenarios/{{1.scenarioId}}/blueprint",
+     "method": "GET",
+     "headers": [
+      {
+       "key": "Content-Type",
+       "value": "application/json"
+      }
+     ]
+    },
+    "module": "make:makeApiCall",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "name": "Leer blueprint vivo"
+     }
+    },
+    "parameters": {
+     "__IMTCONN__": 12169302
+    }
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "object": "{{2.body.response.blueprint}}"
+    },
+    "module": "json:TransformToJSON",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 600,
+      "y": 0,
+      "name": "Blueprint a texto"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "scope": "roundtrip",
+     "variables": [
+      {
+       "name": "counts",
+       "value": "{{if(length(ifempty(1.f1; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f1; emptystring))) / length(1.f1)) + \",\" + if(length(ifempty(1.f2; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f2; emptystring))) / length(1.f2)) + \",\" + if(length(ifempty(1.f3; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f3; emptystring))) / length(1.f3)) + \",\" + if(length(ifempty(1.f4; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f4; emptystring))) / length(1.f4)) + \",\" + if(length(ifempty(1.f5; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f5; emptystring))) / length(1.f5)) + \",\" + if(length(ifempty(1.f6; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f6; emptystring))) / length(1.f6)) + \",\" + if(length(ifempty(1.f7; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f7; emptystring))) / length(1.f7)) + \",\" + if(length(ifempty(1.f8; emptystring)) = 0; 1; (length(3.json) - length(replace(3.json; 1.f8; emptystring))) / length(1.f8))}}"
+      },
+      {
+       "name": "newjson",
+       "value": "{{replace(replace(replace(replace(replace(replace(replace(replace(3.json; ifempty(1.f1; \"@@NOP1@@\"); ifempty(1.r1; emptystring)); ifempty(1.f2; \"@@NOP2@@\"); ifempty(1.r2; emptystring)); ifempty(1.f3; \"@@NOP3@@\"); ifempty(1.r3; emptystring)); ifempty(1.f4; \"\"); ifempty(1.r4; emptystring)); ifempty(1.f5; \"\"); ifempty(1.r5; emptystring)); ifempty(1.f6; \"\"); ifempty(1.r6; emptystring)); ifempty(1.f7; \"\"); ifempty(1.r7; emptystring)); ifempty(1.f8; \"\"); ifempty(1.r8; emptystring))}}"
+      }
+     ]
+    },
+    "module": "util:SetVariables",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 0,
+      "name": "Aplicar reemplazos"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 5,
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 6,
+        "filter": {
+         "name": "No es prueba y cada fragmento aparece 1 vez",
+         "conditions": [
+          [
+           {
+            "a": "{{1.dryRun}}",
+            "o": "boolean:isfalse"
+           },
+           {
+            "a": "{{4.counts}}",
+            "b": "{{ifempty(1.expected; \"1,1,1,1,1,1,1,1\")}}",
+            "o": "text:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "qs": [
+          {
+           "key": "confirmed",
+           "value": "true"
+          }
+         ],
+         "url": "/v2/scenarios/{{1.scenarioId}}",
+         "body": {
+          "blueprint": "{{4.newjson}}"
+         },
+         "method": "PATCH",
+         "headers": [
+          {
+           "key": "Content-Type",
+           "value": "application/json"
+          }
+         ]
+        },
+        "module": "make:makeApiCall",
+        "onerror": [
+         {
+          "id": 9,
+          "mapper": {
+           "key": "",
+           "data": {
+            "at": "{{now}}",
+            "probe": "{{if(length(ifempty(1.probe; emptystring)) > 0; substring(3.json; max(0; indexOf(3.json; 1.probe) - 50); indexOf(3.json; 1.probe) + 700); emptystring)}}",
+            "counts": "{{4.counts}}",
+            "dryRun": "{{1.dryRun}}",
+            "length": "{{length(3.json)}}",
+            "applied": "{{false}}",
+            "response": "ERROR: {{6.error.message}}",
+            "newLength": "{{length(4.newjson)}}",
+            "scenarioId": "{{1.scenarioId}}",
+            "statusCode": "0"
+           },
+           "overwrite": false
+          },
+          "module": "datastore:AddRecord",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 1500,
+            "y": -400,
+            "name": "Registrar resultado"
+           }
+          },
+          "parameters": {
+           "datastore": 193874
+          }
+         },
+         {
+          "id": 10,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 1800,
+            "y": -400
+           }
+          }
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1500,
+          "y": -150,
+          "name": "Guardar blueprint"
+         }
+        },
+        "parameters": {
+         "__IMTCONN__": 12169302
+        }
+       },
+       {
+        "id": 7,
+        "mapper": {
+         "key": "",
+         "data": {
+          "at": "{{now}}",
+          "probe": "{{if(length(ifempty(1.probe; emptystring)) > 0; substring(3.json; max(0; indexOf(3.json; 1.probe) - 50); indexOf(3.json; 1.probe) + 700); emptystring)}}",
+          "counts": "{{4.counts}}",
+          "dryRun": "{{1.dryRun}}",
+          "length": "{{length(3.json)}}",
+          "applied": "{{true}}",
+          "response": "{{substring(toString(6.body); 0; 300)}}",
+          "newLength": "{{length(4.newjson)}}",
+          "scenarioId": "{{1.scenarioId}}",
+          "statusCode": "{{6.statusCode}}"
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1800,
+          "y": -150,
+          "name": "Registrar resultado"
+         }
+        },
+        "parameters": {
+         "datastore": 193874
+        }
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 8,
+        "filter": {
+         "name": "Prueba o fragmentos inválidos",
+         "conditions": [
+          [
+           {
+            "a": "{{1.dryRun}}",
+            "o": "boolean:istrue"
+           }
+          ],
+          [
+           {
+            "a": "{{4.counts}}",
+            "b": "{{ifempty(1.expected; \"1,1,1,1,1,1,1,1\")}}",
+            "o": "text:notequal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "key": "",
+         "data": {
+          "at": "{{now}}",
+          "probe": "{{if(length(ifempty(1.probe; emptystring)) > 0; substring(3.json; max(0; indexOf(3.json; 1.probe) - 50); indexOf(3.json; 1.probe) + 700); emptystring)}}",
+          "counts": "{{4.counts}}",
+          "dryRun": "{{1.dryRun}}",
+          "length": "{{length(3.json)}}",
+          "applied": "{{false}}",
+          "response": "",
+          "newLength": "{{length(4.newjson)}}",
+          "scenarioId": "{{1.scenarioId}}",
+          "statusCode": "0"
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1500,
+          "y": 150,
+          "name": "Registrar resultado"
+         }
+        },
+        "parameters": {
+         "datastore": 193874
+        }
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 1200,
+      "y": 0
+     }
+    }
+   }
+  ],
+  "name": "Firbot - Blueprint Patcher",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": true,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "name": "scenarioId",
+     "type": "number",
+     "required": true
+    },
+    {
+     "name": "dryRun",
+     "type": "boolean",
+     "default": true,
+     "required": true
+    },
+    {
+     "name": "f1",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r1",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f2",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r2",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f3",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r3",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f4",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r4",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f5",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r5",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f6",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r6",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f7",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r7",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "f8",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "r8",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "expected",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "probe",
+     "type": "text",
+     "required": false
+    }
+   ],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

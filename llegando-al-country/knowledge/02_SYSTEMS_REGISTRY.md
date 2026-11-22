@@ -1,28 +1,29 @@
 ---
 title: "Systems Registry"
-status: Draft
+status: Verified
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "Make configuration confirmed from live system 2026-11-22; other systems as indicated"
 ---
 
 # 02 — Systems Registry
 
 IDs are repository-specific and **not** vendor resource IDs.
 
-| System ID | Exact platform / system | Role | Status | Criticality | Owner / technical maintainer | Data handled | Connected systems | Verification |
-|---|---|---|---|---|---|---|---|---|
-| `SYS-LTC-001` | Make.com — Llegando al Country account | Nexo orchestration / Data Stores | Active - Core | Critical | Client owns account; Firbot maintains scenarios | Messages, workflow state, API interactions | 002, 003, 004, 005 | Stakeholder + Make screenshot + inspected main export |
-| `SYS-LTC-002` | Strapi — `admin.countrymagazine.com.ar` | Domain records / service listings / bot logs | Active - Core | Critical | Country Magazine technical team | Providers, recommendation details, users, messages, ads, payment-linked entities | 001, 006 | Stakeholder + UI screenshots |
-| `SYS-LTC-003` | WhatsApp Business Cloud API | End-user messages / notifications | Active - Core | Critical | Client ownership/configuration TODO; Firbot integration | Messages, phone IDs, contact profiles | 001 | Stakeholder + inspected Make HTTP/webhook config |
-| `SYS-LTC-004` | OpenAI API | Text processing / AI extraction | Active | High | API account owner TODO; Firbot integration | Conversation inputs/AI outputs | 001 | Stakeholder + inspected Make module types |
-| `SYS-LTC-005` | Gmail | Technical error notifications | Active | Medium | Notification mailbox owner TODO; Firbot error-handling flow | Diagnostic alerts | 001 | Stakeholder + notification subscenario references |
-| `SYS-LTC-006` | Country Magazine / Llegando al Country website and custom dashboard | Ads discovery, message/stats UI | Active - Core | High | Country Magazine technical team | Strapi-derived operational/business data | 002 | Stakeholder; dashboard implementation not inspected |
+| System ID | System | Role | Status | Criticality | Owner / maintainer | How Make connects | Verification |
+|---|---|---|---|---|---|---|---|
+| `SYS-LTC-001` | Make.com — org `Llegando al Country` (4655020), team `My Team` (1163364), zone `us2.make.com`, plan Pro | Orchestration, Data Stores, webhooks | Active - Core | Critical | Client owns account; Firbot maintains scenarios | — | Confirmed from live system |
+| `SYS-LTC-002` | Strapi — `admin.countrymagazine.com.ar` (Strapi v4-style REST, nginx/Ubuntu) | System of record: ads, recommendations, messages, catalogues, custom bot API | Active - Core | Critical | Country Magazine technical team | Raw HTTP; 2 literal API tokens + 1 bot token; team var `LL_STRAPI_TOKEN` (RecMulti) | Endpoints confirmed from blueprints; models not inspected |
+| `SYS-LTC-003` | WhatsApp Business Cloud API (Graph v22.0; phone-number ID `717278908136135`) | User channel, templates, media | Active - Core | Critical | Meta app / WABA owner **Unknown** | Inbound: custom webhook 2623296; outbound: raw HTTP with literal token (19 scenarios) or team var `LL_WA_TOKEN` | Confirmed from blueprints; Meta config not inspected |
+| `SYS-LTC-004` | OpenAI API (Make app `openai-gpt-3`) | Intent/slot extraction, similarity, FAQ, name extraction | Active | High | Account owner **Unknown** | Connection `My OpenAI connection` (4527306) | Confirmed connection; models configured: `gpt-6-luna`, `gpt-4o-mini` |
+| `SYS-LTC-005` | Gmail | Stated error-notification channel | **Conflict — verification required** | Medium | Unknown | **No Gmail module/connection exists in Make.** Gmail addresses appear only as e-mail *recipients*. | Stakeholder statement vs. live config |
+| `SYS-LTC-006` | Country Magazine / Llegando website and dashboard | Ads UI, "Contactar" button, stats/messages dashboard | Active - Core | High | Country Magazine technical team | Calls Make webhooks (Inference for which component); reads Strapi | Stakeholder + webhook payloads |
+| `SYS-LTC-007` | Microsoft 365 / Outlook (Make app `microsoft-email`) | **Actual** sender of error e-mails | Active | High (monitoring) | Individual Firbot account (connection 5431897) | OAuth connection | Confirmed from live system |
+| `SYS-LTC-008` | Google Drive (client Google account) | Sticker image storage | Active | Low | Client | Connection 9967715 (expires 2027-05-19) | Confirmed |
+| `SYS-LTC-009` | Make API | A/B variable update (9953737, OAuth, expires 2027-05-20); Blueprint Patcher (12169302, API key) | Active / tooling | Medium | Client Make user | Make app connections | Confirmed |
 
-## Outstanding system details
+## Outstanding
 
-- **TODO: verify:** exact Make organisation and team ID from authoritative account admin; screenshot URL alone is insufficient.
-- **TODO: verify:** actual Strapi version, hosting, database engine, public/private API scopes, endpoint restrictions and connection ownership.
-- **TODO: verify:** Meta WABA ID, phone-number ID, app ownership, webhook subscriptions and token rotation status. No credentials in docs.
-- **TODO: verify:** OpenAI model(s), project ownership, request limits, retention policy and error handling.
-- **TODO: verify:** error mailbox identity and notification routing. Do not infer from browser tab labels.
-- **TODO: verify:** client dashboard implementation, availability/monitoring and identity/access controls.
+- Meta: WABA ID, app ownership, webhook callback URL and verify token, token type/expiry, template approval status.
+- Strapi: version, hosting, token permissions, lifecycle hooks/cron that call Make webhooks, custom `wpp-bot` controllers.
+- OpenAI: account/project owner, billing, data-retention settings; whether `gpt-6-luna` is the intended model.
+- E-mail: who owns the alert mailboxes; whether Gmail is still expected anywhere.

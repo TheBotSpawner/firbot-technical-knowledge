@@ -1,71 +1,78 @@
 ---
 title: "System Map"
-status: Draft
+status: Verified
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "Make side confirmed from live system 2026-11-22; Strapi/Meta/OpenAI internals not inspected"
 ---
 
 # 01 — System Map
 
 ## Executive summary
 
-Nexo is a production WhatsApp assistant orchestrated through **multiple Make.com scenarios** in Llegando al Country's account. It uses **WhatsApp Business Cloud API** for messages, **OpenAI API** for AI processing, **Strapi** for operational records and listings, **Make Data Stores** for supporting state, and **Gmail** for technical error alerts. The client's website and analytics/messages dashboard are developed and operated separately by the client, reading data from Strapi.
+Nexo runs as **37 Make scenarios (29 active)** in the client-owned Make organization `Llegando al Country` (4655020, team 1163364, zone us2). Three families of automation exist:
 
-## Architecture overview
+1. **Conversational bot** — one webhook-triggered main scenario (2505419) receiving WhatsApp Cloud API events, orchestrating 17 on-demand subscenarios, OpenAI structured-output calls and Make Data Stores, and reading/writing Strapi.
+2. **Platform-triggered notifications** — 8 scenarios triggered by webhooks from the client platform (Strapi lifecycle events / website: new recommendation, ad published, new review, 20 visits, "Contactar" click, onboarding days) that send WhatsApp **templates** to providers, advertisers and users.
+3. **Scheduled housekeeping** — history purge (every 2 h) and off-hours template replay (10:00/18:00).
 
-- **Communication:** `SYS-LTC-003` WhatsApp API ⇄ `SYS-LTC-001` Make main webhook/scenarios.
-- **Processing:** `SYS-LTC-001` Make calls `SYS-LTC-004` OpenAI API and child scenarios (exact processing by route not fully documented yet).
-- **Persistent domain data:** `SYS-LTC-002` Strapi; Firbot writes/updates recommendation and WhatsApp logging entities as necessary, but **only reads** published ads.
-- **Transient/workflow state:** Make Data Stores `DATA-LTC-005`–`DATA-LTC-013`.
-- **Operational alerts:** `SYS-LTC-005` Gmail error notifications, using a child scenario indicated by the blueprint.
-- **Presentation / business operations:** `SYS-LTC-006` client-managed web application/dashboard, using Strapi.
+Shared services: `LL - Log Message` (Strapi message log), `Envio de Notificaciones de Error Chatbots` (Outlook e-mail alerts).
 
-## Diagram (logical, not a verified network topology)
+## Architecture diagram
 
 ```mermaid
 flowchart LR
-  U[WhatsApp users] <-->|messages| WA[WhatsApp Business Cloud API]
-  WA <-->|webhook and replies| MAIN[Make: Nexo main scenario]
-  MAIN <-->|calls| CHILD[Make: child scenarios]
-  MAIN <-->|AI calls| AI[OpenAI API]
-  MAIN <-->|state| DS[Make Data Stores]
-  CHILD <-->|read and allowed write| ST[Strapi]
-  MAIN -->|read/write where used| ST
-  MAIN -.->|errors| G[Gmail notifications]
-  CHILD -.->|errors| G
-  WEB[Client website and dashboard] <-->|client-managed integration| ST
+  U[WhatsApp users<br/>residents, providers, advertisers] <-->|messages / templates| WA[WhatsApp Business Cloud API<br/>Graph v22.0, phone-number ID 717278908136135]
+  WA -->|messages + statuses webhook| H1[Make webhook<br/>WPP-Messages-Nexo-Webhook]
+  H1 --> MAIN[Make: LL - Chatbot Recomendacion de Servicios]
+  MAIN --> SUBS[Make subscenarios<br/>search, recommend, admin, RecMulti, stickers…]
+  MAIN & SUBS -->|HTTP POST messages/media<br/>literal token| WA
+  MAIN & SUBS -->|structured outputs| AI[OpenAI via Make app<br/>gpt-6-luna / gpt-4o-mini]
+  MAIN & SUBS <-->|state| DS[(Make Data Stores ×9)]
+  MAIN & SUBS <-->|REST /api/*<br/>Bearer / X-Bot-Token| ST[(Strapi<br/>admin.countrymagazine.com.ar)]
+  ST -->|lifecycle / website webhooks| H2[Make webhooks ×8]
+  WEB[Client website + dashboard] <--> ST
+  WEB -->|Contactar click, onboarding| H2
+  H2 --> NOTIF[Make notification scenarios] -->|templates| WA
+  SCHED[Make schedules] --> HK[Delete Messages / Send Template On Time]
+  SUBS -.->|errors| ERR[Error notifier] -->|Microsoft 365 / Outlook| MAIL[Firbot + stakeholder mailboxes]
+  STK[Google Drive<br/>sticker files] --> SUBS
+  MAPI[Make API] <-->|A/B variable; Blueprint Patcher| SUBS
 ```
 
-**Diagram caveat:** Direct versus child-initiated Strapi access and error notifications are schematic. Per-module routes and exact connections must be verified using all productive blueprints; the provided main export is not a full end-to-end snapshot.
-
-## Sources of truth
-
-| Data domain | Current candidate | Verification |
-|---|---|---|
-| Published service ads | Strapi: `LL - Anuncios` | Confirmed from user-supplied Strapi screenshots and stakeholder |
-| Recommendations | Strapi: `LL - Recomendaciones de servicios` | Confirmed from user-supplied screenshots and stakeholder |
-| WhatsApp conversation records | Strapi: `LL - WhatsApp Conversación` | Confirmed from user-supplied screenshots; exact completeness TODO |
-| WhatsApp message records | Strapi: `LL - WhatsApp Mensaje` | Confirmed from user-supplied screenshots; exact completeness TODO |
-| Ephemeral user processing / helpers | Make Data Stores | Screenshot confirmed stores exist; exact usage by scenario TODO |
-| Analytics displayed in client's dashboard | Strapi-backed | Confirmed by stakeholder; implementation TODO |
+Hosts: `graph.facebook.com`, `admin.countrymagazine.com.ar`, `hook.us2.make.com`, `countrymagazine.com.ar` (links only), Google Drive, Microsoft Graph (via Make app), OpenAI (via Make app), Make API.
 
 ## Main flows
 
-1. **General inbound:** WhatsApp sends a new message to Make's main webhook. The main scenario routes according to message kind, conversation state and special interactions, and may call child scenarios.
-2. **Search:** Main export references separate search-by-zone, search-by-category and service-by-zone subscenarios; published ads are used as read-only business data.
-3. **Recommendations:** User sends a recommendation; Nexo's recommendation child and related flows interact with Strapi. A separate child route handles multiple contacts/recommendations.
-4. **Message logging:** A Make child `LL - Log Message` receives structured entry/exit log payloads; Strapi WhatsApp message/conversation collections are present.
-5. **Failures:** Error-handling paths invoke a notification subscenario; Gmail is the stated error communication channel.
+| Flow | Path | Doc |
+|---|---|---|
+| Greeting | First text → greeting + Welcome sticker + 3 buttons | [main](automations/make/ll-chatbot-recomendacion-de-servicios.md) |
+| Search | AI intent → Buscar Zona → Buscar Categoría → Buscar Servicio por Zona (reads `/api/servicios`) | [search](automations/make/ll-search-subscenarios.md) |
+| Single recommendation | AI slots complete → zone/category resolution → Recomendar Servicio (POST/PUT `recomendaciones-servicios`) → Strapi webhook → provider template + coupon | [recommend](automations/make/ll-recomendar-servicio.md), [outbound](automations/make/ll-outbound-notifications.md) |
+| Multiple recommendation | ≥2 contacts → RecMulti 1→2→5→4 with tray in `LL_MultiRecBatch` | [RecMulti](automations/make/ll-recmulti-recomendacion-multiple.md) |
+| Publish / magazine / FAQ | AI intent → static texts / Special Interaction / FAQ prompt | [main](automations/make/ll-chatbot-recomendacion-de-servicios.md) |
+| Review request | Website "Contactar" → Pedido Review template → answer handled by Special Interaction | [review](automations/make/ll-special-interaction-and-review.md) |
+| Advertiser lifecycle | Strapi events → Anuncio Publicado / Opinión / Visitas / Onboarding 2–4 templates | [outbound](automations/make/ll-outbound-notifications.md) |
+| Admin welcome campaign | `#adminmode` (allow-list) → queue contacts → send template | [admin](automations/make/ll-admin-mode-and-welcome.md) |
+| Logging | Every message → Log Message → `POST /api/wpp-bot/mensajes`; read receipts → PUT `vistoEn` | [utilities](automations/make/shared-utility-subscenarios.md) |
+| Errors | onerror → error notifier → Outlook e-mail (+ optional WA apology) | [utilities](automations/make/shared-utility-subscenarios.md) |
+
+## Sources of truth
+
+| Domain | System of record | Make copy / cache |
+|---|---|---|
+| Ads | Strapi `servicios` (read-only for Make) | none |
+| Recommendations | Strapi `recomendaciones-servicios` | `LL_RecommendationsMade` (contacted flag), `LL_MultiRecBatch` (pending) |
+| Messages / conversations | Strapi `wpp-mensajes` / conversations (via custom endpoint) | `LL_MessagesHistory` (≤10 recent, short-lived) |
+| Admin permissions | Make `LL_PermissionsList` | — |
+| Review requests | Make `LL_ReviewRequests` | — |
+| Dashboard statistics | Strapi (client dashboard) | — |
 
 ## Lifecycle and ownership
 
-- **Current:** production Nexo, Make orchestrations, Strapi, WhatsApp Cloud API, OpenAI API, Gmail technical alerts.
-- **Not deployed/confirmed:** a separate testing environment, a formal paid maintenance contract.
-- **TODO:** verify change control, incident escalation, restore/replay strategy and permissions.
+- Production only; no test environment (confirmed — development runs observed in production on 2026-11-05).
+- Client owns Make account, Strapi, website, Google Drive; Firbot maintains Make scenarios; error-mail connection belongs to a Firbot individual.
+- Meta app/WABA ownership, OpenAI account ownership: **Unknown**.
 
 ## Sources
 
-- Stakeholder onboarding conversation, 2026-11-22.
-- User-supplied Strapi UI screenshots, 2026-11-22 (not stored in Git).
-- User-supplied Make Data Stores screenshot, 2026-11-22 (not stored in Git).
-- Inspected *LL - Chatbot Recomendacion de Servicios* main blueprint, provided 2026-11-22 (original excluded due to embedded secrets).
+Make API read-only inventory 2026-11-22 (scenarios, blueprints, hooks, connections, data stores, data structures, executions); onboarding stakeholder conversation and screenshots 2026-11-22.

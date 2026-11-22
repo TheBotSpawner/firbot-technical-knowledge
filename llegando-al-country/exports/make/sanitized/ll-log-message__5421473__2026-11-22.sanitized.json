@@ -1,0 +1,1220 @@
+{
+ "id": 5421473,
+ "name": "LL - Log Message",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "builtin",
+  "datastore",
+  "util",
+  "util",
+  "http",
+  "scenario-service",
+  "builtin",
+  "builtin",
+  "scenario-service",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-09-14T02:30:37.001Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-06-17T22:49:13.796Z",
+ "chainingRole": "bridge",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 450
+     },
+     "interface": [
+      {
+       "help": "Boolean if the message need to be save in the data store or only in Strappi",
+       "name": "SaveInDataStore",
+       "type": "boolean",
+       "label": "",
+       "default": false,
+       "required": true
+      },
+      {
+       "help": "",
+       "name": "Telefono",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "Nombre",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "Direccion",
+       "type": "select",
+       "label": "",
+       "options": [
+        {
+         "value": "Salida"
+        },
+        {
+         "value": "Entrada"
+        }
+       ],
+       "required": true
+      },
+      {
+       "help": "",
+       "name": "Mensaje",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "Timestamp",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "ClaveExterna",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "VarianteId",
+       "type": "number",
+       "label": "",
+       "default": null,
+       "required": false
+      },
+      {
+       "help": "",
+       "name": "RecomendacionId",
+       "type": "number",
+       "label": "",
+       "default": null,
+       "required": false
+      },
+      {
+       "help": "Need Json Format",
+       "name": "Metadata",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "AdminMode",
+       "type": "boolean",
+       "label": "",
+       "default": false,
+       "required": false
+      },
+      {
+       "help": "",
+       "name": "CurrentlyProcessing",
+       "type": "boolean",
+       "label": "",
+       "default": false,
+       "required": true
+      }
+     ]
+    }
+   },
+   {
+    "id": 12,
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 27,
+        "filter": {
+         "name": "Save in Data Store",
+         "conditions": [
+          [
+           {
+            "a": "{{1.SaveInDataStore}}",
+            "b": "{{true}}",
+            "o": "boolean:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "key": "",
+         "data": {
+          "Name": "{{1.Nombre}}",
+          "Message": "{{1.Mensaje}}",
+          "Direction": "{{1.Direccion}}",
+          "Timestamp": "{{if(1.Direccion = \"Salida\"; now; formatDate(parseDate(1.Timestamp; \"X\"); \"YYYY-MM-DD HH:mm:ss\"; \"America/Argentina/Buenos_Aires\"))}}",
+          "Admin_Mode": "{{1.AdminMode}}",
+          "Cellphone_Number": "{{1.Telefono}}",
+          "Is Currently Processing": "{{1.CurrentlyProcessing}}"
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "overwrite",
+           "type": "boolean",
+           "label": "Overwrite an existing record",
+           "required": true
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "Name",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Cellphone_Number",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Message",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Timestamp",
+             "type": "date",
+             "label": null
+            },
+            {
+             "name": "Direction",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Admin_Mode",
+             "type": "boolean",
+             "label": null
+            },
+            {
+             "name": "Is Currently Processing",
+             "type": "boolean",
+             "label": null
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "data": {
+            "nested": {
+             "Admin_Mode": {
+              "mode": "edit"
+             },
+             "Is Currently Processing": {
+              "mode": "edit"
+             }
+            }
+           },
+           "overwrite": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "datastore": {
+            "label": "LL_MessagesHistory"
+           }
+          }
+         },
+         "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "Add Message to DS"
+         },
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "datastore": 38022
+        }
+       },
+       {
+        "id": 16,
+        "mapper": {
+         "name": "Wpp Message Key",
+         "scope": "roundtrip",
+         "value": "{{27.key}}"
+        },
+        "module": "util:SetVariable2",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "name",
+           "type": "text",
+           "label": "Variable name",
+           "required": true
+          },
+          {
+           "name": "scope",
+           "type": "select",
+           "label": "Variable lifetime",
+           "required": true,
+           "validate": {
+            "enum": [
+             "roundtrip",
+             "execution"
+            ]
+           }
+          },
+          {
+           "name": "value",
+           "type": "any",
+           "label": "Variable value"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "scope": {
+            "label": "One cycle"
+           }
+          }
+         },
+         "designer": {
+          "x": 900,
+          "y": 0,
+          "name": "Set Wpp Message Key"
+         },
+         "interface": [
+          {
+           "name": "Wpp Message Key",
+           "type": "any",
+           "label": "Wpp Message Key"
+          }
+         ]
+        },
+        "parameters": {}
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 17,
+        "mapper": {
+         "name": "Wpp Message Key"
+        },
+        "module": "util:GetVariable2",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "name",
+           "type": "text",
+           "label": "Variable name",
+           "required": true
+          }
+         ],
+         "restore": {},
+         "designer": {
+          "x": 600,
+          "y": 600,
+          "name": "Get Wpp Message Key"
+         },
+         "interface": [
+          {
+           "name": "Wpp Message Key",
+           "type": "any",
+           "label": "Wpp Message Key"
+          }
+         ]
+        },
+        "parameters": {}
+       },
+       {
+        "id": 9,
+        "mapper": {
+         "url": "https://admin.countrymagazine.com.ar/api/wpp-bot/mensajes",
+         "method": "post",
+         "headers": [
+          {
+           "name": "X-Bot-Token",
+           "value": "[REDACTED_STRAPI_BOT_TOKEN]"
+          },
+          {
+           "name": "Content-Type",
+           "value": "application/json"
+          }
+         ],
+         "contentType": "json",
+         "inputMethod": "jsonString",
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "jsonStringBodyContent": "{\r\n  \"claveExterna\": \"{{escapeJSON(1.ClaveExterna)}}\",\r\n  \"telefono\": \"{{escapeJSON(1.Telefono)}}\",\r\n  \"mensaje\": \"{{escapeJSON(replaceEmojiCharacters(1.Mensaje; space))}}\",\r\n  \"direccion\": \"{{if((lower(1.Direccion) = \"salida\") | (lower(1.Direccion) = \"saliente\"); \"saliente\"; \"entrante\")}}\",\r\n  \"ocurridoEn\": \"{{if((1.Timestamp != emptystring) & (1.Timestamp != null); 1.Timestamp; formatDate(now; \"YYYY-MM-DDTHH:mm:ss.SSS[Z]\"; \"UTC\"))}}\",\r\n  \"esRecontacto\": false\r\n  {{if((1.Nombre != emptystring) & (1.Nombre != null); \",\"\"nombre\"\":\"\"\" + escapeJSON(replaceEmojiCharacters(1.Nombre; space)) + \"\"\"\"; emptystring)}}\r\n  {{if((1.VarianteId != emptystring) & (1.VarianteId != null); \",\"\"varianteId\"\":\" + 1.VarianteId; emptystring)}}\r\n  {{if((1.RecomendacionId != emptystring) & (1.RecomendacionId != null); \",\"\"recomendacionId\"\":\" + 1.RecomendacionId; emptystring)}}\r\n  {{if((1.Metadata != emptystring) & (1.Metadata != null); \",\"\"metadata\"\":\" + replaceEmojiCharacters(1.Metadata; space); emptystring)}}\r\n}",
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 19,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error al intentar guardar el mensaje en strapi, revisar y volver a enviar para que se cargue, cuidado que no se cargue en la data store si eso funciono"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 1200,
+            "y": 900,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 18,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 1500,
+            "y": 900
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "inputMethod",
+           "type": "select",
+           "label": "Body input method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "dataStructure",
+             "jsonString"
+            ]
+           }
+          },
+          {
+           "name": "jsonStringBodyContent",
+           "type": "text",
+           "label": "Body content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "POST"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null,
+             null
+            ]
+           },
+           "contentType": {
+            "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+           },
+           "inputMethod": {
+            "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 900,
+          "y": 600,
+          "name": "Save Message On Strappi"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 20,
+        "filter": null,
+        "mapper": null,
+        "module": "builtin:BasicRouter",
+        "routes": [
+         {
+          "flow": [
+           {
+            "id": 21,
+            "filter": {
+             "name": "Error Saving in Strapi",
+             "conditions": [
+              [
+               {
+                "a": "{{9.data.errores}}",
+                "b": "1",
+                "o": "number:greaterorequal"
+               }
+              ],
+              [
+               {
+                "a": "{{9.data.omitidos}}",
+                "b": "1",
+                "o": "number:greaterorequal"
+               }
+              ]
+             ]
+            },
+            "mapper": {
+             "data": {
+              "scenarioURL": "{{var.scenario.url}}",
+              "CCRecipients": "[REDACTED_EMAIL_6]",
+              "scenarioName": "{{var.scenario.name}}",
+              "toRecipients": "[REDACTED_EMAIL_2]",
+              "wppReplyNeeded": false,
+              "emailErrorMessage": "Error al intentar guardar el mensaje en strapi, revisar y volver a enviar para que se cargue, cuidado que no se cargue en la data store si eso funciono"
+             }
+            },
+            "module": "scenario-service:CallSubscenario",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "data",
+               "spec": [
+                {
+                 "name": "scenarioName",
+                 "type": "text",
+                 "label": "",
+                 "required": true
+                },
+                {
+                 "name": "scenarioURL",
+                 "type": "text",
+                 "label": "",
+                 "required": true
+                },
+                {
+                 "name": "emailErrorMessage",
+                 "type": "text",
+                 "label": "",
+                 "required": true
+                },
+                {
+                 "name": "toRecipients",
+                 "type": "text",
+                 "label": "",
+                 "required": true
+                },
+                {
+                 "name": "CCRecipients",
+                 "type": "text",
+                 "label": ""
+                },
+                {
+                 "name": "BCCRecipients",
+                 "type": "text",
+                 "label": ""
+                },
+                {
+                 "name": "clientPhoneNumber",
+                 "type": "text",
+                 "label": ""
+                },
+                {
+                 "name": "wppErrorMessage",
+                 "type": "text",
+                 "label": ""
+                },
+                {
+                 "name": "wppReplyNeeded",
+                 "type": "boolean",
+                 "label": "",
+                 "required": true
+                }
+               ],
+               "type": "collection",
+               "label": "Scenario Inputs"
+              }
+             ],
+             "restore": {
+              "expect": {
+               "data": {
+                "nested": {
+                 "wppReplyNeeded": {
+                  "mode": "chose"
+                 }
+                }
+               }
+              },
+              "parameters": {
+               "scenario": {
+                "label": "Envio de Notificaciones de Error Chatbots"
+               }
+              }
+             },
+             "designer": {
+              "x": 1500,
+              "y": 300,
+              "name": "Error Notification Email"
+             },
+             "parameters": [
+              {
+               "name": "scenario",
+               "type": "scenario",
+               "label": "Scenario",
+               "required": true
+              },
+              {
+               "name": "shouldWaitForExecutionEnd",
+               "type": "boolean",
+               "label": "Wait for the scenario to finish",
+               "required": true
+              }
+             ]
+            },
+            "parameters": {
+             "scenario": "SCN_4226818",
+             "shouldWaitForExecutionEnd": true
+            }
+           }
+          ]
+         },
+         {
+          "flow": [
+           {
+            "id": 2,
+            "mapper": {
+             "DataStoreKey": "{{ifempty(17.`Wpp Message Key`; emptystring)}}"
+            },
+            "module": "scenario-service:ReturnData",
+            "version": 2,
+            "metadata": {
+             "expect": [
+              {
+               "name": "DataStoreKey",
+               "type": "text",
+               "label": ""
+              }
+             ],
+             "restore": {},
+             "designer": {
+              "x": 1500,
+              "y": 600
+             }
+            },
+            "parameters": {}
+           }
+          ]
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "designer": {
+          "x": 1200,
+          "y": 450
+         }
+        }
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 450
+     }
+    }
+   }
+  ],
+  "name": "LL - Log Message",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": [],
+    "samples": {
+     "__sanitized__": "design-time sample bundles removed (contained real personal data)"
+    }
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "help": "Boolean if the message need to be save in the data store or only in Strappi",
+     "name": "SaveInDataStore",
+     "type": "boolean",
+     "label": "",
+     "default": false,
+     "required": true
+    },
+    {
+     "help": "",
+     "name": "Telefono",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "Nombre",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "Direccion",
+     "type": "select",
+     "label": "",
+     "options": [
+      {
+       "value": "Salida"
+      },
+      {
+       "value": "Entrada"
+      }
+     ],
+     "required": true
+    },
+    {
+     "help": "",
+     "name": "Mensaje",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "Timestamp",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "ClaveExterna",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "VarianteId",
+     "type": "number",
+     "label": "",
+     "default": null,
+     "required": false
+    },
+    {
+     "help": "",
+     "name": "RecomendacionId",
+     "type": "number",
+     "label": "",
+     "default": null,
+     "required": false
+    },
+    {
+     "help": "Need Json Format",
+     "name": "Metadata",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "AdminMode",
+     "type": "boolean",
+     "label": "",
+     "default": false,
+     "required": false
+    },
+    {
+     "help": "",
+     "name": "CurrentlyProcessing",
+     "type": "boolean",
+     "label": "",
+     "default": false,
+     "required": true
+    }
+   ],
+   "output": [
+    {
+     "help": "Key from the new save in the data store",
+     "name": "DataStoreKey",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 1,
+   "hook_url": 0,
+   "email": 4,
+   "phone": 0,
+   "samples_removed": 1,
+   "person": 0
+  }
+ }
+}

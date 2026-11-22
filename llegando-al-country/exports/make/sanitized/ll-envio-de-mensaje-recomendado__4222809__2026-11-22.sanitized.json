@@ -1,0 +1,3445 @@
+{
+ "id": 4222809,
+ "name": "LL - Envio de Mensaje Recomendado",
+ "teamId": 1163364,
+ "hookId": 1925734,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "gateway",
+  "builtin",
+  "http",
+  "scenario-service",
+  "builtin",
+  "util",
+  "util",
+  "datastore",
+  "openai-gpt-3",
+  "scenario-service",
+  "builtin",
+  "http",
+  "scenario-service",
+  "builtin",
+  "http",
+  "scenario-service",
+  "builtin",
+  "scenario-service",
+  "make",
+  "http",
+  "scenario-service",
+  "builtin",
+  "datastore",
+  "scenario-service",
+  "builtin",
+  "datastore",
+  "builtin"
+ ],
+ "lastEdit": "2026-11-06T19:18:05.509Z",
+ "scheduling": {
+  "type": "immediately",
+  "maximum_runs_per_minute": 100
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-02-24T15:34:26.173Z",
+ "chainingRole": "parent",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "gateway:CustomWebHook",
+    "version": 1,
+    "metadata": {
+     "restore": {
+      "parameters": {
+       "hook": {
+        "data": {
+         "editable": "true"
+        },
+        "label": "Creacion-Recomendado-Strapi"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 0,
+      "y": 900
+     },
+     "interface": [
+      {
+       "help": "",
+       "name": "event",
+       "type": "text",
+       "label": "Event",
+       "default": null,
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "createdAt",
+       "type": "date",
+       "label": "Created at",
+       "required": false
+      },
+      {
+       "help": "",
+       "name": "model",
+       "type": "text",
+       "label": "Model",
+       "default": null,
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "uid",
+       "type": "text",
+       "label": "Uid",
+       "default": null,
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "entry",
+       "spec": [
+        {
+         "help": "",
+         "name": "id",
+         "type": "number",
+         "label": "ID",
+         "default": null,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "nombrePrestador",
+         "type": "text",
+         "label": "Nombre prestador",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "telefonoServicio",
+         "type": "text",
+         "label": "Telefono servicio",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "nombreCliente",
+         "type": "text",
+         "label": "Nombre cliente",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "barrioCliente",
+         "type": "text",
+         "label": "Barrio cliente",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "mailCliente",
+         "type": "text",
+         "label": "Mail cliente",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "botonMensaje",
+         "type": "text",
+         "label": "Boton mensaje",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "createdAt",
+         "type": "date",
+         "label": "Created at",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "updatedAt",
+         "type": "date",
+         "label": "Updated at",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "enviado",
+         "type": "boolean",
+         "label": "Enviado",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "opinion",
+         "type": "text",
+         "label": "Opinion",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "calificacion",
+         "type": "number",
+         "label": "Calificacion",
+         "default": null,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "calificacionPrecio",
+         "type": "number",
+         "label": "Calificacion precio",
+         "default": null,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "observacion",
+         "type": "text",
+         "label": "Observacion",
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "Recomendadores",
+         "spec": [
+          {
+           "help": "",
+           "name": "Recomendado1",
+           "type": "text",
+           "label": "Recomendado 1",
+           "default": null,
+           "required": false,
+           "multiline": false
+          }
+         ],
+         "type": "collection",
+         "label": "Recomendadores",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "mensajesEnviados",
+         "type": "number",
+         "label": "Mensajes enviados",
+         "default": null,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "barrioServicio",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Barrio servicio",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "categoriaServicio",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Categoria servicio",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "cupon",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Cupon",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "usuario",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Usuario",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "opinionGenerada",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Opinion generada",
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "anuncioCreado",
+         "spec": [
+          {
+           "help": "",
+           "name": "count",
+           "type": "number",
+           "label": "Count",
+           "default": null,
+           "required": false
+          }
+         ],
+         "type": "collection",
+         "label": "Anuncio creado",
+         "required": false
+        }
+       ],
+       "type": "collection",
+       "label": "Entry",
+       "required": false
+      }
+     ],
+     "parameters": [
+      {
+       "name": "hook",
+       "type": "hook:gateway-webhook",
+       "label": "Webhook",
+       "required": true
+      },
+      {
+       "name": "maxResults",
+       "type": "number",
+       "label": "Maximum number of results"
+      }
+     ]
+    },
+    "parameters": {
+     "hook": 1925734,
+     "maxResults": 1000
+    }
+   },
+   {
+    "id": 33,
+    "filter": {
+     "name": "Is Service Recommendation",
+     "conditions": [
+      [
+       {
+        "a": "{{1.modelo}}",
+        "b": "ll-pre-servicio",
+        "o": "text:equal:ci"
+       },
+       {
+        "a": "{{1.evento}}",
+        "b": "afterCreate",
+        "o": "text:equal:ci"
+       }
+      ]
+     ]
+    },
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 37,
+        "filter": {
+         "name": "Check If is a Good Time",
+         "conditions": [
+          [
+           {
+            "a": "{{if(((formatDate(now; \"E\"; \"America/Argentina/Buenos_Aires\") >= 1) & (formatDate(now; \"E\"; \"America/Argentina/Buenos_Aires\") <= 5) & (formatDate(now; \"HHmm\"; \"America/Argentina/Buenos_Aires\") >= 1800) & (formatDate(now; \"HHmm\"; \"America/Argentina/Buenos_Aires\") <= 2200)) | ((formatDate(now; \"E\"; \"America/Argentina/Buenos_Aires\") >= 6) & (formatDate(now; \"E\"; \"America/Argentina/Buenos_Aires\") <= 7) & (formatDate(now; \"HHmm\"; \"America/Argentina/Buenos_Aires\") >= 1000) & (formatDate(now; \"HHmm\"; \"America/Argentina/Buenos_Aires\") <= 2200)); 1; 0)}}",
+            "b": "1",
+            "o": "number:equal"
+           }
+          ],
+          [
+           {
+            "a": "test",
+            "b": "test",
+            "o": "text:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "url": "https://admin.countrymagazine.com.ar/api/wpp-bot/codigo",
+         "method": "post",
+         "headers": [
+          {
+           "name": "X-Bot-Token",
+           "value": "[REDACTED_STRAPI_BOT_TOKEN]"
+          },
+          {
+           "name": "Content-Type",
+           "value": "application/json"
+          }
+         ],
+         "contentType": "json",
+         "inputMethod": "jsonString",
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "jsonStringBodyContent": "{\r\n  \"recomendacionId\": {{1.data.id}},\r\n  \"elegirVariante\": true,\r\n  \"campaniaId\": 1\r\n}",
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 44,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error consiguiendo el cupon desde strapi"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 900,
+            "y": 1500,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 43,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 1200,
+            "y": 1500
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "inputMethod",
+           "type": "select",
+           "label": "Body input method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "dataStructure",
+             "jsonString"
+            ]
+           }
+          },
+          {
+           "name": "jsonStringBodyContent",
+           "type": "text",
+           "label": "Body content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "POST"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null,
+             null
+            ]
+           },
+           "contentType": {
+            "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+           },
+           "inputMethod": {
+            "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 600,
+          "y": 750,
+          "name": "Get Cupon"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 2,
+        "mapper": {
+         "name": "cuponRecomendados",
+         "scope": "roundtrip",
+         "value": "{{37.data.codigo}}"
+        },
+        "module": "util:SetVariable2",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "name",
+           "type": "text",
+           "label": "Variable name",
+           "required": true
+          },
+          {
+           "name": "scope",
+           "type": "select",
+           "label": "Variable lifetime",
+           "required": true,
+           "validate": {
+            "enum": [
+             "roundtrip",
+             "execution"
+            ]
+           }
+          },
+          {
+           "name": "value",
+           "type": "any",
+           "label": "Variable value"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "scope": {
+            "label": "One cycle"
+           }
+          }
+         },
+         "designer": {
+          "x": 900,
+          "y": 600,
+          "name": "Set Cupon"
+         },
+         "interface": [
+          {
+           "name": "cuponRecomendados",
+           "type": "any",
+           "label": "cuponRecomendados"
+          }
+         ]
+        },
+        "parameters": {}
+       },
+       {
+        "id": 42,
+        "filter": null,
+        "mapper": {
+         "name": "CleanPhone",
+         "scope": "roundtrip",
+         "value": "{{replace(replace(replace(replace(replace(replace(1.rawData.telefonoServicio; space; emptystring); \"+\"; emptystring); \"-\"; emptystring); \"(\"; emptystring); \")\"; emptystring); \".\"; emptystring)}}"
+        },
+        "module": "util:SetVariable2",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "name",
+           "type": "text",
+           "label": "Variable name",
+           "required": true
+          },
+          {
+           "name": "scope",
+           "type": "select",
+           "label": "Variable lifetime",
+           "required": true,
+           "validate": {
+            "enum": [
+             "roundtrip",
+             "execution"
+            ]
+           }
+          },
+          {
+           "name": "value",
+           "type": "any",
+           "label": "Variable value"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "scope": {
+            "label": "One cycle"
+           }
+          }
+         },
+         "designer": {
+          "x": 1200,
+          "y": 600,
+          "name": "Set CleanPhone"
+         },
+         "interface": [
+          {
+           "name": "CleanPhone",
+           "type": "any",
+           "label": "CleanPhone"
+          }
+         ]
+        },
+        "parameters": {}
+       },
+       {
+        "id": 16,
+        "mapper": {
+         "sort": [],
+         "filter": [
+          [
+           {
+            "a": "Phone Number",
+            "b": "{{if((substring(42.CleanPhone; 0; 5) = \"\"\"\") + \"54911\"\"\"; substring(42.CleanPhone; 3; length(42.CleanPhone)); if((substring(42.CleanPhone; 0; 4) = \"\"\"\") + \"5411\"\"\"; substring(42.CleanPhone; 2; length(42.CleanPhone)); if((substring(42.CleanPhone; 0; 3) = \"\"\"\") + \"911\"\"\"; substring(42.CleanPhone; 1; length(42.CleanPhone)); 42.CleanPhone)))}}",
+            "o": "text:contain"
+           }
+          ]
+         ],
+         "mappAbleLimit": ""
+        },
+        "module": "datastore:SearchRecord",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "filter",
+           "type": "filter",
+           "label": "Filter",
+           "options": "rpc://datastore/1.15.3/RpcGetUDTKeys",
+           "required": true
+          },
+          {
+           "name": "sort",
+           "spec": [
+            {
+             "name": "key",
+             "type": "select",
+             "label": "Key",
+             "dynamic": true,
+             "options": [],
+             "required": true
+            },
+            {
+             "name": "order",
+             "type": "select",
+             "label": "Order",
+             "options": [
+              {
+               "label": "Ascending",
+               "value": 1
+              },
+              {
+               "label": "Descending",
+               "value": -1
+              }
+             ],
+             "required": true
+            }
+           ],
+           "type": "array",
+           "label": "Sort"
+          },
+          {
+           "name": "mappAbleLimit",
+           "type": "uinteger",
+           "label": "Mappable Limit"
+          }
+         ],
+         "restore": {
+          "parameters": {
+           "datastore": {
+            "label": "LL_RecommendationsMade"
+           }
+          }
+         },
+         "advanced": true,
+         "designer": {
+          "x": 1500,
+          "y": 600,
+          "name": "Search Phone In Recomendations Made"
+         },
+         "interface": [
+          {
+           "name": "__IMTLENGTH__",
+           "type": "uinteger",
+           "label": "Total number of bundles"
+          },
+          {
+           "name": "__IMTINDEX__",
+           "type": "uinteger",
+           "label": "Bundle order position"
+          },
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "help": "Nombre del contacto",
+             "name": "Contact Name",
+             "type": "text",
+             "label": null,
+             "default": null,
+             "required": false,
+             "multiline": false
+            },
+            {
+             "help": "Numero de telefono del contacto",
+             "name": "Phone Number",
+             "type": "text",
+             "label": null,
+             "default": null,
+             "required": true,
+             "multiline": false
+            },
+            {
+             "help": "Horario en el que se envio el ultimo mensaje al usuario contactado ",
+             "name": "Last Contact Timestamp",
+             "type": "date",
+             "label": null,
+             "required": false
+            },
+            {
+             "help": "Cantidad de mensajes enviados al usuario recomendado",
+             "name": "Messages Sent",
+             "type": "number",
+             "label": null,
+             "default": 0,
+             "required": true
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          },
+          {
+           "name": "continueWhenNoRes",
+           "type": "boolean",
+           "label": "Continue the execution of the route even if the module returns no results"
+          },
+          {
+           "name": "limit",
+           "type": "uinteger",
+           "label": "Limit"
+          }
+         ]
+        },
+        "parameters": {
+         "limit": null,
+         "datastore": 80766,
+         "continueWhenNoRes": true
+        }
+       },
+       {
+        "id": 13,
+        "filter": {
+         "name": "Message Not Sent",
+         "conditions": [
+          [
+           {
+            "a": "{{16.key}}",
+            "o": "notexist"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "model": "gpt-6-luna",
+         "prompt": "Tu tarea: extraer SOLO el primer NOMBRE de persona (nombre de pila) desde un texto libre que describe a un proveedor. El texto puede incluir oficio/categoría/etiquetas antes del nombre, es necesario que solo devuelvas en tu variable extractedName el primer nombre del proveedor, removiendo oficios, apellidos, nombre extra, etc. Y tiene que ser el nombre del proveedor de servicios, de nadie mas.\r\n\r\nNombre Recibido: {{1.data.nombrePrestador}}\r\n\r\nEJEMPLOS:\r\n\"Nombre Recibido: Juan Perez Electricista\" -> {\"extractedName\":\"Juan\"}\r\n\"Nestor Badami\" -> {\"extractedName\":\"Nestor\"}\r\n\"Carpintero Recomendado Salvador (Eli)\" -> {\"extractedName\":\"Salvador\"}\r\n\"Dany El Pintor De Oscar\" -> {\"extractedName\":\"Dany\"}\r\n\"Electricista\" -> {\"extractedName\":\"\"}\r\n\r\nIMPORTANTE:\r\n- No devuelvas el texto completo.\r\n- No devuelvas más de una palabra.\r\n- No agregues explicaciones. Solo el JSON.",
+         "rawText": "Nombre Recibido: {{1.data.nombrePrestador}}",
+         "parameters": [
+          {
+           "name": "extractedName",
+           "type": "string",
+           "isRequired": true,
+           "description": "El primer nombre del proveedor extraído si es que existe"
+          }
+         ]
+        },
+        "module": "openai-gpt-3:transformTextToStructuredData",
+        "onerror": [
+         {
+          "id": 46,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error en el GPT que consigue el nombre de usuario limpio"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 2100,
+            "y": 1200,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 45,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 2400,
+            "y": 1200
+           }
+          }
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "model",
+           "type": "select",
+           "label": "Model",
+           "required": true
+          },
+          {
+           "name": "rawText",
+           "type": "text",
+           "label": "Text to Parse",
+           "required": true
+          },
+          {
+           "name": "prompt",
+           "type": "text",
+           "label": "Prompt",
+           "required": true
+          },
+          {
+           "name": "parameters",
+           "spec": {
+            "name": "value",
+            "spec": [],
+            "type": "collection",
+            "label": "Data Definition"
+           },
+           "type": "array",
+           "label": "Structured Data Definition",
+           "required": true
+          },
+          {
+           "name": "objectDefinitions",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Object Name",
+              "required": true
+             },
+             {
+              "name": "description",
+              "type": "text",
+              "label": "Description",
+              "required": true
+             },
+             {
+              "name": "properties",
+              "spec": {
+               "spec": [],
+               "type": "collection",
+               "label": "Property"
+              },
+              "type": "array",
+              "label": "Properties",
+              "labels": {
+               "add": "Add property"
+              },
+              "required": true
+             }
+            ],
+            "type": "collection",
+            "label": "Object Definition"
+           },
+           "type": "array",
+           "label": "Object Definitions"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "model": {
+            "mode": "chose",
+            "label": "gpt-4o-mini (system)"
+           },
+           "parameters": {
+            "mode": "chose",
+            "items": [
+             {
+              "type": {
+               "mode": "chose",
+               "label": "Text"
+              },
+              "isRequired": {
+               "mode": "chose"
+              },
+              "valueExamples": {
+               "mode": "chose"
+              }
+             }
+            ]
+           },
+           "objectDefinitions": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "__IMTCONN__": {
+            "data": {
+             "scoped": "true",
+             "connection": "openai-gpt-3"
+            },
+            "label": "My OpenAI connection"
+           }
+          }
+         },
+         "designer": {
+          "x": 1800,
+          "y": 600,
+          "name": "Name Extractor"
+         },
+         "interface": [
+          {
+           "name": "extractedName",
+           "type": "text"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "__IMTCONN__",
+           "type": "account:openai-gpt-3",
+           "label": "Connection",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "__IMTCONN__": 4527306
+        }
+       },
+       {
+        "id": 55,
+        "mapper": {
+         "url": "https://admin.countrymagazine.com.ar/api/categorias-de-servicios?filters[id]={{1.rawData.categoriaServicio.connect[].id}}",
+         "method": "get",
+         "headers": [
+          {
+           "name": "Authorization",
+           "value": "Bearer [REDACTED_STRAPI_API_TOKEN]"
+          }
+         ],
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 58,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error enviando Template de recomendados, revisarlo y volver a ejecutar para que llegue ese mensaje"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 2400,
+            "y": 900,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 56,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 2700,
+            "y": 900
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "GET"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null
+            ]
+           },
+           "contentType": {
+            "label": "Empty"
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 2100,
+          "y": 450,
+          "name": "Search in categorias-de-servicios in Strapi"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 21,
+        "mapper": {
+         "url": "https://graph.facebook.com/v22.0/717278908136135/messages",
+         "method": "post",
+         "headers": [
+          {
+           "name": "Authorization",
+           "value": "Bearer [REDACTED_WHATSAPP_ACCESS_TOKEN]"
+          }
+         ],
+         "timeout": "40",
+         "contentType": "json",
+         "inputMethod": "jsonString",
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "jsonStringBodyContent": "{{if(length(trim(ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))))) = 0; \"{\"\"messaging_product\"\":\"\"whatsapp\"\",\"\"to\"\":\"\"\" + 1.data.telefonoServicio + \"\"\",\"\"type\"\":\"\"template\"\",\"\"template\"\":{\"\"name\"\":\"\"llegando_contacto_recomendados_c\"\",\"\"language\"\":{\"\"code\"\":\"\"es_AR\"\"},\"\"components\"\":[{\"\"type\"\":\"\"body\"\",\"\"parameters\"\":[{\"\"type\"\":\"\"text\"\",\"\"parameter_name\"\":\"\"name\"\",\"\"text\"\":\"\" \" + if(13.extractedName != emptystring; if(13.extractedName != null; 13.extractedName; \"vecino\"); \"vecino\") + \"\"\"},{\"\"type\"\":\"\"text\"\",\"\"parameter_name\"\":\"\"neighborhood\"\",\"\"text\"\":\"\"\" + 1.data.barrioCliente + \"\"\"},{\"\"type\"\":\"\"text\"\",\"\"parameter_name\"\":\"\"discount_url\"\",\"\"text\"\":\"\"\" + 37.data.urlAterrizaje + \"\"\"},{\"\"type\"\":\"\"text\"\",\"\"parameter_name\"\":\"\"code\"\",\"\"text\"\":\"\"\" + 2.cuponRecomendados + \"\"\"}]}]}}\"; if(if(var.team.ABTesting = \"b\"; \"b\"; \"a\") = \"a\"; \"{\r\n  \"\"messaging_product\"\": \"\"whatsapp\"\",\r\n  \"\"to\"\": \"\"\" + 1.data.telefonoServicio + \"\"\",\r\n  \"\"type\"\": \"\"template\"\",\r\n  \"\"template\"\": {\r\n    \"\"name\"\": \"\"llegando_contacto_recomendados_a\"\",\r\n    \"\"language\"\": {\r\n      \"\"code\"\": \"\"es_AR\"\"\r\n    },\r\n    \"\"components\"\": [\r\n      {\r\n        \"\"type\"\": \"\"body\"\",\r\n        \"\"parameters\"\": [\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"name\"\",\r\n            \"\"text\"\": \"\" \" + if(13.extractedName != emptystring; if(13.extractedName != null; 13.extractedName + space; \"vecino\" + space); \"vecino\" + space) + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"neighborhood\"\",\r\n            \"\"text\"\": \"\"\" + 1.data.barrioCliente + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"category1\"\",\r\n            \"\"text\"\": \"\"\" + ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))) + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"category2\"\",\r\n            \"\"text\"\": \"\"\" + ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))) + \"\"\"\r\n          },\r\n{\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"discount_url\"\",\r\n            \"\"text\"\": \"\"\" + 37.data.urlAterrizaje + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"code\"\",\r\n            \"\"text\"\": \"\"\" + 2.cuponRecomendados + \"\"\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}\"; \"{\r\n  \"\"messaging_product\"\": \"\"whatsapp\"\",\r\n  \"\"to\"\": \"\"\" + 1.data.telefonoServicio + \"\"\",\r\n  \"\"type\"\": \"\"template\"\",\r\n  \"\"template\"\": {\r\n    \"\"name\"\": \"\"llegando_contacto_recomendados_b\"\",\r\n    \"\"language\"\": {\r\n      \"\"code\"\": \"\"es_AR\"\"\r\n    },\r\n    \"\"components\"\": [\r\n      {\r\n        \"\"type\"\": \"\"body\"\",\r\n        \"\"parameters\"\": [\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"name\"\",\r\n            \"\"text\"\": \"\" \" + if(13.extractedName != emptystring; if(13.extractedName != null; 13.extractedName + space; \"vecino\" + space); \"vecino\" + space) + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"neighborhood\"\",\r\n            \"\"text\"\": \"\"\" + 1.data.barrioCliente + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"category1\"\",\r\n            \"\"text\"\": \"\"\" + ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))) + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"category2\"\",\r\n            \"\"text\"\": \"\"\" + ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))) + \"\"\"\r\n          },\r\n{\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"discount_url\"\",\r\n            \"\"text\"\": \"\"\" + 37.data.urlAterrizaje + \"\"\"\r\n          },\r\n          {\r\n            \"\"type\"\": \"\"text\"\",\r\n            \"\"parameter_name\"\": \"\"code\"\",\r\n            \"\"text\"\": \"\"\" + 2.cuponRecomendados + \"\"\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}\"))}}",
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 48,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error enviando Template de recomendados, revisarlo y volver a ejecutar para que llegue ese mensaje"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 2700,
+            "y": 600,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 47,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 3000,
+            "y": 600
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "inputMethod",
+           "type": "select",
+           "label": "Body input method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "dataStructure",
+             "jsonString"
+            ]
+           }
+          },
+          {
+           "name": "jsonStringBodyContent",
+           "type": "text",
+           "label": "Body content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "POST"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null
+            ]
+           },
+           "contentType": {
+            "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+           },
+           "inputMethod": {
+            "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 2400,
+          "y": 300,
+          "name": "Enviar Template Recomendados ABTesting"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 41,
+        "mapper": {
+         "data": {
+          "Nombre": "{{1.data.nombrePrestador}}",
+          "Mensaje": "Template WhatsApp: llegando_contacto_recomendados_{{if(length(trim(ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))))) = 0; \"c\"; if(var.team.ABTesting = \"b\"; \"b\"; \"a\"))}} | Cupon: {{2.cuponRecomendados}} | Barrio: {{1.data.barrioCliente}} | Nombre usado: {{if(13.extractedName != emptystring; if(13.extractedName != null; 13.extractedName; \"vecino\"); \"vecino\")}}",
+          "Metadata": "{\r\n    \"flow\": \"envio_mensaje_recomendado\",\r\n    \"tipoMensaje\": \"template_primer_contacto_recomendado_{{if(length(trim(ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))))) = 0; \"c\"; if(var.team.ABTesting = \"b\"; \"b\"; \"a\"))}}\",\r\n    \"templateName\": \"llegando_contacto_recomendados_{{if(length(trim(ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))))) = 0; \"c\"; if(var.team.ABTesting = \"b\"; \"b\"; \"a\"))}}\",\r\n    \"templateParams\": {\r\n      \"cupon\": \"{{2.cuponRecomendados}}\",\r\n      \"barrio\": \"{{1.data.barrioCliente}}\",\r\n      \"nombreUsado\": \"{{if(13.extractedName != emptystring; if(13.extractedName != null; 13.extractedName; \"vecino\"); \"vecino\")}}\"\r\n    },\r\n    \"codigo\": \"{{37.data.codigo}}\",\r\n    \"urlAterrizaje\": \"{{37.data.urlAterrizaje}}\",\r\n    \"descuento\": \"{{37.data.descuento}}\",\r\n    \"duracion\": \"{{37.data.duracion}}\",\r\n    \"telefonoServicio\": \"{{1.data.telefonoServicio}}\",\r\n    \"nombrePrestador\": \"{{1.data.nombrePrestador}}\",\r\n    \"barrioCliente\": \"{{1.data.barrioCliente}}\"\r\n  }",
+          "Telefono": "{{1.data.telefonoServicio}}",
+          "AdminMode": false,
+          "Direccion": "Salida",
+          "Timestamp": "{{now}}",
+          "VarianteId": "{{37.data.variante.id}}",
+          "ClaveExterna": "{{21.data.messages[].id}}",
+          "RecomendacionId": "{{1.data.id}}",
+          "SaveInDataStore": false,
+          "CurrentlyProcessing": false
+         }
+        },
+        "module": "scenario-service:CallSubscenario",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "SaveInDataStore",
+             "type": "boolean",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Telefono",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Nombre",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Direccion",
+             "type": "select",
+             "label": "",
+             "required": true,
+             "validate": {
+              "enum": [
+               "Salida",
+               "Entrada"
+              ]
+             }
+            },
+            {
+             "name": "Mensaje",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Timestamp",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "ClaveExterna",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "VarianteId",
+             "type": "number",
+             "label": ""
+            },
+            {
+             "name": "RecomendacionId",
+             "type": "number",
+             "label": ""
+            },
+            {
+             "name": "Metadata",
+             "type": "text",
+             "label": ""
+            },
+            {
+             "name": "AdminMode",
+             "type": "boolean",
+             "label": ""
+            },
+            {
+             "name": "CurrentlyProcessing",
+             "type": "boolean",
+             "label": "",
+             "required": true
+            }
+           ],
+           "type": "collection",
+           "label": "Scenario Inputs"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "data": {
+            "nested": {
+             "AdminMode": {
+              "mode": "chose"
+             },
+             "Direccion": {
+              "mode": "chose",
+              "label": "Salida"
+             },
+             "SaveInDataStore": {
+              "mode": "chose"
+             },
+             "CurrentlyProcessing": {
+              "mode": "chose"
+             }
+            }
+           }
+          },
+          "parameters": {
+           "scenario": {
+            "label": "LL - Log Message"
+           }
+          }
+         },
+         "designer": {
+          "x": 2700,
+          "y": 150,
+          "name": "Call Log To Save Exit Message on Strapi"
+         },
+         "interface": [
+          {
+           "name": "executionId",
+           "type": "text",
+           "label": "Execution ID"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "scenario",
+           "type": "scenario",
+           "label": "Scenario",
+           "required": true
+          },
+          {
+           "name": "shouldWaitForExecutionEnd",
+           "type": "boolean",
+           "label": "Wait for the scenario to finish",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "scenario": "SCN_5421473",
+         "shouldWaitForExecutionEnd": false
+        }
+       },
+       {
+        "id": 53,
+        "mapper": {
+         "value": "{{if(length(trim(ifempty(55.data.data[].attributes.nombre; if(contains(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\"); trim(substring(ifempty(1.data.observacion; emptystring); indexOf(ifempty(1.data.observacion; emptystring); \"Servicio ingresado:\") + 19; length(ifempty(1.data.observacion; emptystring)))); ifempty(1.data.observacion; emptystring))))) = 0; ifempty(var.team.ABTesting; \"a\"); if(var.team.ABTesting = \"a\"; \"b\"; \"a\"))}}",
+         "select": "team",
+         "teamId": "1163364",
+         "typeId": "2",
+         "variableName": "ABTesting"
+        },
+        "module": "make:updateAVariable",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "select",
+           "type": "select",
+           "label": "Variable in organization/team",
+           "required": true,
+           "validate": {
+            "enum": [
+             "organization",
+             "team"
+            ]
+           }
+          },
+          {
+           "name": "variableName",
+           "type": "text",
+           "label": "Variable name",
+           "required": true
+          },
+          {
+           "name": "typeId",
+           "type": "select",
+           "label": "Type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "1",
+             "2",
+             "3",
+             "4"
+            ]
+           }
+          },
+          {
+           "name": "value",
+           "type": "text",
+           "label": "Variable value",
+           "required": true
+          },
+          {
+           "name": "teamId",
+           "type": "text",
+           "label": "Team ID",
+           "required": true
+          }
+         ],
+         "restore": {
+          "expect": {
+           "select": {
+            "label": "Team"
+           },
+           "teamId": {
+            "rpcSearch": {
+             "label": "My Team",
+             "value": 1163364,
+             "default": false
+            }
+           },
+           "typeId": {
+            "mode": "chose",
+            "label": "String"
+           }
+          },
+          "parameters": {
+           "__IMTCONN__": {
+            "data": {
+             "scoped": "true",
+             "connection": "make2"
+            },
+            "label": "My Make (API key) connection ([REDACTED_EMAIL_5])"
+           }
+          }
+         },
+         "designer": {
+          "x": 3000,
+          "y": 150,
+          "name": "Change AB Testing Global Variable"
+         },
+         "parameters": [
+          {
+           "name": "__IMTCONN__",
+           "type": "account:make2,make",
+           "label": "Connection",
+           "required": true
+          }
+         ],
+         "setupValidation": {
+          "result": {
+           "valid": true,
+           "fields": []
+          },
+          "version": 1,
+          "configuration": "924a363fb6930fc3"
+         }
+        },
+        "parameters": {
+         "__IMTCONN__": 9953737
+        }
+       },
+       {
+        "id": 14,
+        "mapper": {
+         "url": "https://admin.countrymagazine.com.ar/api/recomendaciones-servicios/{{1.data.id}}",
+         "method": "put",
+         "headers": [
+          {
+           "name": "Authorization",
+           "value": "Bearer [REDACTED_STRAPI_API_TOKEN]"
+          }
+         ],
+         "contentType": "json",
+         "inputMethod": "jsonString",
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "jsonStringBodyContent": "{\r\n    \"data\":{\r\n        \"mensajesEnviados\": 1\r\n    }\r\n}",
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 50,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error actualizando los mensaje enviados a recomendados en strapi, revisar y cambiarlo en strapi para que todo este en orden"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 3600,
+            "y": 300,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 49,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 3900,
+            "y": 300
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "inputMethod",
+           "type": "select",
+           "label": "Body input method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "dataStructure",
+             "jsonString"
+            ]
+           }
+          },
+          {
+           "name": "jsonStringBodyContent",
+           "type": "text",
+           "label": "Body content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "PUT"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null
+            ]
+           },
+           "contentType": {
+            "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+           },
+           "inputMethod": {
+            "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "proxyKeychain": {
+            "label": "Choose a key"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 3300,
+          "y": 150,
+          "name": "Update mensajesEnviados - Strapi"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "proxyKeychain": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 15,
+        "mapper": {
+         "key": "",
+         "data": {
+          "Contact Name": "{{1.rawData.nombrePrestador}}",
+          "Phone Number": "{{1.rawData.telefonoServicio}}",
+          "Messages Sent": "1",
+          "Last Contact Timestamp": "{{formatDate(now; \"YYYY-MM-DD HH:mm\"; \"America/Argentina/Buenos_Aires\")}}"
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "onerror": [
+         {
+          "id": 52,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error actualizando los mensaje enviados a recomendados en la DB, revisarlo y cambiarlo en la DB para que todo este en orden"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 3900,
+            "y": 0,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 51,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 4200,
+            "y": 0
+           }
+          }
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "overwrite",
+           "type": "boolean",
+           "label": "Overwrite an existing record",
+           "required": true
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "Contact Name",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Phone Number",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Last Contact Timestamp",
+             "type": "date",
+             "label": null
+            },
+            {
+             "name": "Messages Sent",
+             "type": "number",
+             "label": null
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "overwrite": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "datastore": {
+            "label": "LL_RecommendationsMade"
+           }
+          }
+         },
+         "designer": {
+          "x": 3600,
+          "y": 0,
+          "name": "Add Record To RecomendationsMade"
+         },
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "datastore": 80766
+        }
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 34,
+        "filter": {
+         "name": "Its not a good time",
+         "conditions": []
+        },
+        "mapper": {
+         "key": "",
+         "data": {
+          "Payload": "{{`1`}}",
+          "WebhookToSend": "https://hook.us2.make.com/[REDACTED_WEBHOOK_PATH]"
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "onerror": [
+         {
+          "id": 36,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 900,
+            "y": 1800
+           }
+          }
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "overwrite",
+           "type": "boolean",
+           "label": "Overwrite an existing record",
+           "required": true
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "Payload",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "WebhookToSend",
+             "type": "text",
+             "label": null
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "overwrite": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "datastore": {
+            "label": "LL_OffTimeRecomendations"
+           }
+          }
+         },
+         "designer": {
+          "x": 600,
+          "y": 1800,
+          "name": "Save Data in OffTimeRecords"
+         },
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "datastore": 101658
+        }
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 900
+     }
+    },
+    "parameters": {
+     "else": 1
+    }
+   }
+  ],
+  "name": "LL - Envio de Mensaje Recomendado",
+  "metadata": {
+   "instant": true,
+   "version": 1,
+   "designer": {
+    "orphans": [],
+    "samples": {
+     "__sanitized__": "design-time sample bundles removed (contained real personal data)"
+    }
+   },
+   "scenario": {
+    "dlq": true,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": true,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "immediately",
+   "maximum_runs_per_minute": 100
+  },
+  "interface": {
+   "input": [],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 1,
+   "strapi_token": 2,
+   "xbot_token": 1,
+   "hook_url": 1,
+   "email": 13,
+   "phone": 0,
+   "samples_removed": 1,
+   "person": 0
+  }
+ }
+}

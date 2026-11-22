@@ -1,0 +1,643 @@
+{
+ "id": 6477190,
+ "name": "LL - Limpieza Tabla Recomendados Interna",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": false,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "http",
+  "builtin"
+ ],
+ "lastEdit": "2026-10-01T20:58:49.566Z",
+ "scheduling": {
+  "type": "indefinitely",
+  "interval": 900
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-10-01T20:58:49.566Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": false,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 2,
+    "mapper": {
+     "url": "https://admin.countrymagazine.com.ar/api/recomendaciones-servicios?filters[telefonoServicio][$notNull]=true&filters[$or][0][mensajesEnviados][$null]=true&filters[$or][1][mensajesEnviados][$eq]=1",
+     "limit": 226,
+     "method": "get",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer [REDACTED_STRAPI_API_TOKEN]"
+      }
+     ],
+     "timeout": 40,
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "paginationType": "pageBased",
+     "stopOnHttpError": true,
+     "paginationOutputFormat": "items",
+     "paginationRequestConfig": {
+      "pageSizeParamName": "pagination[pageSize]",
+      "pageSizeParamValue": 200,
+      "pageNumberParamName": "pagination[page]",
+      "initialPageNumberValue": 2
+     },
+     "paginationResponseConfig": {
+      "itemsPath": "data"
+     },
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "version": 4,
+    "metadata": {
+     "expect": [
+      {
+       "name": "url",
+       "type": "url",
+       "label": "URL",
+       "required": true
+      },
+      {
+       "name": "method",
+       "type": "select",
+       "label": "Method",
+       "default": "get",
+       "required": true,
+       "validate": {
+        "enum": [
+         "get",
+         "head",
+         "post",
+         "put",
+         "patch",
+         "delete",
+         "options"
+        ]
+       }
+      },
+      {
+       "name": "headers",
+       "spec": {
+        "name": "header",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true,
+          "validate": {
+           "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+          }
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Header"
+       },
+       "type": "array",
+       "label": "Headers",
+       "labels": {
+        "add": "Add a header"
+       }
+      },
+      {
+       "name": "queryParameters",
+       "spec": {
+        "name": "queryParameter",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Parameter"
+       },
+       "type": "array",
+       "label": "Query parameters",
+       "labels": {
+        "add": "Add a parameter"
+       }
+      },
+      {
+       "name": "contentType",
+       "type": "select",
+       "label": "Body content type",
+       "mappable": false,
+       "validate": {
+        "enum": [
+         "json",
+         "multipart",
+         "urlEncoded",
+         "custom"
+        ]
+       },
+       "placeholder": "Select body content type"
+      },
+      {
+       "name": "parseResponse",
+       "type": "boolean",
+       "label": "Parse response",
+       "default": true,
+       "required": true
+      },
+      {
+       "name": "paginationType",
+       "type": "select",
+       "label": "Pagination type",
+       "mappable": false,
+       "validate": {
+        "enum": [
+         "offsetBased",
+         "pageBased",
+         "urlBased",
+         "tokenBased"
+        ]
+       },
+       "placeholder": "Select pagination type"
+      },
+      {
+       "name": "paginationResponseConfig",
+       "spec": [
+        {
+         "name": "paginationResponseDefinitionBanner",
+         "text": "Determine response paths from the API documentation or by running a test call with this module. If using the test call’s output, only enter the path after `data`.",
+         "type": "banner",
+         "theme": "info"
+        },
+        {
+         "name": "itemsPath",
+         "type": "text",
+         "label": "Items path",
+         "required": false
+        }
+       ],
+       "type": "collection",
+       "label": "Pagination response config"
+      },
+      {
+       "name": "paginationRequestConfig",
+       "spec": [
+        {
+         "name": "pageNumberParamName",
+         "type": "text",
+         "label": "Page parameter name",
+         "default": "page",
+         "required": true
+        },
+        {
+         "name": "initialPageNumberValue",
+         "type": "uinteger",
+         "label": "Initial page value",
+         "default": 1,
+         "required": true
+        },
+        {
+         "name": "pageSizeParamName",
+         "type": "text",
+         "label": "Page size parameter name",
+         "required": false
+        },
+        {
+         "name": "pageSizeParamValue",
+         "type": "uinteger",
+         "label": "Page size parameter value",
+         "required": false,
+         "validate": {
+          "min": 1
+         }
+        }
+       ],
+       "type": "collection",
+       "label": "Pagination request config"
+      },
+      {
+       "name": "paginationOutputFormat",
+       "type": "select",
+       "label": "Output format",
+       "default": "items",
+       "mappable": false,
+       "required": true,
+       "validate": {
+        "enum": [
+         "items",
+         "pages"
+        ]
+       }
+      },
+      {
+       "name": "limit",
+       "type": "uinteger",
+       "label": "Limit",
+       "default": 100,
+       "required": true,
+       "validate": {
+        "max": 10000,
+        "min": 1
+       }
+      },
+      {
+       "name": "stopOnHttpError",
+       "type": "boolean",
+       "label": "Return error if HTTP request fails",
+       "default": true,
+       "advanced": true,
+       "required": true
+      },
+      {
+       "name": "timeout",
+       "type": "uinteger",
+       "label": "Timeout",
+       "default": 40,
+       "advanced": true,
+       "validate": {
+        "max": 300,
+        "min": 1
+       }
+      },
+      {
+       "name": "allowRedirects",
+       "type": "boolean",
+       "label": "Allow redirects",
+       "default": true,
+       "advanced": true,
+       "required": true
+      },
+      {
+       "name": "shareCookies",
+       "type": "boolean",
+       "label": "Share cookies with other HTTP modules",
+       "default": false,
+       "advanced": true,
+       "required": true
+      },
+      {
+       "name": "requestCompressedContent",
+       "type": "boolean",
+       "label": "Request compressed content",
+       "default": true,
+       "advanced": true,
+       "required": true
+      }
+     ],
+     "restore": {
+      "expect": {
+       "method": {
+        "mode": "chose",
+        "extra": {
+         "mode": "chose",
+         "label": "GET"
+        },
+        "label": "GET"
+       },
+       "headers": {
+        "extra": {
+         "mode": "chose",
+         "items": [
+          null
+         ]
+        }
+       },
+       "shareCookies": {
+        "extra": {
+         "mode": "chose"
+        }
+       },
+       "parseResponse": {
+        "extra": {
+         "mode": "chose"
+        }
+       },
+       "allowRedirects": {
+        "extra": {
+         "mode": "chose"
+        }
+       },
+       "paginationType": {
+        "mode": "chose",
+        "extra": {
+         "label": "Page-basedUse when the API requires you to specify the page value to retrieve the next set of results."
+        },
+        "label": "Page-based",
+        "nested": [
+         {
+          "name": "paginationResponseConfig",
+          "spec": [
+           {
+            "name": "paginationResponseDefinitionBanner",
+            "text": "Determine response paths from the API documentation or by running a test call with this module. If using the test call’s output, only enter the path after `data`.",
+            "type": "banner",
+            "theme": "info"
+           },
+           {
+            "help": "Enter the path to the array of items. For example, `results` or `result.users`. If the entire response is an array, use `emptyarray` pill.",
+            "name": "itemsPath",
+            "type": "text",
+            "label": "Items path",
+            "required": false
+           }
+          ],
+          "type": "collection",
+          "label": "Pagination response config"
+         },
+         {
+          "name": "paginationRequestConfig",
+          "spec": [
+           {
+            "help": "Enter the query parameter name that defines the page number. For example, `page` or `page_number`.",
+            "name": "pageNumberParamName",
+            "type": "text",
+            "label": "Page parameter name",
+            "default": "page",
+            "required": true
+           },
+           {
+            "help": "Enter the page number to start the request at. This is typically `0` or `1`. You can also use this field to return items beyond Make’s 10,000 limit.",
+            "name": "initialPageNumberValue",
+            "type": "uinteger",
+            "label": "Initial page value",
+            "default": 1,
+            "required": true
+           },
+           {
+            "help": "Enter the query parameter name that defines the page size. For example, `limit` or `per_page`.",
+            "name": "pageSizeParamName",
+            "type": "text",
+            "label": "Page size parameter name",
+            "required": false
+           },
+           {
+            "help": "Enter the maximum number of items to retrieve per page.",
+            "name": "pageSizeParamValue",
+            "type": "uinteger",
+            "label": "Page size parameter value",
+            "required": false,
+            "validate": {
+             "min": 1
+            }
+           }
+          ],
+          "type": "collection",
+          "label": "Pagination request config"
+         },
+         {
+          "name": "paginationOutputFormat",
+          "type": "select",
+          "label": "Output format",
+          "default": "items",
+          "options": [
+           {
+            "label": "Array of items",
+            "value": "items"
+           },
+           {
+            "label": "Array of pages",
+            "value": "pages"
+           }
+          ],
+          "mappable": false,
+          "required": true
+         },
+         {
+          "help": "Enter the maximum number of items to return.",
+          "name": "limit",
+          "type": "uinteger",
+          "label": "Limit",
+          "default": 100,
+          "required": true,
+          "validate": {
+           "max": 10000,
+           "min": 1
+          }
+         }
+        ]
+       },
+       "queryParameters": {
+        "extra": {
+         "mode": "chose"
+        }
+       },
+       "stopOnHttpError": {
+        "extra": {
+         "mode": "chose"
+        }
+       },
+       "paginationOutputFormat": {
+        "mode": "chose",
+        "extra": {
+         "label": "Array of items"
+        },
+        "label": "Array of items"
+       },
+       "requestCompressedContent": {
+        "extra": {
+         "mode": "chose"
+        }
+       }
+      },
+      "parameters": {
+       "tlsType": {
+        "extra": {
+         "label": "Empty"
+        }
+       },
+       "authenticationType": {
+        "mode": "chose",
+        "extra": {
+         "label": "No authenticationUse when no credentials are required for the request."
+        },
+        "label": "No authentication"
+       }
+      }
+     },
+     "designer": {
+      "x": 0,
+      "y": 0,
+      "name": "Get Recomendados to Contact - Strapi"
+     },
+     "interface": [
+      {
+       "name": "__IMTLENGTH__",
+       "type": "number",
+       "label": "Total number of bundles"
+      },
+      {
+       "name": "__IMTINDEX__",
+       "type": "number",
+       "label": "Bundle order position"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "authenticationType",
+       "type": "select",
+       "label": "Authentication type",
+       "mappable": false,
+       "required": true,
+       "validate": {
+        "enum": [
+         "noAuth",
+         "apiKey",
+         "basicAuth",
+         "oAuth"
+        ]
+       },
+       "placeholder": "Select authentication type"
+      },
+      {
+       "name": "tlsType",
+       "type": "select",
+       "label": "Transport layer security (TLS)",
+       "advanced": true,
+       "mappable": false,
+       "validate": {
+        "enum": [
+         "mTls",
+         "tls"
+        ]
+       },
+       "placeholder": "Select TLS type"
+      },
+      {
+       "name": "proxyKeychain",
+       "type": "keychain:proxy",
+       "label": "Proxy",
+       "advanced": true
+      }
+     ]
+    },
+    "parameters": {
+     "tlsType": "",
+     "authenticationType": "noAuth"
+    }
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "id": "{{2.id}}",
+     "attributes": "{{2.attributes}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "__IMTTARGET__",
+       "spec": [],
+       "type": "collection",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Get Recomendados to Contact - Strapi - Make a request [3]"
+       },
+       "target": {
+        "label": "Custom"
+       }
+      }
+     },
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "messages": [
+       {
+        "message": "You're not using the data generated by this module. Consider removing it, or add module(s) after it.",
+        "category": "last",
+        "severity": "warning"
+       }
+      ]
+     }
+    },
+    "parameters": {
+     "feeder": 2
+    }
+   }
+  ],
+  "name": "LL - Limpieza Tabla Recomendados Interna",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "indefinitely",
+   "interval": 900
+  },
+  "interface": {
+   "input": [],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 1,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

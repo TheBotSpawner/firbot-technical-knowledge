@@ -2,7 +2,7 @@
 title: "Contacts and Roles"
 status: Draft
 last_modified: 2026-11-22
-verification: "Initial baseline; partial validation"
+verification: "Roles updated with live Make ownership evidence 2026-11-22 (no personal data recorded)"
 ---
 
 # 05 — Contacts and Roles
@@ -18,7 +18,11 @@ verification: "Initial baseline; partial validation"
 | Production incident contact | `<Support Contact — Nexo>` | Receive/triage incidents | Transitional | No formal support agreement yet; TODO |
 | WhatsApp / Meta platform owner | `<Meta App / WABA Owner>` | WhatsApp numbers, Meta app, tokens, webhook configuration | Unknown | TODO |
 | OpenAI billing / project owner | `<OpenAI API Owner>` | API subscription, security and capacity | Unknown | TODO |
-| Gmail notification mailbox owner | `<Error Notification Mailbox Owner>` | Receive error alerts | Unknown | TODO |
+| Error-notification recipients | `<Error Notification Recipients>` | Receive error e-mails (Firbot mailboxes + one stakeholder mailbox, hard-coded per module) | Current | Confirmed from live config; identities kept out of repo |
+| Microsoft 365 connection owner | `<Firbot Individual — Outlook connection>` | Owns OAuth connection 5431897 used to send all error e-mails | Current | Confirmed from live config |
+| Make account user | `<Client Make Account User>` | Single client-owned Make user that created/edited all scenarios (Firbot works through it) | Current | Confirmed from live system |
+| Make admin allow-list members | `<Nexo Admins (LL_PermissionsList)>` | 5 WhatsApp numbers allowed to use `#adminmode` | Current | Confirmed count; identities not exported |
+| Google Drive owner (stickers) | `<Client Google Account>` | Owns sticker files | Current | Confirmed from live config |
 
 ## Approval / communication
 

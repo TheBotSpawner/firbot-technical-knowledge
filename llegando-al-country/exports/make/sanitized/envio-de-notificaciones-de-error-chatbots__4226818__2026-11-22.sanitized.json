@@ -1,0 +1,1236 @@
+{
+ "id": 4226818,
+ "name": "Envio de Notificaciones de Error Chatbots",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "builtin",
+  "builtin",
+  "builtin",
+  "builtin",
+  "builtin",
+  "builtin",
+  "microsoft-email",
+  "http"
+ ],
+ "lastEdit": "2026-03-22T01:01:44.830Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-02-24T22:19:33.302Z",
+ "chainingRole": "child",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 2,
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "help": "",
+       "name": "scenarioName",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "scenarioURL",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "emailErrorMessage",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "toRecipients",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "CCRecipients",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "BCCRecipients",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "clientPhoneNumber",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "wppErrorMessage",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": false,
+       "multiline": false
+      },
+      {
+       "help": "",
+       "name": "wppReplyNeeded",
+       "type": "boolean",
+       "label": "",
+       "default": false,
+       "required": true
+      }
+     ]
+    }
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "array": "{{split(2.toRecipients; \",\")}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "mode": "edit",
+       "name": "array",
+       "spec": [],
+       "type": "array",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "array": {
+        "mode": "edit"
+       }
+      }
+     },
+     "designer": {
+      "x": 300,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "name": "",
+     "address": "{{3.value}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "address",
+       "type": "email",
+       "label": "Email Address",
+       "required": true
+      },
+      {
+       "name": "name",
+       "type": "text",
+       "label": "Name"
+      }
+     ],
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Iterator [3]"
+       },
+       "target": {
+        "label": "To Recipients"
+       }
+      }
+     },
+     "designer": {
+      "x": 600,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "feeder": 3,
+     "target": "9.toRecipients"
+    }
+   },
+   {
+    "id": 5,
+    "mapper": {
+     "array": "{{split(2.CCRecipients; \",\")}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "mode": "edit",
+       "name": "array",
+       "spec": [],
+       "type": "array",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "array": {
+        "mode": "edit"
+       }
+      }
+     },
+     "designer": {
+      "x": 900,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 6,
+    "mapper": {
+     "name": "",
+     "address": "{{5.value}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "address",
+       "type": "email",
+       "label": "Email Address",
+       "required": true
+      },
+      {
+       "name": "name",
+       "type": "text",
+       "label": "Name"
+      }
+     ],
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Iterator [5]"
+       },
+       "target": {
+        "label": "CC Recipients"
+       }
+      }
+     },
+     "designer": {
+      "x": 1200,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "feeder": 5,
+     "target": "9.ccRecipients"
+    }
+   },
+   {
+    "id": 7,
+    "mapper": {
+     "array": "{{split(2.BCCRecipients; \",\")}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "mode": "edit",
+       "name": "array",
+       "spec": [],
+       "type": "array",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "array": {
+        "mode": "edit"
+       }
+      }
+     },
+     "designer": {
+      "x": 1500,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 8,
+    "mapper": {
+     "name": "",
+     "address": "{{7.value}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "address",
+       "type": "email",
+       "label": "Email Address",
+       "required": true
+      },
+      {
+       "name": "name",
+       "type": "text",
+       "label": "Name"
+      }
+     ],
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Iterator [7]"
+       },
+       "target": {
+        "label": "Bcc Recipients"
+       }
+      }
+     },
+     "designer": {
+      "x": 1800,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "feeder": 7,
+     "target": "9.bccRecipients"
+    }
+   },
+   {
+    "id": 9,
+    "mapper": {
+     "content": "<div style=\"background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: auto;\">\n<div style=\"background-color: #d9534f; color: white; padding: 15px; text-align: center; font-size: 18px; border-radius: 8px 8px 0 0;\">\n⚠️ Error en ejecución del escenario\n</div>\n<div style=\"padding: 15px; color: #333;\">\n<p>Estimado Usuario,</p>\n<p>Un error fue encontrado en la ejecución del escenario <strong>{{2.scenarioName}}</strong></p>\n<p>Detalles del error:</p>\n<div style=\"background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 14px;\">\n{{2.emailErrorMessage}}\n</div>\n<p>Puede acceder al escenario desde el siguiente link:</p>\n<a href=\"{{2.scenarioURL}}\" style=\"display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-top: 15px;\">See Execution</a>\n</div>\n<div style=\"font-size: 12px; color: #777; text-align: center; margin-top: 20px;\">\n<p>Este mensaje fue generado automáticamente por Make.</p>\n</div>\n</div>\n",
+     "subject": "Error on {{2.scenarioName}}",
+     "contentType": "html",
+     "ccRecipients": "{{6.array}}",
+     "toRecipients": "{{4.array}}",
+     "bccRecipients": "{{8.array}}",
+     "singleValueExtendedProperties": {}
+    },
+    "module": "microsoft-email:createAndSendAMessage",
+    "version": 2,
+    "metadata": {
+     "expect": [
+      {
+       "name": "toRecipients",
+       "spec": [
+        {
+         "name": "address",
+         "type": "email",
+         "label": "Email Address",
+         "required": true
+        },
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name"
+        }
+       ],
+       "type": "array",
+       "label": "To Recipients",
+       "required": true
+      },
+      {
+       "name": "subject",
+       "type": "text",
+       "label": "Subject",
+       "required": true
+      },
+      {
+       "name": "content",
+       "type": "text",
+       "label": "Body Content",
+       "required": true
+      },
+      {
+       "name": "attachments",
+       "spec": [
+        {
+         "name": "filename",
+         "type": "filename",
+         "label": "File Name",
+         "required": true,
+         "semantic": "file:name"
+        },
+        {
+         "name": "data",
+         "type": "buffer",
+         "label": "Data",
+         "required": true,
+         "semantic": "file:data"
+        }
+       ],
+       "type": "array",
+       "label": "Attachments"
+      },
+      {
+       "name": "replyTo",
+       "spec": [
+        {
+         "name": "address",
+         "type": "email",
+         "label": "Email Address",
+         "required": true
+        },
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name"
+        }
+       ],
+       "type": "array",
+       "label": "Reply To"
+      },
+      {
+       "name": "from",
+       "spec": [
+        {
+         "name": "address",
+         "type": "email",
+         "label": "Email Address",
+         "required": true
+        },
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name"
+        }
+       ],
+       "type": "array",
+       "label": "From",
+       "validate": {
+        "maxItems": 1
+       }
+      },
+      {
+       "name": "ccRecipients",
+       "spec": [
+        {
+         "name": "address",
+         "type": "email",
+         "label": "Email Address",
+         "required": true
+        },
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name"
+        }
+       ],
+       "type": "array",
+       "label": "CC Recipients"
+      },
+      {
+       "name": "bccRecipients",
+       "spec": [
+        {
+         "name": "address",
+         "type": "email",
+         "label": "Email Address",
+         "required": true
+        },
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name"
+        }
+       ],
+       "type": "array",
+       "label": "Bcc Recipients"
+      },
+      {
+       "name": "importance",
+       "type": "select",
+       "label": "Importance",
+       "validate": {
+        "enum": [
+         "Low",
+         "Normal",
+         "High"
+        ]
+       }
+      },
+      {
+       "name": "internetMessageHeaders",
+       "spec": [
+        {
+         "name": "name",
+         "type": "text",
+         "label": "Name",
+         "required": true
+        },
+        {
+         "name": "value",
+         "type": "text",
+         "label": "Value",
+         "required": true
+        }
+       ],
+       "type": "array",
+       "label": "Internet Message Headers"
+      },
+      {
+       "name": "contentType",
+       "type": "select",
+       "label": "Body Content Type",
+       "required": true,
+       "validate": {
+        "enum": [
+         "html",
+         "text"
+        ]
+       }
+      },
+      {
+       "name": "singleValueExtendedProperties",
+       "spec": [
+        {
+         "name": "sensitivityLabel",
+         "type": "text",
+         "label": "Sensitivity Label"
+        }
+       ],
+       "type": "collection",
+       "label": "Extended MAPI Properties"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "from": {
+        "mode": "chose"
+       },
+       "replyTo": {
+        "mode": "chose"
+       },
+       "importance": {
+        "mode": "chose",
+        "label": "Empty"
+       },
+       "attachments": {
+        "mode": "chose"
+       },
+       "contentType": {
+        "mode": "chose",
+        "label": "HTML"
+       },
+       "ccRecipients": {
+        "mode": "edit"
+       },
+       "toRecipients": {
+        "mode": "edit"
+       },
+       "bccRecipients": {
+        "mode": "edit"
+       },
+       "internetMessageHeaders": {
+        "mode": "chose"
+       }
+      },
+      "parameters": {
+       "__IMTCONN__": {
+        "data": {
+         "scoped": "true",
+         "connection": "azure"
+        },
+        "label": "[REDACTED_PERSON] Firbot Connection ([REDACTED_PERSON] <[REDACTED_EMAIL_2]>)"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 2100,
+      "y": 0,
+      "name": "Send Email Error Notification"
+     },
+     "parameters": [
+      {
+       "name": "__IMTCONN__",
+       "type": "account:azure",
+       "label": "Connection",
+       "required": true
+      }
+     ]
+    },
+    "parameters": {
+     "__IMTCONN__": 5431897
+    }
+   },
+   {
+    "id": 11,
+    "filter": {
+     "name": "wppReplyNeeded",
+     "conditions": [
+      [
+       {
+        "a": "{{2.wppReplyNeeded}}",
+        "b": "{{true}}",
+        "o": "boolean:equal"
+       },
+       {
+        "a": "{{2.clientPhoneNumber}}",
+        "b": "{{emptystring}}",
+        "o": "text:notequal:ci"
+       },
+       {
+        "a": "{{2.wppErrorMessage}}",
+        "b": "{{emptystring}}",
+        "o": "text:notequal:ci"
+       }
+      ]
+     ]
+    },
+    "mapper": {
+     "url": "https://graph.facebook.com/v22.0/717278908136135/messages",
+     "method": "post",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer [REDACTED_WHATSAPP_ACCESS_TOKEN]"
+      }
+     ],
+     "contentType": "json",
+     "inputMethod": "jsonString",
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "stopOnHttpError": true,
+     "jsonStringBodyContent": "{\r\n  \"messaging_product\": \"whatsapp\",\r\n  \"to\": \"{{2.clientPhoneNumber}}\",\r\n  \"type\": \"text\",\r\n  \"text\": {\r\n    \"preview_url\": false,\r\n    \"body\": \"{{replace(replace(2.wppErrorMessage; newline; \"\\n\"); carriagereturn; \"\\r\")}}\"\r\n  }\r\n}",
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "version": 4,
+    "metadata": {
+     "expect": [
+      {
+       "name": "url",
+       "type": "url",
+       "label": "URL",
+       "required": true
+      },
+      {
+       "name": "method",
+       "type": "select",
+       "label": "Method",
+       "required": true,
+       "validate": {
+        "enum": [
+         "get",
+         "head",
+         "post",
+         "put",
+         "patch",
+         "delete",
+         "options"
+        ]
+       }
+      },
+      {
+       "name": "headers",
+       "spec": {
+        "name": "value",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true,
+          "validate": {
+           "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+          }
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Header"
+       },
+       "type": "array",
+       "label": "Headers"
+      },
+      {
+       "name": "queryParameters",
+       "spec": {
+        "name": "value",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Parameter"
+       },
+       "type": "array",
+       "label": "Query parameters"
+      },
+      {
+       "name": "contentType",
+       "type": "select",
+       "label": "Body content type",
+       "validate": {
+        "enum": [
+         "json",
+         "multipart",
+         "urlEncoded",
+         "custom"
+        ]
+       }
+      },
+      {
+       "name": "parseResponse",
+       "type": "boolean",
+       "label": "Parse response",
+       "required": true
+      },
+      {
+       "name": "stopOnHttpError",
+       "type": "boolean",
+       "label": "Return error if HTTP request fails",
+       "required": true
+      },
+      {
+       "name": "timeout",
+       "type": "uinteger",
+       "label": "Timeout",
+       "validate": {
+        "max": 300,
+        "min": 1
+       }
+      },
+      {
+       "name": "allowRedirects",
+       "type": "boolean",
+       "label": "Allow redirects",
+       "required": true
+      },
+      {
+       "name": "shareCookies",
+       "type": "boolean",
+       "label": "Share cookies with other HTTP modules",
+       "required": true
+      },
+      {
+       "name": "requestCompressedContent",
+       "type": "boolean",
+       "label": "Request compressed content",
+       "required": true
+      },
+      {
+       "name": "inputMethod",
+       "type": "select",
+       "label": "Body input method",
+       "required": true,
+       "validate": {
+        "enum": [
+         "dataStructure",
+         "jsonString"
+        ]
+       }
+      },
+      {
+       "name": "jsonStringBodyContent",
+       "type": "text",
+       "label": "Body content",
+       "required": true
+      },
+      {
+       "name": "paginationType",
+       "type": "select",
+       "label": "Pagination type",
+       "validate": {
+        "enum": [
+         "offsetBased",
+         "pageBased",
+         "urlBased",
+         "tokenBased"
+        ]
+       }
+      }
+     ],
+     "restore": {
+      "expect": {
+       "method": {
+        "mode": "chose",
+        "label": "POST"
+       },
+       "headers": {
+        "mode": "chose",
+        "items": [
+         null
+        ]
+       },
+       "contentType": {
+        "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+       },
+       "inputMethod": {
+        "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+       },
+       "shareCookies": {
+        "mode": "chose"
+       },
+       "parseResponse": {
+        "mode": "chose"
+       },
+       "allowRedirects": {
+        "mode": "chose"
+       },
+       "paginationType": {
+        "label": "Empty"
+       },
+       "queryParameters": {
+        "mode": "chose"
+       },
+       "stopOnHttpError": {
+        "mode": "chose"
+       },
+       "requestCompressedContent": {
+        "mode": "chose"
+       }
+      },
+      "parameters": {
+       "tlsType": {
+        "label": "Empty"
+       },
+       "proxyKeychain": {
+        "label": "Choose a key"
+       },
+       "authenticationType": {
+        "label": "No authenticationUse when no credentials are required for the request."
+       }
+      }
+     },
+     "designer": {
+      "x": 2400,
+      "y": 0,
+      "name": "Envio Mensaje de Texto Comun"
+     },
+     "interface": [
+      {
+       "name": "data",
+       "type": "any",
+       "label": "Data"
+      },
+      {
+       "name": "statusCode",
+       "type": "number",
+       "label": "Status Code"
+      },
+      {
+       "name": "headers",
+       "spec": [
+        {
+         "name": "content-length",
+         "type": "text",
+         "label": "Content-Length"
+        },
+        {
+         "name": "content-encoding",
+         "type": "text",
+         "label": "Content-Encoding"
+        },
+        {
+         "name": "content-type",
+         "type": "text",
+         "label": "Content-Type"
+        },
+        {
+         "name": "server",
+         "type": "text",
+         "label": "Server"
+        },
+        {
+         "name": "cache-control",
+         "type": "text",
+         "label": "Cache-Control"
+        },
+        {
+         "name": "set-cookie",
+         "spec": {
+          "type": "text"
+         },
+         "type": "array",
+         "label": "Set-Cookie"
+        }
+       ],
+       "type": "collection",
+       "label": "Headers"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "authenticationType",
+       "type": "select",
+       "label": "Authentication type",
+       "required": true,
+       "validate": {
+        "enum": [
+         "noAuth",
+         "apiKey",
+         "basicAuth",
+         "oAuth"
+        ]
+       }
+      },
+      {
+       "name": "tlsType",
+       "type": "select",
+       "label": "Transport layer security (TLS)",
+       "validate": {
+        "enum": [
+         "mTls",
+         "tls"
+        ]
+       }
+      },
+      {
+       "name": "proxyKeychain",
+       "type": "keychain:proxy",
+       "label": "Proxy"
+      }
+     ]
+    },
+    "parameters": {
+     "tlsType": "",
+     "proxyKeychain": "",
+     "authenticationType": "noAuth"
+    }
+   }
+  ],
+  "name": "Envio de Notificaciones de Error Chatbots",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": [
+     [
+      {
+       "id": 10,
+       "mapper": {
+        "to": "{{2.clientPhoneNumber}}",
+        "text": {
+         "body": "{{2.wppErrorMessage}}",
+         "preview_url": false
+        },
+        "type": "text",
+        "fromId": "717278908136135"
+       },
+       "module": "whatsapp-business-cloud:sendMessage",
+       "version": 1,
+       "metadata": {
+        "expect": [
+         {
+          "name": "fromId",
+          "type": "select",
+          "label": "Sender ID",
+          "required": true
+         },
+         {
+          "name": "to",
+          "type": "text",
+          "label": "Receiver",
+          "required": true
+         },
+         {
+          "name": "type",
+          "type": "select",
+          "label": "Message Type",
+          "required": true,
+          "validate": {
+           "enum": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "document",
+            "sticker",
+            "location",
+            "contacts",
+            "interactive"
+           ]
+          }
+         },
+         {
+          "name": "text",
+          "spec": [
+           {
+            "name": "body",
+            "type": "text",
+            "label": "Body",
+            "required": true,
+            "validate": {
+             "max": 4096
+            }
+           },
+           {
+            "name": "preview_url",
+            "type": "boolean",
+            "label": "Preview URL",
+            "required": true
+           }
+          ],
+          "type": "collection",
+          "label": "Text"
+         }
+        ],
+        "restore": {
+         "expect": {
+          "text": {
+           "nested": {
+            "preview_url": {
+             "mode": "chose"
+            }
+           }
+          },
+          "type": {
+           "label": "Text"
+          },
+          "fromId": {
+           "mode": "chose",
+           "label": "CMAG Llegando ([REDACTED_PHONE])"
+          }
+         },
+         "parameters": {
+          "__IMTCONN__": {
+           "data": {
+            "scoped": "true",
+            "connection": "whatsapp-business-cloud2"
+           },
+           "label": "CountryMagazineConnection v1 (adminid)"
+          }
+         }
+        },
+        "designer": {
+         "x": 2417,
+         "y": 291,
+         "name": "Send WPP Error Notification",
+         "messages": [
+          {
+           "message": "Value must not be empty.",
+           "category": "setup",
+           "severity": "error"
+          },
+          {
+           "message": "Referenced module 'Scenarios - Start scenario' [2] is not accessible.",
+           "category": "reference",
+           "severity": "warning"
+          },
+          {
+           "message": "The module is not connected to the data flow.",
+           "category": "link",
+           "severity": "warning"
+          }
+         ]
+        },
+        "parameters": [
+         {
+          "name": "__IMTCONN__",
+          "type": "account:whatsapp-business-cloud,whatsapp-business-cloud2",
+          "label": "Connection",
+          "required": true
+         }
+        ]
+       },
+       "parameters": {
+        "__IMTCONN__": 4524873
+       }
+      }
+     ]
+    ]
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "help": "",
+     "name": "scenarioName",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "scenarioURL",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "emailErrorMessage",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "toRecipients",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "CCRecipients",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "BCCRecipients",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "clientPhoneNumber",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "wppErrorMessage",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "wppReplyNeeded",
+     "type": "boolean",
+     "label": "",
+     "default": false,
+     "required": true
+    }
+   ],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 1,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 1,
+   "phone": 1,
+   "samples_removed": 0,
+   "person": 2
+  }
+ }
+}

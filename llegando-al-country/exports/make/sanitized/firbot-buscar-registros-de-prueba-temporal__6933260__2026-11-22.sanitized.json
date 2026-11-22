@@ -1,0 +1,122 @@
+{
+ "id": 6933260,
+ "name": "Firbot - Buscar registros de prueba (temporal)",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": false,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "json",
+  "util",
+  "datastore"
+ ],
+ "lastEdit": "2026-11-20T19:06:44.921Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-06T18:33:36.540Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": false,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 9,
+    "mapper": {
+     "json": "{\"items\":[{\"n\":\"C1\",\"t\":\"1\"},{\"n\":\"C2\",\"t\":\"2\"},{\"n\":\"C3\",\"t\":\"3\"},{\"n\":\"C4\",\"t\":\"4\"},{\"n\":\"C5\",\"t\":\"5\"},{\"n\":\"C6\",\"t\":\"6\"},{\"n\":\"C7\",\"t\":\"7\"},{\"n\":\"C8\",\"t\":\"8\"},{\"n\":\"C9\",\"t\":\"9\"},{\"n\":\"C10\",\"t\":\"10\"},{\"n\":\"Juan Pintor\",\"t\":\"11\"},{\"n\":\"Ana Limpieza\",\"t\":\"12\"}]}"
+    },
+    "module": "json:ParseJSON",
+    "version": 1,
+    "parameters": {
+     "type": ""
+    }
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "scope": "roundtrip",
+     "variables": [
+      {
+       "name": "r0",
+       "value": "{{if(length(9.items) > 10; \"✋ Se pueden registrar hasta *10 contactos por vez*, así que tomé los primeros 10. Quedaron afuera \" + (length(9.items) - 10) + \": \" + join(map(slice(9.items; 10); \"n\"); \", \") + \". Cuando confirmes esta tanda, mandámelos en otra de hasta 10. \"; emptystring)}}"
+      }
+     ]
+    },
+    "module": "util:SetVariables",
+    "version": 1,
+    "parameters": {}
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "key": "",
+     "data": {
+      "at": "{{now}}",
+      "probe": "[{{2.r0}}]",
+      "counts": "test_limite10"
+     },
+     "overwrite": false
+    },
+    "module": "datastore:AddRecord",
+    "version": 1,
+    "parameters": {
+     "datastore": 193874
+    }
+   }
+  ],
+  "name": "Firbot - Buscar registros de prueba (temporal)",
+  "metadata": {
+   "instant": false,
+   "version": 1
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

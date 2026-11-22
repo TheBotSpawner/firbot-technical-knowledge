@@ -1,0 +1,958 @@
+{
+ "id": 4199053,
+ "name": "LL - Agregar Contactos de Bienvenida",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "builtin",
+  "datastore",
+  "builtin",
+  "datastore",
+  "datastore",
+  "util",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-02-21T19:07:38.353Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-02-21T18:26:35.469Z",
+ "chainingRole": "child",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 13,
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 150
+     },
+     "interface": [
+      {
+       "help": "",
+       "name": "contactsArray",
+       "spec": {
+        "spec": [
+         {
+          "help": "",
+          "name": "name",
+          "spec": [
+           {
+            "help": "",
+            "name": "first_name",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           },
+           {
+            "help": "",
+            "name": "middle_name",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           },
+           {
+            "help": "",
+            "name": "last_name",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           },
+           {
+            "help": "",
+            "name": "formatted_name",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           },
+           {
+            "help": "",
+            "name": "prefix",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           },
+           {
+            "help": "",
+            "name": "suffix",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           }
+          ],
+          "type": "collection",
+          "label": "",
+          "required": false
+         },
+         {
+          "help": "",
+          "name": "phones",
+          "spec": {
+           "spec": [
+            {
+             "help": "",
+             "name": "phone",
+             "type": "text",
+             "label": "",
+             "default": "",
+             "required": false,
+             "multiline": false
+            },
+            {
+             "help": "",
+             "name": "wa_id",
+             "type": "text",
+             "label": "",
+             "default": "",
+             "required": false,
+             "multiline": false
+            },
+            {
+             "help": "",
+             "name": "type",
+             "type": "text",
+             "label": "",
+             "default": "",
+             "required": false,
+             "multiline": false
+            }
+           ],
+           "type": "collection",
+           "required": false
+          },
+          "type": "array",
+          "label": "",
+          "required": false
+         },
+         {
+          "help": "",
+          "name": "org",
+          "spec": [
+           {
+            "help": "",
+            "name": "company",
+            "type": "text",
+            "label": "",
+            "default": "",
+            "required": false,
+            "multiline": false
+           }
+          ],
+          "type": "collection",
+          "label": "",
+          "required": false
+         }
+        ],
+        "type": "collection",
+        "required": false
+       },
+       "type": "array",
+       "label": "",
+       "required": false
+      }
+     ]
+    }
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "array": "{{13.contactsArray}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "mode": "edit",
+       "name": "array",
+       "spec": [],
+       "type": "array",
+       "label": "Array"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "array": {
+        "mode": "edit"
+       }
+      }
+     },
+     "designer": {
+      "x": 300,
+      "y": 150
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "sort": [],
+     "filter": [
+      [
+       {
+        "a": "Phone Number",
+        "b": "{{3.phones[].phone}}",
+        "o": "text:equal"
+       },
+       {
+        "a": "Contact Done",
+        "b": "{{true}}",
+        "o": "boolean:equal"
+       }
+      ]
+     ],
+     "mappAbleLimit": ""
+    },
+    "module": "datastore:SearchRecord",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "filter",
+       "type": "filter",
+       "label": "Filter",
+       "options": "rpc://datastore/1.15.1/RpcGetUDTKeys",
+       "required": true
+      },
+      {
+       "name": "sort",
+       "spec": [
+        {
+         "name": "key",
+         "type": "select",
+         "label": "Key",
+         "dynamic": true,
+         "options": [],
+         "required": true
+        },
+        {
+         "name": "order",
+         "type": "select",
+         "label": "Order",
+         "options": [
+          {
+           "label": "Ascending",
+           "value": 1
+          },
+          {
+           "label": "Descending",
+           "value": -1
+          }
+         ],
+         "required": true
+        }
+       ],
+       "type": "array",
+       "label": "Sort"
+      },
+      {
+       "name": "mappAbleLimit",
+       "type": "uinteger",
+       "label": "Mappable Limit"
+      }
+     ],
+     "restore": {
+      "parameters": {
+       "datastore": {
+        "label": "LL_WelcomeContactsMade"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 600,
+      "y": 150,
+      "name": "Search If User already Contacted"
+     },
+     "interface": [
+      {
+       "name": "__IMTLENGTH__",
+       "type": "uinteger",
+       "label": "Total number of bundles"
+      },
+      {
+       "name": "__IMTINDEX__",
+       "type": "uinteger",
+       "label": "Bundle order position"
+      },
+      {
+       "name": "key",
+       "type": "text",
+       "label": "Key"
+      },
+      {
+       "name": "data",
+       "spec": [
+        {
+         "help": "",
+         "name": "Phone Number",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": true,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "Contact Timestamp",
+         "type": "date",
+         "label": null,
+         "required": true
+        },
+        {
+         "help": "",
+         "name": "Contact Done",
+         "type": "boolean",
+         "label": null,
+         "default": false,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "Contact Name",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        }
+       ],
+       "type": "collection",
+       "label": "Record"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "datastore",
+       "type": "datastore",
+       "label": "Data store",
+       "required": true
+      },
+      {
+       "name": "continueWhenNoRes",
+       "type": "boolean",
+       "label": "Continue the execution of the route even if the module returns no results"
+      },
+      {
+       "name": "limit",
+       "type": "uinteger",
+       "label": "Limit"
+      }
+     ]
+    },
+    "parameters": {
+     "limit": null,
+     "datastore": 76313,
+     "continueWhenNoRes": true
+    }
+   },
+   {
+    "id": 5,
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 6,
+        "filter": {
+         "name": "Not Contacted yet",
+         "conditions": [
+          [
+           {
+            "a": "{{4.`__IMTLENGTH__`}}",
+            "o": "notexist"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "sort": [],
+         "filter": [
+          [
+           {
+            "a": "Phone Number",
+            "b": "{{3.phones[].phone}}",
+            "o": "text:equal"
+           }
+          ]
+         ],
+         "mappAbleLimit": ""
+        },
+        "module": "datastore:SearchRecord",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "filter",
+           "type": "filter",
+           "label": "Filter",
+           "options": "rpc://datastore/1.15.1/RpcGetUDTKeys",
+           "required": true
+          },
+          {
+           "name": "sort",
+           "spec": [
+            {
+             "name": "key",
+             "type": "select",
+             "label": "Key",
+             "dynamic": true,
+             "options": [],
+             "required": true
+            },
+            {
+             "name": "order",
+             "type": "select",
+             "label": "Order",
+             "options": [
+              {
+               "label": "Ascending",
+               "value": 1
+              },
+              {
+               "label": "Descending",
+               "value": -1
+              }
+             ],
+             "required": true
+            }
+           ],
+           "type": "array",
+           "label": "Sort"
+          },
+          {
+           "name": "mappAbleLimit",
+           "type": "uinteger",
+           "label": "Mappable Limit"
+          }
+         ],
+         "restore": {
+          "parameters": {
+           "datastore": {
+            "label": "LL_WelcomeContactsMade"
+           }
+          }
+         },
+         "advanced": true,
+         "designer": {
+          "x": 1200,
+          "y": 0,
+          "name": "Search If User already Created"
+         },
+         "interface": [
+          {
+           "name": "__IMTLENGTH__",
+           "type": "uinteger",
+           "label": "Total number of bundles"
+          },
+          {
+           "name": "__IMTINDEX__",
+           "type": "uinteger",
+           "label": "Bundle order position"
+          },
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "help": "",
+             "name": "Phone Number",
+             "type": "text",
+             "label": null,
+             "default": null,
+             "required": true,
+             "multiline": false
+            },
+            {
+             "help": "",
+             "name": "Contact Timestamp",
+             "type": "date",
+             "label": null,
+             "required": true
+            },
+            {
+             "help": "",
+             "name": "Contact Done",
+             "type": "boolean",
+             "label": null,
+             "default": false,
+             "required": false
+            },
+            {
+             "help": "",
+             "name": "Contact Name",
+             "type": "text",
+             "label": null,
+             "default": null,
+             "required": false,
+             "multiline": false
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          },
+          {
+           "name": "continueWhenNoRes",
+           "type": "boolean",
+           "label": "Continue the execution of the route even if the module returns no results"
+          },
+          {
+           "name": "limit",
+           "type": "uinteger",
+           "label": "Limit"
+          }
+         ]
+        },
+        "parameters": {
+         "limit": null,
+         "datastore": 76313,
+         "continueWhenNoRes": true
+        }
+       },
+       {
+        "id": 7,
+        "filter": {
+         "name": "Not Created yet",
+         "conditions": [
+          [
+           {
+            "a": "{{6.`__IMTLENGTH__`}}",
+            "o": "notexist"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "key": "",
+         "data": {
+          "Contact Done": false,
+          "Contact Name": "{{3.name.first_name}} {{3.name.last_name}}",
+          "Phone Number": "{{3.phones[].phone}}",
+          "Contact Timestamp": ""
+         },
+         "overwrite": false
+        },
+        "module": "datastore:AddRecord",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key"
+          },
+          {
+           "name": "overwrite",
+           "type": "boolean",
+           "label": "Overwrite an existing record",
+           "required": true
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "Phone Number",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Contact Timestamp",
+             "type": "date",
+             "label": null
+            },
+            {
+             "name": "Contact Done",
+             "type": "boolean",
+             "label": null
+            },
+            {
+             "name": "Contact Name",
+             "type": "text",
+             "label": null
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "data": {
+            "nested": {
+             "Contact Done": {
+              "mode": "chose"
+             }
+            }
+           },
+           "overwrite": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "datastore": {
+            "label": "LL_WelcomeContactsMade"
+           }
+          }
+         },
+         "designer": {
+          "x": 1500,
+          "y": 0,
+          "name": "Add Welcome Contact"
+         },
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "datastore": 76313
+        }
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 8,
+        "filter": {
+         "name": "In Any Case",
+         "conditions": []
+        },
+        "mapper": {
+         "value": "-{{space}}{{if(4.`__IMTLENGTH__` = null; \"✅\" + space + if(3.name.first_name = emptystring; 3.phones[].phone; if(3.name.first_name = null; 3.phones[].phone; 3.name.first_name + space)) + 3.name.last_name; \"❌\" + space + \"*\" + if(3.name.first_name = emptystring; 3.phones[].phone; if(3.name.first_name = null; 3.phones[].phone; 3.name.first_name + space)) + 3.name.last_name + \"*: Usuario ya Contactado\")}}"
+        },
+        "module": "util:TextAggregator",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "value",
+           "type": "text",
+           "label": "Text"
+          }
+         ],
+         "restore": {
+          "extra": {
+           "feeder": {
+            "label": "Iterator [3]"
+           }
+          },
+          "parameters": {
+           "rowSeparator": {
+            "label": "New row"
+           }
+          }
+         },
+         "advanced": true,
+         "designer": {
+          "x": 1200,
+          "y": 300
+         },
+         "parameters": [
+          {
+           "name": "rowSeparator",
+           "type": "select",
+           "label": "Row separator",
+           "validate": {
+            "enum": [
+             "\n",
+             "\t",
+             "other"
+            ]
+           }
+          }
+         ]
+        },
+        "parameters": {
+         "feeder": 3,
+         "rowSeparator": "\n"
+        }
+       },
+       {
+        "id": 12,
+        "mapper": {
+         "addedContacts": "{{8.text}}"
+        },
+        "module": "scenario-service:ReturnData",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "addedContacts",
+           "type": "text",
+           "label": ""
+          }
+         ],
+         "restore": {},
+         "designer": {
+          "x": 1500,
+          "y": 300
+         }
+        },
+        "parameters": {}
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 150
+     }
+    }
+   }
+  ],
+  "name": "LL - Agregar Contactos de Bienvenida",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "help": "",
+     "name": "contactsArray",
+     "spec": {
+      "spec": [
+       {
+        "help": "",
+        "name": "name",
+        "spec": [
+         {
+          "help": "",
+          "name": "first_name",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         },
+         {
+          "help": "",
+          "name": "middle_name",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         },
+         {
+          "help": "",
+          "name": "last_name",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         },
+         {
+          "help": "",
+          "name": "formatted_name",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         },
+         {
+          "help": "",
+          "name": "prefix",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         },
+         {
+          "help": "",
+          "name": "suffix",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         }
+        ],
+        "type": "collection",
+        "label": "",
+        "required": false
+       },
+       {
+        "help": "",
+        "name": "phones",
+        "spec": {
+         "spec": [
+          {
+           "help": "",
+           "name": "phone",
+           "type": "text",
+           "label": "",
+           "default": "",
+           "required": false,
+           "multiline": false
+          },
+          {
+           "help": "",
+           "name": "wa_id",
+           "type": "text",
+           "label": "",
+           "default": "",
+           "required": false,
+           "multiline": false
+          },
+          {
+           "help": "",
+           "name": "type",
+           "type": "text",
+           "label": "",
+           "default": "",
+           "required": false,
+           "multiline": false
+          }
+         ],
+         "type": "collection",
+         "required": false
+        },
+        "type": "array",
+        "label": "",
+        "required": false
+       },
+       {
+        "help": "",
+        "name": "org",
+        "spec": [
+         {
+          "help": "",
+          "name": "company",
+          "type": "text",
+          "label": "",
+          "default": "",
+          "required": false,
+          "multiline": false
+         }
+        ],
+        "type": "collection",
+        "label": "",
+        "required": false
+       }
+      ],
+      "type": "collection",
+      "required": false
+     },
+     "type": "array",
+     "label": "",
+     "required": false
+    }
+   ],
+   "output": [
+    {
+     "help": "",
+     "name": "addedContacts",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

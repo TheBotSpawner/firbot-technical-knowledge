@@ -1,0 +1,196 @@
+{
+ "id": 6920671,
+ "name": "Firbot - Consulta Strapi (temporal)",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": false,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "http",
+  "json",
+  "datastore"
+ ],
+ "lastEdit": "2026-11-05T21:16:44.926Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-05T21:16:15.246Z",
+ "chainingRole": "none",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": false,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "path",
+       "type": "text"
+      },
+      {
+       "name": "tag",
+       "type": "text"
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "url": "https://admin.countrymagazine.com.ar/api/{{1.path}}",
+     "method": "get",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer {{var.team.LL_STRAPI_TOKEN}}"
+      }
+     ],
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "stopOnHttpError": false,
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "version": 4,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "name": "GET Strapi"
+     }
+    },
+    "parameters": {
+     "tlsType": "",
+     "authenticationType": "noAuth"
+    }
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "object": "{{2.data}}"
+    },
+    "module": "json:TransformToJSON",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 600,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 6,
+    "mapper": {
+     "key": "",
+     "data": {
+      "at": "{{now}}",
+      "probe": "{{substring(4.json; 0; 8000)}}",
+      "counts": "{{1.tag}}",
+      "response": "{{2.statusCode}}"
+     },
+     "overwrite": false
+    },
+    "module": "datastore:AddRecord",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "datastore": 193874
+    }
+   }
+  ],
+  "name": "Firbot - Consulta Strapi (temporal)",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": true,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "name": "path",
+     "type": "text"
+    },
+    {
+     "name": "tag",
+     "type": "text"
+    }
+   ],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}

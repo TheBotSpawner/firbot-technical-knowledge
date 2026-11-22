@@ -1,0 +1,1065 @@
+{
+ "id": 5892850,
+ "name": "Sleep n Seconds",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "util",
+  "datastore",
+  "builtin",
+  "util",
+  "http",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-09-17T11:19:21.417Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-08-09T02:38:48.425Z",
+ "chainingRole": "child",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 2,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "restore": {},
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "help": "",
+       "name": "seconds",
+       "type": "number",
+       "label": "",
+       "default": 8,
+       "required": true
+      },
+      {
+       "help": "",
+       "name": "wa_id",
+       "type": "text",
+       "label": "",
+       "default": "",
+       "required": true,
+       "multiline": false
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "duration": "{{2.seconds}}"
+    },
+    "module": "util:FunctionSleep",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "duration",
+       "type": "uinteger",
+       "label": "Delay",
+       "required": true,
+       "validate": {
+        "max": 300,
+        "min": 1
+       }
+      }
+     ],
+     "restore": {},
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "name": "Sleep n sec"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 10,
+    "mapper": {
+     "sort": [],
+     "filter": [
+      [
+       {
+        "a": "Cellphone_Number",
+        "b": "{{2.wa_id}}",
+        "o": "text:equal"
+       },
+       {
+        "a": "Direction",
+        "b": "Salida",
+        "o": "text:equal"
+       },
+       {
+        "a": "Timestamp",
+        "b": "{{addSeconds(now; \"-\" + sum(2.seconds; 2))}}",
+        "o": "date:greaterorequal"
+       }
+      ]
+     ],
+     "mappAbleLimit": ""
+    },
+    "module": "datastore:SearchRecord",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "filter",
+       "type": "filter",
+       "label": "Filter",
+       "options": {
+        "store": [
+         {
+          "label": "Name",
+          "value": "Name",
+          "filter": "text:*"
+         },
+         {
+          "label": "Cellphone_Number",
+          "value": "Cellphone_Number",
+          "filter": "text:*"
+         },
+         {
+          "label": "Message",
+          "value": "Message",
+          "filter": "text:*"
+         },
+         {
+          "label": "Timestamp",
+          "value": "Timestamp",
+          "filter": "date:*"
+         },
+         {
+          "label": "Direction",
+          "value": "Direction",
+          "filter": "text:*"
+         },
+         {
+          "label": "Admin_Mode",
+          "value": "Admin_Mode",
+          "filter": "boolean:*"
+         },
+         {
+          "label": "Is Currently Processing",
+          "value": "Is Currently Processing",
+          "filter": "boolean:*"
+         }
+        ],
+        "operators": [
+         {
+          "label": "Basic operators",
+          "options": [
+           {
+            "label": "Exists",
+            "value": "exist"
+           },
+           {
+            "label": "Does not exist",
+            "value": "notexist"
+           }
+          ]
+         },
+         {
+          "label": "Text operators",
+          "options": [
+           {
+            "label": "Equal to",
+            "value": "text:equal"
+           },
+           {
+            "label": "Equal to (case insensitive)",
+            "value": "text:equal:ci"
+           },
+           {
+            "label": "Not equal to",
+            "value": "text:notequal"
+           },
+           {
+            "label": "Not equal to (case insensitive)",
+            "value": "text:notequal:ci"
+           },
+           {
+            "label": "Contains",
+            "value": "text:contain"
+           },
+           {
+            "label": "Contains (case insensitive)",
+            "value": "text:contain:ci"
+           },
+           {
+            "label": "Does not contain",
+            "value": "text:notcontain"
+           },
+           {
+            "label": "Does not contain (case insensitive)",
+            "value": "text:notcontain:ci"
+           },
+           {
+            "label": "Starts with",
+            "value": "text:startwith"
+           },
+           {
+            "label": "Starts with (case insensitive)",
+            "value": "text:startwith:ci"
+           },
+           {
+            "label": "Does not start with",
+            "value": "text:notstartwith"
+           },
+           {
+            "label": "Does not start with (case insensitive)",
+            "value": "text:notstartwith:ci"
+           },
+           {
+            "label": "Ends with",
+            "value": "text:endwith"
+           },
+           {
+            "label": "Ends with (case insensitive)",
+            "value": "text:endwith:ci"
+           },
+           {
+            "label": "Does not end with",
+            "value": "text:notendwith"
+           },
+           {
+            "label": "Does not end with (case insensitive)",
+            "value": "text:notendwith:ci"
+           }
+          ]
+         },
+         {
+          "label": "Numeric operators",
+          "options": [
+           {
+            "label": "Equal to",
+            "value": "number:equal"
+           },
+           {
+            "label": "Not equal to",
+            "value": "number:notequal"
+           },
+           {
+            "label": "Greater than",
+            "value": "number:greater"
+           },
+           {
+            "label": "Less than",
+            "value": "number:less"
+           },
+           {
+            "label": "Greater than or equal to",
+            "value": "number:greaterorequal"
+           },
+           {
+            "label": "Less than or equal to",
+            "value": "number:lessorequal"
+           }
+          ]
+         },
+         {
+          "label": "Datetime operators",
+          "options": [
+           {
+            "label": "Equal to",
+            "value": "date:equal"
+           },
+           {
+            "label": "Not equal to",
+            "value": "date:notequal"
+           },
+           {
+            "label": "Later than",
+            "value": "date:greater"
+           },
+           {
+            "label": "Earlier than",
+            "value": "date:less"
+           },
+           {
+            "label": "Later than or equal to",
+            "value": "date:greaterorequal"
+           },
+           {
+            "label": "Earlier than or equal to",
+            "value": "date:lessorequal"
+           }
+          ]
+         },
+         {
+          "label": "Boolean operators",
+          "options": [
+           {
+            "label": "Equal to",
+            "value": "boolean:equal"
+           },
+           {
+            "label": "Not equal to",
+            "value": "boolean:notequal"
+           },
+           {
+            "label": "Is true",
+            "value": "boolean:istrue"
+           },
+           {
+            "label": "Is false",
+            "value": "boolean:isfalse"
+           }
+          ]
+         },
+         {
+          "label": "Array operators",
+          "options": [
+           {
+            "label": "Contains",
+            "value": "array:contain"
+           },
+           {
+            "label": "Contains (case insensitive)",
+            "value": "array:contain:ci"
+           },
+           {
+            "label": "Does not contain",
+            "value": "array:notcontain"
+           },
+           {
+            "label": "Does not contain (case insensitive)",
+            "value": "array:notcontain:ci"
+           },
+           {
+            "label": "Array length equal to",
+            "value": "array:equal"
+           },
+           {
+            "label": "Array length not equal to",
+            "value": "array:notequal"
+           },
+           {
+            "label": "Array length greater than",
+            "value": "array:greater"
+           },
+           {
+            "label": "Array length less than",
+            "value": "array:less"
+           },
+           {
+            "label": "Array length greater than or equal to",
+            "value": "array:greaterorequal"
+           },
+           {
+            "label": "Array length less than or equal to",
+            "value": "array:lessorequal"
+           }
+          ]
+         }
+        ]
+       },
+       "required": true
+      },
+      {
+       "name": "sort",
+       "spec": [
+        {
+         "name": "key",
+         "type": "select",
+         "label": "Key",
+         "dynamic": true,
+         "options": [],
+         "required": true
+        },
+        {
+         "name": "order",
+         "type": "select",
+         "label": "Order",
+         "options": [
+          {
+           "label": "Ascending",
+           "value": 1
+          },
+          {
+           "label": "Descending",
+           "value": -1
+          }
+         ],
+         "required": true
+        }
+       ],
+       "type": "array",
+       "label": "Sort"
+      },
+      {
+       "name": "mappAbleLimit",
+       "type": "uinteger",
+       "label": "Mappable Limit"
+      }
+     ],
+     "restore": {
+      "parameters": {
+       "datastore": {
+        "label": "LL_MessagesHistory"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 600,
+      "y": 0,
+      "name": "Get Sent Messages from Last n Seconds"
+     },
+     "interface": [
+      {
+       "name": "__IMTLENGTH__",
+       "type": "uinteger",
+       "label": "Total number of bundles"
+      },
+      {
+       "name": "__IMTINDEX__",
+       "type": "uinteger",
+       "label": "Bundle order position"
+      },
+      {
+       "name": "key",
+       "type": "text",
+       "label": "Key"
+      },
+      {
+       "name": "data",
+       "spec": [
+        {
+         "help": "Nombre del usuario",
+         "name": "Name",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "Numero de celular de la persona",
+         "name": "Cellphone_Number",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "El mensaje ",
+         "name": "Message",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "Cuando se genero ese mensaje",
+         "name": "Timestamp",
+         "type": "date",
+         "label": null,
+         "required": false
+        },
+        {
+         "help": "Si es de entrada o salida",
+         "name": "Direction",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "Admin_Mode",
+         "type": "boolean",
+         "label": null,
+         "default": false,
+         "required": false
+        },
+        {
+         "help": "With this we check if another message is processing right now",
+         "name": "Is Currently Processing",
+         "type": "boolean",
+         "label": null,
+         "default": false,
+         "required": false
+        }
+       ],
+       "type": "collection",
+       "label": "Record"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "datastore",
+       "type": "datastore",
+       "label": "Data store",
+       "required": true
+      },
+      {
+       "name": "continueWhenNoRes",
+       "type": "boolean",
+       "label": "Continue the execution of the route even if the module returns no results"
+      },
+      {
+       "name": "limit",
+       "type": "uinteger",
+       "label": "Limit"
+      }
+     ],
+     "setupValidation": {
+      "result": {
+       "valid": true,
+       "fields": []
+      },
+      "version": 1,
+      "configuration": "f7014df4a451d81"
+     }
+    },
+    "parameters": {
+     "limit": null,
+     "datastore": 38022,
+     "continueWhenNoRes": true
+    }
+   },
+   {
+    "id": 11,
+    "mapper": {
+     "key": "{{10.key}}",
+     "data": "{{10.data}}",
+     "__IMTLENGTH__": "{{10.`__IMTLENGTH__`}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "CheckIfUserExist - Search records [29]"
+       },
+       "target": {
+        "label": "Custom"
+       }
+      }
+     },
+     "designer": {
+      "x": 900,
+      "y": 0
+     }
+    },
+    "parameters": {
+     "feeder": 10
+    }
+   },
+   {
+    "id": 6,
+    "filter": {
+     "name": "No reply sent",
+     "conditions": [
+      [
+       {
+        "a": "{{11.array[].key}}",
+        "b": "{{null}}",
+        "o": "text:equal"
+       }
+      ]
+     ]
+    },
+    "mapper": {
+     "name": "ProcessingMessage",
+     "scope": "roundtrip",
+     "value": "{{switch(floor(random * 3) + 1; 1; \"Un segundo, ya te ayudo con eso 😊\"; 2; \"Dame un segundito que lo reviso 👀\"; 3; \"A ver… dejame chequearlo un segundo 🔎\")}}"
+    },
+    "module": "util:SetVariable2",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "name",
+       "type": "text",
+       "label": "Variable name",
+       "required": true
+      },
+      {
+       "name": "scope",
+       "type": "select",
+       "label": "Variable lifetime",
+       "required": true,
+       "validate": {
+        "enum": [
+         "roundtrip",
+         "execution"
+        ]
+       }
+      },
+      {
+       "name": "value",
+       "type": "any",
+       "label": "Variable value"
+      }
+     ],
+     "restore": {
+      "expect": {
+       "scope": {
+        "label": "One cycle"
+       }
+      }
+     },
+     "designer": {
+      "x": 1200,
+      "y": 0,
+      "name": "Set Processing Message"
+     },
+     "interface": [
+      {
+       "name": "ProcessingMessage",
+       "type": "any",
+       "label": "ProcessingMessage"
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 7,
+    "mapper": {
+     "url": "https://graph.facebook.com/v22.0/717278908136135/messages",
+     "method": "post",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer [REDACTED_WHATSAPP_ACCESS_TOKEN]"
+      }
+     ],
+     "contentType": "json",
+     "inputMethod": "jsonString",
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "stopOnHttpError": true,
+     "jsonStringBodyContent": "{\r\n  \"messaging_product\": \"whatsapp\",\r\n  \"to\": \"{{2.wa_id}}\",\r\n  \"type\": \"text\",\r\n  \"text\": {\r\n    \"preview_url\": false,\r\n    \"body\": \"{{replace(replace(6.ProcessingMessage; newline; \"\\n\"); carriagereturn; \"\\r\")}}\"\r\n  }\r\n}",
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "version": 4,
+    "metadata": {
+     "expect": [
+      {
+       "name": "url",
+       "type": "url",
+       "label": "URL",
+       "required": true
+      },
+      {
+       "name": "method",
+       "type": "select",
+       "label": "Method",
+       "required": true,
+       "validate": {
+        "enum": [
+         "get",
+         "head",
+         "post",
+         "put",
+         "patch",
+         "delete",
+         "options"
+        ]
+       }
+      },
+      {
+       "name": "headers",
+       "spec": {
+        "name": "value",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true,
+          "validate": {
+           "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+          }
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Header"
+       },
+       "type": "array",
+       "label": "Headers"
+      },
+      {
+       "name": "queryParameters",
+       "spec": {
+        "name": "value",
+        "spec": [
+         {
+          "name": "name",
+          "type": "text",
+          "label": "Name",
+          "required": true
+         },
+         {
+          "name": "value",
+          "type": "text",
+          "label": "Value"
+         }
+        ],
+        "type": "collection",
+        "label": "Parameter"
+       },
+       "type": "array",
+       "label": "Query parameters"
+      },
+      {
+       "name": "contentType",
+       "type": "select",
+       "label": "Body content type",
+       "validate": {
+        "enum": [
+         "json",
+         "multipart",
+         "urlEncoded",
+         "custom"
+        ]
+       }
+      },
+      {
+       "name": "parseResponse",
+       "type": "boolean",
+       "label": "Parse response",
+       "required": true
+      },
+      {
+       "name": "stopOnHttpError",
+       "type": "boolean",
+       "label": "Return error if HTTP request fails",
+       "required": true
+      },
+      {
+       "name": "timeout",
+       "type": "uinteger",
+       "label": "Timeout",
+       "validate": {
+        "max": 300,
+        "min": 1
+       }
+      },
+      {
+       "name": "allowRedirects",
+       "type": "boolean",
+       "label": "Allow redirects",
+       "required": true
+      },
+      {
+       "name": "shareCookies",
+       "type": "boolean",
+       "label": "Share cookies with other HTTP modules",
+       "required": true
+      },
+      {
+       "name": "requestCompressedContent",
+       "type": "boolean",
+       "label": "Request compressed content",
+       "required": true
+      },
+      {
+       "name": "inputMethod",
+       "type": "select",
+       "label": "Body input method",
+       "required": true,
+       "validate": {
+        "enum": [
+         "dataStructure",
+         "jsonString"
+        ]
+       }
+      },
+      {
+       "name": "jsonStringBodyContent",
+       "type": "text",
+       "label": "Body content",
+       "required": true
+      },
+      {
+       "name": "paginationType",
+       "type": "select",
+       "label": "Pagination type",
+       "validate": {
+        "enum": [
+         "offsetBased",
+         "pageBased",
+         "urlBased",
+         "tokenBased"
+        ]
+       }
+      }
+     ],
+     "restore": {
+      "expect": {
+       "method": {
+        "mode": "chose",
+        "label": "POST"
+       },
+       "headers": {
+        "mode": "chose",
+        "items": [
+         null
+        ]
+       },
+       "contentType": {
+        "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+       },
+       "inputMethod": {
+        "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+       },
+       "shareCookies": {
+        "mode": "chose"
+       },
+       "parseResponse": {
+        "mode": "chose"
+       },
+       "allowRedirects": {
+        "mode": "chose"
+       },
+       "paginationType": {
+        "label": "Empty"
+       },
+       "queryParameters": {
+        "mode": "chose"
+       },
+       "stopOnHttpError": {
+        "mode": "chose"
+       },
+       "requestCompressedContent": {
+        "mode": "chose"
+       }
+      },
+      "parameters": {
+       "tlsType": {
+        "label": "Empty"
+       },
+       "authenticationType": {
+        "label": "No authenticationUse when no credentials are required for the request."
+       }
+      }
+     },
+     "designer": {
+      "x": 1500,
+      "y": 0,
+      "name": "Send Processing WPP Message"
+     },
+     "interface": [
+      {
+       "name": "data",
+       "type": "any",
+       "label": "Data"
+      },
+      {
+       "name": "statusCode",
+       "type": "number",
+       "label": "Status Code"
+      },
+      {
+       "name": "headers",
+       "spec": [
+        {
+         "name": "content-length",
+         "type": "text",
+         "label": "Content-Length"
+        },
+        {
+         "name": "content-encoding",
+         "type": "text",
+         "label": "Content-Encoding"
+        },
+        {
+         "name": "content-type",
+         "type": "text",
+         "label": "Content-Type"
+        },
+        {
+         "name": "server",
+         "type": "text",
+         "label": "Server"
+        },
+        {
+         "name": "cache-control",
+         "type": "text",
+         "label": "Cache-Control"
+        },
+        {
+         "name": "set-cookie",
+         "spec": {
+          "type": "text"
+         },
+         "type": "array",
+         "label": "Set-Cookie"
+        }
+       ],
+       "type": "collection",
+       "label": "Headers"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "authenticationType",
+       "type": "select",
+       "label": "Authentication type",
+       "required": true,
+       "validate": {
+        "enum": [
+         "noAuth",
+         "apiKey",
+         "basicAuth",
+         "oAuth"
+        ]
+       }
+      },
+      {
+       "name": "tlsType",
+       "type": "select",
+       "label": "Transport layer security (TLS)",
+       "validate": {
+        "enum": [
+         "mTls",
+         "tls"
+        ]
+       }
+      },
+      {
+       "name": "proxyKeychain",
+       "type": "keychain:proxy",
+       "label": "Proxy"
+      }
+     ]
+    },
+    "parameters": {
+     "tlsType": "",
+     "authenticationType": "noAuth"
+    }
+   },
+   {
+    "id": 4,
+    "mapper": {},
+    "module": "scenario-service:ReturnData",
+    "version": 2,
+    "metadata": {
+     "restore": {},
+     "designer": {
+      "x": 1800,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   }
+  ],
+  "name": "Sleep n Seconds",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": [],
+    "samples": {
+     "__sanitized__": "design-time sample bundles removed (contained real personal data)"
+    }
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "help": "",
+     "name": "seconds",
+     "type": "number",
+     "label": "",
+     "default": 8,
+     "required": true
+    },
+    {
+     "help": "",
+     "name": "wa_id",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": true,
+     "multiline": false
+    }
+   ],
+   "output": []
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 1,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 0,
+   "phone": 0,
+   "samples_removed": 1,
+   "person": 0
+  }
+ }
+}

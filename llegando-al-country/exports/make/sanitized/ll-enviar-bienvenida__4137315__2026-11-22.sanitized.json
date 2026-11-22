@@ -1,0 +1,1883 @@
+{
+ "id": 4137315,
+ "name": "LL - Enviar Bienvenida",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "datastore",
+  "builtin",
+  "builtin",
+  "builtin",
+  "openai-gpt-3",
+  "scenario-service",
+  "builtin",
+  "http",
+  "scenario-service",
+  "builtin",
+  "scenario-service",
+  "datastore",
+  "util",
+  "scenario-service",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-06-20T05:35:15.641Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-02-13T21:52:27.986Z",
+ "chainingRole": "bridge",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 2,
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 450
+     }
+    }
+   },
+   {
+    "id": 5,
+    "mapper": {
+     "sort": [],
+     "filter": [
+      [
+       {
+        "a": "Contact Done",
+        "b": "{{true}}",
+        "o": "boolean:notequal"
+       }
+      ]
+     ],
+     "mappAbleLimit": ""
+    },
+    "module": "datastore:SearchRecord",
+    "version": 1,
+    "metadata": {
+     "expect": [
+      {
+       "name": "filter",
+       "type": "filter",
+       "label": "Filter",
+       "options": "rpc://datastore/1.15.1/RpcGetUDTKeys",
+       "required": true
+      },
+      {
+       "name": "sort",
+       "spec": [
+        {
+         "name": "key",
+         "type": "select",
+         "label": "Key",
+         "dynamic": true,
+         "options": [],
+         "required": true
+        },
+        {
+         "name": "order",
+         "type": "select",
+         "label": "Order",
+         "options": [
+          {
+           "label": "Ascending",
+           "value": 1
+          },
+          {
+           "label": "Descending",
+           "value": -1
+          }
+         ],
+         "required": true
+        }
+       ],
+       "type": "array",
+       "label": "Sort"
+      },
+      {
+       "name": "mappAbleLimit",
+       "type": "uinteger",
+       "label": "Mappable Limit"
+      }
+     ],
+     "restore": {
+      "parameters": {
+       "datastore": {
+        "label": "LL_WelcomeContactsMade"
+       }
+      }
+     },
+     "advanced": true,
+     "designer": {
+      "x": 300,
+      "y": 450,
+      "name": "Contact Pending"
+     },
+     "interface": [
+      {
+       "name": "__IMTLENGTH__",
+       "type": "uinteger",
+       "label": "Total number of bundles"
+      },
+      {
+       "name": "__IMTINDEX__",
+       "type": "uinteger",
+       "label": "Bundle order position"
+      },
+      {
+       "name": "key",
+       "type": "text",
+       "label": "Key"
+      },
+      {
+       "name": "data",
+       "spec": [
+        {
+         "help": "",
+         "name": "Phone Number",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": true,
+         "multiline": false
+        },
+        {
+         "help": "",
+         "name": "Contact Timestamp",
+         "type": "date",
+         "label": null,
+         "required": true
+        },
+        {
+         "help": "",
+         "name": "Contact Done",
+         "type": "boolean",
+         "label": null,
+         "default": false,
+         "required": false
+        },
+        {
+         "help": "",
+         "name": "Contact Name",
+         "type": "text",
+         "label": null,
+         "default": null,
+         "required": false,
+         "multiline": false
+        }
+       ],
+       "type": "collection",
+       "label": "Record"
+      }
+     ],
+     "parameters": [
+      {
+       "name": "datastore",
+       "type": "datastore",
+       "label": "Data store",
+       "required": true
+      },
+      {
+       "name": "continueWhenNoRes",
+       "type": "boolean",
+       "label": "Continue the execution of the route even if the module returns no results"
+      },
+      {
+       "name": "limit",
+       "type": "uinteger",
+       "label": "Limit"
+      }
+     ]
+    },
+    "parameters": {
+     "limit": null,
+     "datastore": 76313,
+     "continueWhenNoRes": true
+    }
+   },
+   {
+    "id": 26,
+    "mapper": {
+     "key": "{{5.key}}",
+     "data": "{{5.data}}"
+    },
+    "module": "builtin:BasicAggregator",
+    "version": 1,
+    "metadata": {
+     "restore": {
+      "extra": {
+       "feeder": {
+        "label": "Contact Pending - Search records [5]"
+       },
+       "target": {
+        "label": "Custom"
+       }
+      }
+     },
+     "designer": {
+      "x": 600,
+      "y": 450
+     }
+    },
+    "parameters": {
+     "feeder": 5
+    }
+   },
+   {
+    "id": 32,
+    "mapper": null,
+    "module": "builtin:BasicRouter",
+    "routes": [
+     {
+      "flow": [
+       {
+        "id": 7,
+        "filter": {
+         "name": "Are there Users to Contact",
+         "conditions": [
+          [
+           {
+            "a": "{{26.`__IMTAGGLENGTH__`}}",
+            "b": "0",
+            "o": "number:greater"
+           },
+           {
+            "a": "{{26.array[].key}}",
+            "b": "{{emptystring}}",
+            "o": "text:notequal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "array": "{{26.array}}"
+        },
+        "module": "builtin:BasicFeeder",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "mode": "edit",
+           "name": "array",
+           "spec": [],
+           "type": "array",
+           "label": "Array"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "array": {
+            "mode": "edit"
+           }
+          }
+         },
+         "designer": {
+          "x": 1200,
+          "y": 300,
+          "name": "Iterate Contacts Pending"
+         }
+        },
+        "parameters": {}
+       },
+       {
+        "id": 40,
+        "mapper": {
+         "model": "gpt-4o-mini",
+         "prompt": "Tu tarea: extraer SOLO el primer NOMBRE de persona (nombre de pila) desde un texto libre que describe a un proveedor. El texto puede incluir oficio/categoría/etiquetas antes del nombre, es necesario que solo devuelvas en tu variable extractedName el primer nombre del proveedor, removiendo oficios, apellidos, nombre extra, etc. Y tiene que ser el nombre del proveedor de servicios, de nadie mas.\r\n\r\nNombre Recibido: {{7.data.`Contact Name`}}\r\n\nEJEMPLOS:\r\n\"Nombre Recibido: Juan Perez Electricista\" -> {\"extractedName\":\"Juan\"}\r\n\"Nestor Badami\" -> {\"extractedName\":\"Nestor\"}\r\n\"Carpintero Recomendado Salvador (Eli)\" -> {\"extractedName\":\"Salvador\"}\r\n\"Dany El Pintor De Oscar\" -> {\"extractedName\":\"Dany\"}\r\n\"Electricista\" -> {\"extractedName\":\"\"}\r\n\r\nIMPORTANTE:\r\n- No devuelvas el texto completo.\r\n- No devuelvas más de una palabra.\r\n- No agregues explicaciones. Solo el JSON.",
+         "rawText": "Nombre Recibido: {{7.data.`Contact Name`}}",
+         "parameters": [
+          {
+           "name": "extractedName",
+           "type": "string",
+           "isRequired": true,
+           "description": "El primer nombre del proveedor extraído si es que existe"
+          }
+         ]
+        },
+        "module": "openai-gpt-3:transformTextToStructuredData",
+        "onerror": [
+         {
+          "id": 52,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error con el GPT para extraer nombres"
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 1800,
+            "y": 600,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 51,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 2100,
+            "y": 600
+           }
+          }
+         }
+        ],
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "model",
+           "type": "select",
+           "label": "Model",
+           "required": true
+          },
+          {
+           "name": "rawText",
+           "type": "text",
+           "label": "Text to Parse",
+           "required": true
+          },
+          {
+           "name": "prompt",
+           "type": "text",
+           "label": "Prompt",
+           "required": true
+          },
+          {
+           "name": "parameters",
+           "spec": {
+            "name": "value",
+            "spec": [],
+            "type": "collection",
+            "label": "Data Definition"
+           },
+           "type": "array",
+           "label": "Structured Data Definition",
+           "required": true
+          },
+          {
+           "name": "objectDefinitions",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Object Name",
+              "required": true
+             },
+             {
+              "name": "description",
+              "type": "text",
+              "label": "Description",
+              "required": true
+             },
+             {
+              "name": "properties",
+              "spec": {
+               "spec": [],
+               "type": "collection",
+               "label": "Property"
+              },
+              "type": "array",
+              "label": "Properties",
+              "labels": {
+               "add": "Add property"
+              },
+              "required": true
+             }
+            ],
+            "type": "collection",
+            "label": "Object Definition"
+           },
+           "type": "array",
+           "label": "Object Definitions"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "model": {
+            "mode": "chose",
+            "label": "gpt-4o-mini (system)"
+           },
+           "parameters": {
+            "mode": "chose",
+            "items": [
+             {
+              "type": {
+               "mode": "chose",
+               "label": "Text"
+              },
+              "isRequired": {
+               "mode": "chose"
+              },
+              "valueExamples": {
+               "mode": "chose"
+              }
+             }
+            ]
+           },
+           "objectDefinitions": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "__IMTCONN__": {
+            "data": {
+             "scoped": "true",
+             "connection": "openai-gpt-3"
+            },
+            "label": "My OpenAI connection"
+           }
+          }
+         },
+         "designer": {
+          "x": 1500,
+          "y": 300,
+          "name": "Name Extractor"
+         },
+         "interface": [
+          {
+           "name": "extractedName",
+           "type": "text"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "__IMTCONN__",
+           "type": "account:openai-gpt-3",
+           "label": "Connection",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "__IMTCONN__": 4527306
+        }
+       },
+       {
+        "id": 45,
+        "mapper": {
+         "url": "https://graph.facebook.com/v22.0/717278908136135/messages",
+         "method": "post",
+         "headers": [
+          {
+           "name": "Authorization",
+           "value": "Bearer [REDACTED_WHATSAPP_ACCESS_TOKEN]"
+          }
+         ],
+         "contentType": "json",
+         "inputMethod": "jsonString",
+         "shareCookies": false,
+         "parseResponse": true,
+         "allowRedirects": true,
+         "stopOnHttpError": true,
+         "jsonStringBodyContent": "{\r\n  \"messaging_product\": \"whatsapp\",\r\n  \"to\": \"{{7.data.`Phone Number`}}\",\r\n  \"type\": \"template\",\r\n  \"template\": {\r\n    \"name\": \"llegando_first_message_v2\",\r\n    \"language\": {\r\n      \"code\": \"en\"\r\n    },\r\n    \"components\": [\r\n      {\r\n        \"type\": \"body\",\r\n        \"parameters\": [\r\n          {\r\n            \"type\": \"text\",\r\n            \"parameter_name\": \"name\",\r\n            \"text\": \"{{if(40.extractedName = null; space + \"vecino\"; space + 40.extractedName)}}\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}",
+         "requestCompressedContent": true
+        },
+        "module": "http:MakeRequest",
+        "onerror": [
+         {
+          "id": 54,
+          "mapper": {
+           "data": {
+            "scenarioURL": "{{var.scenario.url}}",
+            "CCRecipients": "[REDACTED_EMAIL_1]",
+            "scenarioName": "{{var.scenario.name}}",
+            "toRecipients": "[REDACTED_EMAIL_2]",
+            "wppReplyNeeded": false,
+            "emailErrorMessage": "Error al intentar enviar bienvenida, verificar error y volver a enviarla."
+           }
+          },
+          "module": "scenario-service:CallSubscenario",
+          "version": 2,
+          "metadata": {
+           "expect": [
+            {
+             "name": "data",
+             "spec": [
+              {
+               "name": "scenarioName",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "scenarioURL",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "emailErrorMessage",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "toRecipients",
+               "type": "text",
+               "label": "",
+               "required": true
+              },
+              {
+               "name": "CCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "BCCRecipients",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "clientPhoneNumber",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppErrorMessage",
+               "type": "text",
+               "label": ""
+              },
+              {
+               "name": "wppReplyNeeded",
+               "type": "boolean",
+               "label": "",
+               "required": true
+              }
+             ],
+             "type": "collection",
+             "label": "Scenario Inputs"
+            }
+           ],
+           "restore": {
+            "expect": {
+             "data": {
+              "nested": {
+               "wppReplyNeeded": {
+                "mode": "chose"
+               }
+              }
+             }
+            },
+            "parameters": {
+             "scenario": {
+              "label": "Envio de Notificaciones de Error Chatbots"
+             }
+            }
+           },
+           "designer": {
+            "x": 2100,
+            "y": 300,
+            "name": "Error Notification Email"
+           },
+           "parameters": [
+            {
+             "name": "scenario",
+             "type": "scenario",
+             "label": "Scenario",
+             "required": true
+            },
+            {
+             "name": "shouldWaitForExecutionEnd",
+             "type": "boolean",
+             "label": "Wait for the scenario to finish",
+             "required": true
+            }
+           ]
+          },
+          "parameters": {
+           "scenario": "SCN_4226818",
+           "shouldWaitForExecutionEnd": true
+          }
+         },
+         {
+          "id": 53,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+           "designer": {
+            "x": 2400,
+            "y": 300
+           }
+          }
+         }
+        ],
+        "version": 4,
+        "metadata": {
+         "expect": [
+          {
+           "name": "url",
+           "type": "url",
+           "label": "URL",
+           "required": true
+          },
+          {
+           "name": "method",
+           "type": "select",
+           "label": "Method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "get",
+             "head",
+             "post",
+             "put",
+             "patch",
+             "delete",
+             "options"
+            ]
+           }
+          },
+          {
+           "name": "headers",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true,
+              "validate": {
+               "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+              }
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Header"
+           },
+           "type": "array",
+           "label": "Headers"
+          },
+          {
+           "name": "queryParameters",
+           "spec": {
+            "name": "value",
+            "spec": [
+             {
+              "name": "name",
+              "type": "text",
+              "label": "Name",
+              "required": true
+             },
+             {
+              "name": "value",
+              "type": "text",
+              "label": "Value"
+             }
+            ],
+            "type": "collection",
+            "label": "Parameter"
+           },
+           "type": "array",
+           "label": "Query parameters"
+          },
+          {
+           "name": "contentType",
+           "type": "select",
+           "label": "Body content type",
+           "validate": {
+            "enum": [
+             "json",
+             "multipart",
+             "urlEncoded",
+             "custom"
+            ]
+           }
+          },
+          {
+           "name": "parseResponse",
+           "type": "boolean",
+           "label": "Parse response",
+           "required": true
+          },
+          {
+           "name": "stopOnHttpError",
+           "type": "boolean",
+           "label": "Return error if HTTP request fails",
+           "required": true
+          },
+          {
+           "name": "timeout",
+           "type": "uinteger",
+           "label": "Timeout",
+           "validate": {
+            "max": 300,
+            "min": 1
+           }
+          },
+          {
+           "name": "allowRedirects",
+           "type": "boolean",
+           "label": "Allow redirects",
+           "required": true
+          },
+          {
+           "name": "shareCookies",
+           "type": "boolean",
+           "label": "Share cookies with other HTTP modules",
+           "required": true
+          },
+          {
+           "name": "requestCompressedContent",
+           "type": "boolean",
+           "label": "Request compressed content",
+           "required": true
+          },
+          {
+           "name": "inputMethod",
+           "type": "select",
+           "label": "Body input method",
+           "required": true,
+           "validate": {
+            "enum": [
+             "dataStructure",
+             "jsonString"
+            ]
+           }
+          },
+          {
+           "name": "jsonStringBodyContent",
+           "type": "text",
+           "label": "Body content",
+           "required": true
+          },
+          {
+           "name": "paginationType",
+           "type": "select",
+           "label": "Pagination type",
+           "validate": {
+            "enum": [
+             "offsetBased",
+             "pageBased",
+             "urlBased",
+             "tokenBased"
+            ]
+           }
+          }
+         ],
+         "restore": {
+          "expect": {
+           "method": {
+            "mode": "chose",
+            "label": "POST"
+           },
+           "headers": {
+            "mode": "chose",
+            "items": [
+             null
+            ]
+           },
+           "contentType": {
+            "label": "application/jsonEnter data in the JSON format, as a string or using a data structure."
+           },
+           "inputMethod": {
+            "label": "JSON stringEnter the JSON body as a raw text string. If values contain JSON reserved characters, you must escape them manually."
+           },
+           "shareCookies": {
+            "mode": "chose"
+           },
+           "parseResponse": {
+            "mode": "chose"
+           },
+           "allowRedirects": {
+            "mode": "chose"
+           },
+           "paginationType": {
+            "label": "Empty"
+           },
+           "queryParameters": {
+            "mode": "chose"
+           },
+           "stopOnHttpError": {
+            "mode": "chose"
+           },
+           "requestCompressedContent": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "tlsType": {
+            "label": "Empty"
+           },
+           "proxyKeychain": {
+            "label": "Choose a key"
+           },
+           "authenticationType": {
+            "label": "No authenticationUse when no credentials are required for the request."
+           }
+          }
+         },
+         "designer": {
+          "x": 1800,
+          "y": 150,
+          "name": "Enviar Bienvenida"
+         },
+         "interface": [
+          {
+           "name": "data",
+           "type": "any",
+           "label": "Data"
+          },
+          {
+           "name": "statusCode",
+           "type": "number",
+           "label": "Status Code"
+          },
+          {
+           "name": "headers",
+           "spec": [
+            {
+             "name": "content-length",
+             "type": "text",
+             "label": "Content-Length"
+            },
+            {
+             "name": "content-encoding",
+             "type": "text",
+             "label": "Content-Encoding"
+            },
+            {
+             "name": "content-type",
+             "type": "text",
+             "label": "Content-Type"
+            },
+            {
+             "name": "server",
+             "type": "text",
+             "label": "Server"
+            },
+            {
+             "name": "cache-control",
+             "type": "text",
+             "label": "Cache-Control"
+            },
+            {
+             "name": "set-cookie",
+             "spec": {
+              "type": "text"
+             },
+             "type": "array",
+             "label": "Set-Cookie"
+            }
+           ],
+           "type": "collection",
+           "label": "Headers"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "authenticationType",
+           "type": "select",
+           "label": "Authentication type",
+           "required": true,
+           "validate": {
+            "enum": [
+             "noAuth",
+             "apiKey",
+             "basicAuth",
+             "oAuth"
+            ]
+           }
+          },
+          {
+           "name": "tlsType",
+           "type": "select",
+           "label": "Transport layer security (TLS)",
+           "validate": {
+            "enum": [
+             "mTls",
+             "tls"
+            ]
+           }
+          },
+          {
+           "name": "proxyKeychain",
+           "type": "keychain:proxy",
+           "label": "Proxy"
+          }
+         ]
+        },
+        "parameters": {
+         "tlsType": "",
+         "proxyKeychain": "",
+         "authenticationType": "noAuth"
+        }
+       },
+       {
+        "id": 50,
+        "mapper": {
+         "data": {
+          "Nombre": "{{7.data.`Contact Name`}}",
+          "Mensaje": "Mensaje de Bienvenida para: {{if(40.extractedName = null; space + \"vecino\"; space + 40.extractedName)}}",
+          "Telefono": "{{7.data.`Phone Number`}}",
+          "AdminMode": false,
+          "Direccion": "Salida",
+          "Timestamp": "{{now}}",
+          "ClaveExterna": "{{45.data.messages[].id}}",
+          "SaveInDataStore": false,
+          "CurrentlyProcessing": false
+         }
+        },
+        "module": "scenario-service:CallSubscenario",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "SaveInDataStore",
+             "type": "boolean",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Telefono",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Nombre",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Direccion",
+             "type": "select",
+             "label": "",
+             "required": true,
+             "validate": {
+              "enum": [
+               "Salida",
+               "Entrada"
+              ]
+             }
+            },
+            {
+             "name": "Mensaje",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "Timestamp",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "ClaveExterna",
+             "type": "text",
+             "label": "",
+             "required": true
+            },
+            {
+             "name": "VarianteId",
+             "type": "number",
+             "label": ""
+            },
+            {
+             "name": "RecomendacionId",
+             "type": "number",
+             "label": ""
+            },
+            {
+             "name": "Metadata",
+             "type": "text",
+             "label": ""
+            },
+            {
+             "name": "AdminMode",
+             "type": "boolean",
+             "label": ""
+            },
+            {
+             "name": "CurrentlyProcessing",
+             "type": "boolean",
+             "label": "",
+             "required": true
+            }
+           ],
+           "type": "collection",
+           "label": "Scenario Inputs"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "data": {
+            "nested": {
+             "AdminMode": {
+              "mode": "chose"
+             },
+             "Direccion": {
+              "mode": "chose",
+              "label": "Salida"
+             },
+             "SaveInDataStore": {
+              "mode": "chose"
+             },
+             "CurrentlyProcessing": {
+              "mode": "chose"
+             }
+            }
+           }
+          },
+          "parameters": {
+           "scenario": {
+            "label": "LL - Log Message"
+           }
+          }
+         },
+         "designer": {
+          "x": 2100,
+          "y": 0,
+          "name": "Call Log To Save Exit Message on Strapi"
+         },
+         "interface": [
+          {
+           "name": "executionId",
+           "type": "text",
+           "label": "Execution ID"
+          }
+         ],
+         "parameters": [
+          {
+           "name": "scenario",
+           "type": "scenario",
+           "label": "Scenario",
+           "required": true
+          },
+          {
+           "name": "shouldWaitForExecutionEnd",
+           "type": "boolean",
+           "label": "Wait for the scenario to finish",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "scenario": "SCN_5421473",
+         "shouldWaitForExecutionEnd": false
+        }
+       },
+       {
+        "id": 16,
+        "mapper": {
+         "key": "{{7.key}}",
+         "data": {
+          "Contact Done": true,
+          "Contact Name": "{{7.data.`Contact Name`}}",
+          "Phone Number": "{{7.data.`Phone Number`}}",
+          "Contact Timestamp": "{{7.data.`Contact Timestamp`}}"
+         },
+         "upsert": false,
+         "overwriteArrays": false
+        },
+        "module": "datastore:UpdateRecord",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "key",
+           "type": "text",
+           "label": "Key",
+           "required": true
+          },
+          {
+           "name": "upsert",
+           "type": "boolean",
+           "label": "Insert missing record",
+           "required": true
+          },
+          {
+           "name": "overwriteArrays",
+           "type": "boolean",
+           "label": "Overwrite an existing array in the record",
+           "required": true
+          },
+          {
+           "name": "data",
+           "spec": [
+            {
+             "name": "Phone Number",
+             "type": "text",
+             "label": null
+            },
+            {
+             "name": "Contact Timestamp",
+             "type": "date",
+             "label": null
+            },
+            {
+             "name": "Contact Done",
+             "type": "boolean",
+             "label": null
+            },
+            {
+             "name": "Contact Name",
+             "type": "text",
+             "label": null
+            }
+           ],
+           "type": "collection",
+           "label": "Record"
+          }
+         ],
+         "restore": {
+          "expect": {
+           "data": {
+            "nested": {
+             "Contact Done": {
+              "mode": "chose"
+             }
+            }
+           },
+           "upsert": {
+            "mode": "chose"
+           },
+           "overwriteArrays": {
+            "mode": "chose"
+           }
+          },
+          "parameters": {
+           "datastore": {
+            "label": "LL_WelcomeContactsMade"
+           }
+          }
+         },
+         "designer": {
+          "x": 2400,
+          "y": 0,
+          "name": "Update Contacted to Yes"
+         },
+         "parameters": [
+          {
+           "name": "datastore",
+           "type": "datastore",
+           "label": "Data store",
+           "required": true
+          }
+         ]
+        },
+        "parameters": {
+         "datastore": 76313
+        }
+       },
+       {
+        "id": 9,
+        "mapper": {
+         "value": "{{if(true = true; \"✅ \" + if(7.data.`Contact Name` = emptystring; 7.data.`Phone Number`; if(7.data.`Contact Name` = null; 7.data.`Phone Number`; 7.data.`Contact Name`)); \"❌ \" + if(7.data.`Contact Name` = emptystring; 7.data.`Phone Number`; if(7.data.`Contact Name` = null; 7.data.`Phone Number`; 7.data.`Contact Name`)) + \" - Error al Contactar\")}}"
+        },
+        "module": "util:TextAggregator",
+        "version": 1,
+        "metadata": {
+         "expect": [
+          {
+           "name": "value",
+           "type": "text",
+           "label": "Text"
+          }
+         ],
+         "restore": {
+          "extra": {
+           "feeder": {
+            "label": "Iterator [7]"
+           }
+          },
+          "parameters": {
+           "rowSeparator": {
+            "label": "New row"
+           }
+          }
+         },
+         "advanced": true,
+         "designer": {
+          "x": 2700,
+          "y": 0
+         },
+         "parameters": [
+          {
+           "name": "rowSeparator",
+           "type": "select",
+           "label": "Row separator",
+           "validate": {
+            "enum": [
+             "\n",
+             "\t",
+             "other"
+            ]
+           }
+          }
+         ]
+        },
+        "parameters": {
+         "feeder": 7,
+         "rowSeparator": "\n"
+        }
+       },
+       {
+        "id": 4,
+        "mapper": {
+         "ContactStatus": "Success",
+         "ContactResults": "{{9.text}}"
+        },
+        "module": "scenario-service:ReturnData",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "ContactResults",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "ContactStatus",
+           "type": "text",
+           "label": ""
+          }
+         ],
+         "restore": {},
+         "designer": {
+          "x": 3000,
+          "y": 0,
+          "name": "Return Success"
+         }
+        },
+        "parameters": {}
+       }
+      ]
+     },
+     {
+      "flow": [
+       {
+        "id": 35,
+        "filter": {
+         "name": "No Users to Contact",
+         "conditions": [
+          [
+           {
+            "a": "{{26.`__IMTAGGLENGTH__`}}",
+            "b": "0",
+            "o": "number:lessorequal"
+           }
+          ],
+          [
+           {
+            "a": "{{26.array[].key}}",
+            "b": "{{emptystring}}",
+            "o": "text:equal"
+           }
+          ]
+         ]
+        },
+        "mapper": {
+         "ContactStatus": "Failed",
+         "ContactResults": "No se encontraron usuarios disponibles para contactar. \n\n👉 Por favor intente nuevamente adjuntando contactos válidos."
+        },
+        "module": "scenario-service:ReturnData",
+        "version": 2,
+        "metadata": {
+         "expect": [
+          {
+           "name": "ContactResults",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "ContactStatus",
+           "type": "text",
+           "label": ""
+          }
+         ],
+         "restore": {},
+         "designer": {
+          "x": 1200,
+          "y": 900
+         }
+        },
+        "parameters": {}
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 450
+     }
+    }
+   }
+  ],
+  "name": "LL - Enviar Bienvenida",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": [
+     [
+      {
+       "id": 49,
+       "filter": null,
+       "mapper": null,
+       "module": "builtin:BasicRouter",
+       "routes": [
+        {
+         "flow": [
+          {
+           "id": 48,
+           "filter": {
+            "name": "Its not a good time",
+            "conditions": []
+           },
+           "mapper": {
+            "key": "",
+            "data": {
+             "Payload": "a",
+             "WebhookToSend": "https://hook.us2.make.com/[REDACTED_WEBHOOK_PATH]"
+            },
+            "overwrite": false
+           },
+           "module": "datastore:AddRecord",
+           "version": 1,
+           "metadata": {
+            "expect": [
+             {
+              "name": "key",
+              "type": "text",
+              "label": "Key"
+             },
+             {
+              "name": "overwrite",
+              "type": "boolean",
+              "label": "Overwrite an existing record",
+              "required": true
+             },
+             {
+              "name": "data",
+              "spec": [
+               {
+                "name": "Payload",
+                "type": "text",
+                "label": null
+               },
+               {
+                "name": "WebhookToSend",
+                "type": "text",
+                "label": null
+               }
+              ],
+              "type": "collection",
+              "label": "Record"
+             }
+            ],
+            "restore": {
+             "expect": {
+              "overwrite": {
+               "mode": "chose"
+              }
+             },
+             "parameters": {
+              "datastore": {
+               "label": "LL_OffTimeRecomendations"
+              }
+             }
+            },
+            "designer": {
+             "x": 300,
+             "y": 1200,
+             "name": "Save Data in OffTimeRecords"
+            },
+            "parameters": [
+             {
+              "name": "datastore",
+              "type": "datastore",
+              "label": "Data store",
+              "required": true
+             }
+            ]
+           },
+           "parameters": {
+            "datastore": 101658
+           }
+          }
+         ],
+         "disabled": true
+        }
+       ],
+       "version": 1,
+       "metadata": {
+        "designer": {
+         "x": 0,
+         "y": 1200,
+         "messages": [
+          {
+           "message": "This module is not connected to the flow. This module and everything after it will be skipped during execution. <autoconnect>Link it to your scenario to include them.</autoconnect>",
+           "category": "link",
+           "severity": "warning"
+          }
+         ]
+        }
+       }
+      }
+     ],
+     [
+      {
+       "id": 37,
+       "mapper": {
+        "to": "{{7.data.`Phone Number`}}",
+        "body": {
+         "body_0": "{{if(40.extractedName = null; space + \"vecino\"; space + 40.extractedName)}}",
+         "parameter_names": [
+          "name"
+         ],
+         "inputtext-1771847999507": "Hola{{{{name}}}} 👋\n\nTe escribimos desde Country Magazine para contarte algo nuevo para la comunidad.\n\nCreamos *LLEGANDO al Country*, una agenda digital donde podés *encontrar y recomendar servicios* que trabajan dentro de barrios privados.\n\nDesde electricistas y jardineros hasta shows para eventos, delivery o servicios para mascotas.\n\nLa idea es simple: *organizar las recomendaciones entre vecinos en un solo lugar*.\n\nPodés conocerlo acá:\n👉 *https://countrymagazine.com.ar/llegando*\n\nSi querés, elegí una opción y te cuento más:"
+        },
+        "fromId": "717278908136135",
+        "buttons": {
+         "button_0": {
+          "quick_reply::payload": "¿Cómo funciona?"
+         },
+         "button_1": {
+          "quick_reply::payload": "¿Es gratis usarlo?"
+         },
+         "button_2": {
+          "quick_reply::payload": "Recomendar un Servicio"
+         }
+        },
+        "messageTemplate": "llegando_first_message_v2::en"
+       },
+       "module": "whatsapp-business-cloud:sendTemplateMessage",
+       "version": 1,
+       "metadata": {
+        "expect": [
+         {
+          "name": "fromId",
+          "type": "select",
+          "label": "Sender ID",
+          "required": true
+         },
+         {
+          "name": "to",
+          "type": "text",
+          "label": "Receiver",
+          "required": true
+         },
+         {
+          "name": "messageTemplate",
+          "type": "select",
+          "label": "Message Template",
+          "required": true
+         },
+         {
+          "name": "body",
+          "spec": [
+           {
+            "name": "inputtext-1771847999507",
+            "type": "hidden",
+            "label": "Text Template"
+           },
+           {
+            "name": "body_0",
+            "type": "text",
+            "label": "{{name}}",
+            "required": true
+           },
+           {
+            "name": "parameter_names",
+            "type": "hidden",
+            "label": "Parameter Names"
+           }
+          ],
+          "type": "collection",
+          "label": "Body"
+         },
+         {
+          "name": "buttons",
+          "spec": [
+           {
+            "name": "button_0",
+            "spec": [
+             {
+              "name": "quick_reply::payload",
+              "type": "text",
+              "label": "Payload"
+             }
+            ],
+            "type": "collection",
+            "label": "¿Cómo funciona?"
+           },
+           {
+            "name": "button_1",
+            "spec": [
+             {
+              "name": "quick_reply::payload",
+              "type": "text",
+              "label": "Payload"
+             }
+            ],
+            "type": "collection",
+            "label": "¿Es gratis usarlo?"
+           },
+           {
+            "name": "button_2",
+            "spec": [
+             {
+              "name": "quick_reply::payload",
+              "type": "text",
+              "label": "Payload"
+             }
+            ],
+            "type": "collection",
+            "label": "Recomendar un Servicio"
+           }
+          ],
+          "type": "collection",
+          "label": "Buttons"
+         }
+        ],
+        "restore": {
+         "expect": {
+          "fromId": {
+           "mode": "chose",
+           "label": "Llegando al Country - Servicios Recomendados ([REDACTED_PHONE])"
+          },
+          "messageTemplate": {
+           "label": "llegando_first_message_v2 (en)",
+           "nested": [
+            {
+             "name": "body",
+             "spec": [
+              {
+               "type": "html",
+               "label": "<pre>Hola{{name}} 👋\n\nTe escribimos desde Country Magazine para contarte algo nuevo para la comunidad.\n\nCreamos *LLEGANDO al Country*, una agenda digital donde podés *encontrar y recomendar servicios* que trabajan dentro de barrios privados.\n\nDesde electricistas y jardineros hasta shows para eventos, delivery o servicios para mascotas.\n\nLa idea es simple: *organizar las recomendaciones entre vecinos en un solo lugar*.\n\nPodés conocerlo acá:\n👉 *https://countrymagazine.com.ar/llegando*\n\nSi querés, elegí una opción y te cuento más:</pre>"
+              },
+              {
+               "name": "inputtext-1771847999507",
+               "type": "hidden",
+               "label": "Text Template",
+               "default": "Hola{{{{name}}}} 👋\n\nTe escribimos desde Country Magazine para contarte algo nuevo para la comunidad.\n\nCreamos *LLEGANDO al Country*, una agenda digital donde podés *encontrar y recomendar servicios* que trabajan dentro de barrios privados.\n\nDesde electricistas y jardineros hasta shows para eventos, delivery o servicios para mascotas.\n\nLa idea es simple: *organizar las recomendaciones entre vecinos en un solo lugar*.\n\nPodés conocerlo acá:\n👉 *https://countrymagazine.com.ar/llegando*\n\nSi querés, elegí una opción y te cuento más:"
+              },
+              {
+               "name": "body_0",
+               "type": "text",
+               "label": "{{name}}",
+               "required": true
+              },
+              {
+               "name": "parameter_names",
+               "type": "hidden",
+               "label": "Parameter Names",
+               "default": [
+                "name"
+               ]
+              }
+             ],
+             "type": "collection",
+             "label": "Body"
+            },
+            {
+             "name": "buttons",
+             "spec": [
+              {
+               "name": "button_0",
+               "spec": [
+                {
+                 "help": "Payload that is returned when the button is clicked in addition to the display text on the button.",
+                 "name": "quick_reply::payload",
+                 "type": "text",
+                 "label": "Payload"
+                }
+               ],
+               "type": "collection",
+               "label": "¿Cómo funciona?"
+              },
+              {
+               "name": "button_1",
+               "spec": [
+                {
+                 "help": "Payload that is returned when the button is clicked in addition to the display text on the button.",
+                 "name": "quick_reply::payload",
+                 "type": "text",
+                 "label": "Payload"
+                }
+               ],
+               "type": "collection",
+               "label": "¿Es gratis usarlo?"
+              },
+              {
+               "name": "button_2",
+               "spec": [
+                {
+                 "help": "Payload that is returned when the button is clicked in addition to the display text on the button.",
+                 "name": "quick_reply::payload",
+                 "type": "text",
+                 "label": "Payload"
+                }
+               ],
+               "type": "collection",
+               "label": "Recomendar un Servicio"
+              }
+             ],
+             "type": "collection",
+             "label": "Buttons"
+            }
+           ]
+          }
+         },
+         "parameters": {
+          "__IMTCONN__": {
+           "data": {
+            "scoped": "true",
+            "connection": "whatsapp-business-cloud2"
+           },
+           "label": "CountryMagazineConnection v1 (adminid)"
+          }
+         }
+        },
+        "designer": {
+         "x": 0,
+         "y": 1500,
+         "messages": [
+          {
+           "message": "Connection: Value must not be empty.",
+           "category": "setup",
+           "severity": "error"
+          },
+          {
+           "message": "This module is not connected to the flow. This module and everything after it will be skipped during execution. <autoconnect>Link it to your scenario to include them.</autoconnect>",
+           "category": "link",
+           "severity": "warning"
+          },
+          {
+           "message": "Referenced module 'Flow Control - Iterator' [7] is not accessible.",
+           "category": "reference",
+           "severity": "warning"
+          },
+          {
+           "message": "Referenced module 'OpenAI (ChatGPT, Sora, DALL-E, Whisper) - Transform text to structured data' [40] is not accessible.",
+           "category": "reference",
+           "severity": "warning"
+          }
+         ]
+        },
+        "parameters": [
+         {
+          "name": "__IMTCONN__",
+          "type": "account:whatsapp-business-cloud,whatsapp-business-cloud2",
+          "label": "Connection",
+          "required": true
+         }
+        ]
+       },
+       "parameters": {
+        "__IMTCONN__": 4524873
+       }
+      }
+     ]
+    ],
+    "samples": {
+     "__sanitized__": "design-time sample bundles removed (contained real personal data)"
+    }
+   },
+   "scenario": {
+    "dlq": false,
+    "slots": null,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [],
+   "output": [
+    {
+     "help": "",
+     "name": "ContactResults",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    },
+    {
+     "help": "",
+     "name": "ContactStatus",
+     "type": "text",
+     "label": "",
+     "default": "",
+     "required": false,
+     "multiline": false
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 1,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 1,
+   "email": 4,
+   "phone": 1,
+   "samples_removed": 1,
+   "person": 0
+  }
+ }
+}

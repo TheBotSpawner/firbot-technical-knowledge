@@ -1,13 +1,20 @@
 # Make Blueprint Exports
 
-Put future reviewed, **sanitised** scenario snapshots in `sanitized/` and update [`manifest.md`](manifest.md). Never commit raw Make exports without a secrets + personal-data scan.
+- `sanitized/` — 37 sanitized snapshots of every scenario in the Llegando al Country Make team, taken 2026-11-22. See [`manifest.md`](manifest.md) for hashes, status and redaction counts.
+- `private/` — Git-ignored local staging for raw exports (`private/raw/<make-id>.json`). Raw files contain live credentials and personal data: never commit, share or upload them; delete when no longer needed or move to an approved vault.
 
-Suggested naming for sanitized files: `<exact-name-slug>__<vendor-scenario-id>__<YYYY-MM-DD>.sanitized.json`.
+File naming: `<exact-name-slug>__<make-scenario-id>__<YYYY-MM-DD>.sanitized.json`.
+
+Each sanitized file is the full `scenarios_get` object (scenario metadata + `blueprint`) plus a `__sanitization__` block describing source and redaction counts.
 
 Rules:
-- Preserve module IDs, route topology, filters and input/output schema where possible.
-- Replace bearer credentials, API keys, webhook secrets and private records with literal placeholders such as `[REDACTED]`.
-- Confirm that redaction did not break JSON syntax; **do not re-import sanitised exports as deployable blueprints**.
-- Record source date, actual current scenario ID, last compared-to-live date, inspection reviewer, redaction status and SHA-256 of **sanitized** file only.
-- Raw exports may be temporarily inspected inside `private/` (ignored by Git) under client-approved policy. For strong confidentiality, use an approved secure storage system rather than local Git working copies.
-- Do not infer statuses from file existence; inspect the live Make environment.
+- Preserve module IDs, route topology, filters, mappings and interfaces; replace secrets/PII with `[REDACTED_*]` placeholders.
+- Validate JSON after redaction and re-scan for tokens, e-mails, phones, webhook paths and names before committing.
+- **Do not re-import sanitized exports** into Make — they are evidence, not deployable blueprints.
+- Do not infer status from file existence; re-check the live Make environment.
+
+## Refresh procedure (read-only)
+
+1. List scenarios for team `1163364`; fetch each with `scenarios_get`.
+2. Store raw JSON in `private/raw/`.
+3. Run the sanitizer (same rules as the 2026-11-22 run), validate, scan, write new dated files, update `manifest.md` and the registries for any changed scenario.

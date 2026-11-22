@@ -1,0 +1,547 @@
+{
+ "id": 6920153,
+ "name": "LL - RecMulti 2 Mostrar Resumen",
+ "teamId": 1163364,
+ "hookId": null,
+ "devices": [],
+ "deviceId": null,
+ "deviceScope": null,
+ "concept": false,
+ "description": "",
+ "folderId": null,
+ "slots": null,
+ "isinvalid": false,
+ "islinked": true,
+ "islocked": false,
+ "isPaused": false,
+ "usedPackages": [
+  "scenario-service",
+  "json",
+  "builtin",
+  "util",
+  "util",
+  "datastore",
+  "http",
+  "scenario-service",
+  "builtin",
+  "scenario-service",
+  "scenario-service"
+ ],
+ "lastEdit": "2026-11-05T20:36:53.277Z",
+ "scheduling": {
+  "type": "on-demand"
+ },
+ "iswaiting": false,
+ "dlqCount": 0,
+ "allDlqCount": 0,
+ "createdByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "updatedByUser": {
+  "id": 4881180,
+  "name": "[REDACTED_USER_NAME]",
+  "email": "[REDACTED_EMAIL]"
+ },
+ "nextExec": null,
+ "created": "2026-11-05T20:36:53.277Z",
+ "chainingRole": "bridge",
+ "type": "scenario",
+ "isShared": false,
+ "isActive": true,
+ "labels": [],
+ "blueprint": {
+  "flow": [
+   {
+    "id": 1,
+    "mapper": {},
+    "module": "scenario-service:StartSubscenario",
+    "version": 2,
+    "metadata": {
+     "designer": {
+      "x": 0,
+      "y": 0
+     },
+     "interface": [
+      {
+       "name": "wa_id",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "user_name",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "items_json",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "zone_name",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "status",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "note",
+       "type": "text",
+       "required": false
+      },
+      {
+       "name": "TestMode",
+       "type": "boolean",
+       "default": false,
+       "required": false
+      },
+      {
+       "name": "created_at",
+       "type": "text",
+       "required": false
+      }
+     ]
+    },
+    "parameters": {}
+   },
+   {
+    "id": 2,
+    "mapper": {
+     "json": "{{1.items_json}}"
+    },
+    "module": "json:ParseJSON",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 300,
+      "y": 0,
+      "name": "Leer lista de contactos"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 3,
+    "mapper": {
+     "array": "{{2.items}}"
+    },
+    "module": "builtin:BasicFeeder",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 600,
+      "y": 0,
+      "name": "Recorrer contactos"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 4,
+    "mapper": {
+     "value": "{{3.`__IMTINDEX__`}}. {{substring(ifempty(3.n; \"Contacto\"); 0; 40)}} — {{if(length(trim(ifempty(3.s; emptystring))) > 0; 3.s; \"_sin servicio_\")}}"
+    },
+    "module": "util:TextAggregator",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 900,
+      "y": 0,
+      "name": "Armar lista numerada"
+     }
+    },
+    "parameters": {
+     "feeder": 3,
+     "rowSeparator": "\n"
+    }
+   },
+   {
+    "id": 5,
+    "mapper": {
+     "scope": "roundtrip",
+     "variables": [
+      {
+       "name": "msg",
+       "value": "{{if(1.status = \"await_confirm\"; \"📋 *Contactos para recomendar (\" + length(2.items) + \"):*\" + newline + newline + 4.text + newline + newline + \"📍 Barrio donde hicieron el servicio: *\" + 1.zone_name + \"*\" + newline + newline + if(length(ifempty(1.note; emptystring)) > 0; 1.note + newline + newline; emptystring) + if(contains(4.text; \"_sin servicio_\"); \"Los que dicen _sin servicio_ los registro igual. Si sabés cuál es, escribímelo (ej: _Carlos es pintor_).\" + newline + newline; emptystring) + \"¿Los registro? Si querés corregir algo, escribime.\"; \"📋 *Contactos para recomendar (\" + length(2.items) + \"):*\" + newline + newline + 4.text + newline + newline + if(length(ifempty(1.note; emptystring)) > 0; 1.note + newline + newline; emptystring) + \"📍 Recordá que para mandar varios juntos tienen que ser *del mismo barrio*.\" + newline + \"¿En qué barrio hicieron el servicio?\")}}"
+      }
+     ]
+    },
+    "module": "util:SetVariables",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 1200,
+      "y": 0,
+      "name": "Armar mensaje"
+     }
+    },
+    "parameters": {}
+   },
+   {
+    "id": 6,
+    "mapper": {
+     "key": "{{1.wa_id}}",
+     "data": {
+      "wa_id": "{{1.wa_id}}",
+      "status": "{{1.status}}",
+      "contacts": "{{1.items_json}}",
+      "last_msg": "{{5.msg}}",
+      "user_name": "{{1.user_name}}",
+      "zone_name": "{{1.zone_name}}",
+      "created_at": "{{ifempty(1.created_at; now)}}",
+      "updated_at": "{{now}}"
+     },
+     "overwrite": true
+    },
+    "module": "datastore:AddRecord",
+    "version": 1,
+    "metadata": {
+     "designer": {
+      "x": 1500,
+      "y": 0,
+      "name": "Guardar bandeja de contactos"
+     }
+    },
+    "parameters": {
+     "datastore": 193870
+    }
+   },
+   {
+    "id": 7,
+    "filter": {
+     "name": "No es test",
+     "conditions": [
+      [
+       {
+        "a": "{{1.TestMode}}",
+        "b": "{{false}}",
+        "o": "boolean:equal"
+       }
+      ]
+     ]
+    },
+    "mapper": {
+     "url": "https://graph.facebook.com/v22.0/717278908136135/messages",
+     "method": "post",
+     "headers": [
+      {
+       "name": "Authorization",
+       "value": "Bearer {{var.team.LL_WA_TOKEN}}"
+      }
+     ],
+     "contentType": "json",
+     "inputMethod": "jsonString",
+     "shareCookies": false,
+     "parseResponse": true,
+     "allowRedirects": true,
+     "stopOnHttpError": true,
+     "jsonStringBodyContent": "{\"messaging_product\":\"whatsapp\",\"recipient_type\":\"individual\",\"to\":\"{{1.wa_id}}\",\"type\":\"interactive\",\"interactive\":{\"type\":\"button\",\"body\":{\"text\":\"{{escapeJSON(substring(5.msg; 0; 1020))}}\"},\"action\":{\"buttons\":{{if(1.status = \"await_confirm\"; \"[{\"\"type\"\":\"\"reply\"\",\"\"reply\"\":{\"\"id\"\":\"\"mrec_ok\"\",\"\"title\"\":\"\"✅ Sí, registrar\"\"}},{\"\"type\"\":\"\"reply\"\",\"\"reply\"\":{\"\"id\"\":\"\"mrec_zone\"\",\"\"title\"\":\"\"📍 Cambiar barrio\"\"}},{\"\"type\"\":\"\"reply\"\",\"\"reply\"\":{\"\"id\"\":\"\"mrec_cancel\"\",\"\"title\"\":\"\"❌ Cancelar\"\"}}]\"; \"[{\"\"type\"\":\"\"reply\"\",\"\"reply\"\":{\"\"id\"\":\"\"mrec_cancel\"\",\"\"title\"\":\"\"❌ Cancelar\"\"}}]\")}}}}}",
+     "requestCompressedContent": true
+    },
+    "module": "http:MakeRequest",
+    "onerror": [
+     {
+      "id": 71,
+      "mapper": {
+       "data": {
+        "scenarioURL": "{{var.scenario.url}}",
+        "CCRecipients": "[REDACTED_EMAIL_1]",
+        "scenarioName": "{{var.scenario.name}}",
+        "toRecipients": "[REDACTED_EMAIL_2]",
+        "wppReplyNeeded": false,
+        "clientPhoneNumber": "{{1.wa_id}}",
+        "emailErrorMessage": "Error enviando mensaje de WhatsApp (recomendación múltiple) - {{7.error.message}}"
+       }
+      },
+      "module": "scenario-service:CallSubscenario",
+      "version": 2,
+      "metadata": {
+       "expect": [
+        {
+         "name": "data",
+         "spec": [
+          {
+           "name": "scenarioURL",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "CCRecipients",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "scenarioName",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "toRecipients",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "wppReplyNeeded",
+           "type": "boolean",
+           "label": ""
+          },
+          {
+           "name": "clientPhoneNumber",
+           "type": "text",
+           "label": ""
+          },
+          {
+           "name": "emailErrorMessage",
+           "type": "text",
+           "label": ""
+          }
+         ],
+         "type": "collection",
+         "label": "Scenario Inputs"
+        }
+       ],
+       "designer": {
+        "x": 1800,
+        "y": 300,
+        "name": "Email de error"
+       }
+      },
+      "parameters": {
+       "scenario": "SCN_4226818",
+       "shouldWaitForExecutionEnd": true
+      }
+     },
+     {
+      "id": 72,
+      "module": "builtin:Ignore",
+      "version": 1,
+      "metadata": {
+       "designer": {
+        "x": 2100,
+        "y": 300
+       }
+      }
+     }
+    ],
+    "version": 4,
+    "metadata": {
+     "designer": {
+      "x": 1800,
+      "y": 0,
+      "name": "Enviar resumen por WhatsApp"
+     }
+    },
+    "parameters": {
+     "tlsType": "",
+     "authenticationType": "noAuth"
+    }
+   },
+   {
+    "id": 8,
+    "mapper": {
+     "data": {
+      "Nombre": "{{1.user_name}}",
+      "Mensaje": "{{5.msg}}",
+      "Metadata": "{\"flow\":\"recomendacion_multiple\",\"tipoMensaje\":\"resumen_contactos\"}",
+      "Telefono": "{{1.wa_id}}",
+      "AdminMode": false,
+      "Direccion": "Salida",
+      "Timestamp": "{{now}}",
+      "ClaveExterna": "{{7.data.messages[].id}}",
+      "SaveInDataStore": false,
+      "CurrentlyProcessing": false
+     }
+    },
+    "module": "scenario-service:CallSubscenario",
+    "version": 2,
+    "metadata": {
+     "expect": [
+      {
+       "name": "data",
+       "spec": [
+        {
+         "name": "Nombre",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "Mensaje",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "Metadata",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "Telefono",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "AdminMode",
+         "type": "boolean",
+         "label": ""
+        },
+        {
+         "name": "Direccion",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "Timestamp",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "ClaveExterna",
+         "type": "text",
+         "label": ""
+        },
+        {
+         "name": "SaveInDataStore",
+         "type": "boolean",
+         "label": ""
+        },
+        {
+         "name": "CurrentlyProcessing",
+         "type": "boolean",
+         "label": ""
+        }
+       ],
+       "type": "collection",
+       "label": "Scenario Inputs"
+      }
+     ],
+     "designer": {
+      "x": 2100,
+      "y": 0,
+      "name": "Log en Strapi"
+     }
+    },
+    "parameters": {
+     "scenario": "SCN_5421473",
+     "shouldWaitForExecutionEnd": false
+    }
+   },
+   {
+    "id": 9,
+    "mapper": {
+     "msg": "{{5.msg}}"
+    },
+    "module": "scenario-service:ReturnData",
+    "version": 2,
+    "metadata": {
+     "expect": [
+      {
+       "name": "msg",
+       "type": "text",
+       "label": ""
+      }
+     ],
+     "designer": {
+      "x": 2400,
+      "y": 0
+     }
+    },
+    "parameters": {}
+   }
+  ],
+  "name": "LL - RecMulti 2 Mostrar Resumen",
+  "metadata": {
+   "instant": false,
+   "version": 1,
+   "designer": {
+    "orphans": []
+   },
+   "scenario": {
+    "dlq": false,
+    "dataloss": false,
+    "maxErrors": 3,
+    "autoCommit": true,
+    "roundtrips": 1,
+    "sequential": false,
+    "confidential": false,
+    "freshVariables": false,
+    "autoCommitTriggerLast": true
+   }
+  },
+  "scheduling": {
+   "type": "on-demand"
+  },
+  "interface": {
+   "input": [
+    {
+     "name": "wa_id",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "user_name",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "items_json",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "zone_name",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "status",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "note",
+     "type": "text",
+     "required": false
+    },
+    {
+     "name": "TestMode",
+     "type": "boolean",
+     "default": false,
+     "required": false
+    },
+    {
+     "name": "created_at",
+     "type": "text",
+     "required": false
+    }
+   ],
+   "output": [
+    {
+     "name": "msg",
+     "type": "text"
+    }
+   ]
+  }
+ },
+ "__sanitization__": {
+  "source": "Make API scenarios_get (read-only) via MCP",
+  "team_id": 1163364,
+  "organization_id": 4655020,
+  "obtained_at": "2026-11-22",
+  "policy": "Secrets, webhook paths, emails, phone numbers, user identities and design-time sample data replaced with [REDACTED_*] placeholders. NOT importable into production.",
+  "counts": {
+   "wa_token": 0,
+   "strapi_token": 0,
+   "xbot_token": 0,
+   "hook_url": 0,
+   "email": 2,
+   "phone": 0,
+   "samples_removed": 0,
+   "person": 0
+  }
+ }
+}
